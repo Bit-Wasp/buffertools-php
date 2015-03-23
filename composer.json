@@ -1,0 +1,23 @@
+{
+  "name": "bitwasp/buffertools",
+  "description": "Toolbox for working with binary and hex data. Similar to NodeJS Buffer.",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Thomas Kerin",
+      "homepage": "https://thomaskerin.io"
+    },
+    {
+      "name": "Ruben de Vries",
+      "email": "ruben@rubensayshi.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "BitWasp\\Buffertools\\": "src/Buffertools/",
+      "BitWasp\\Buffertools\\Tests\\": "tests/"
+    }
+  },
+  "minimum-stability": "stable",
+  "require": {}
+}
