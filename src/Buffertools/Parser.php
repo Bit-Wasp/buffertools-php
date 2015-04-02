@@ -1,25 +1,26 @@
 <?php
 
-namespace BitWasp\Bitcoin;
+namespace BitWasp\Buffertools;
 
-use BitWasp\Bitcoin\Exceptions\ParserOutOfRange;
+use BitWasp\Buffertools\Exceptions\ParserOutOfRange;
+use Mdanter\Ecc\EccFactory;
 
 class Parser
 {
     /**
      * @var string
      */
-    protected $string;
+    private $string;
 
     /**
-     * @var \BitWasp\Bitcoin\Math\Math
+     * @var \Mdanter\Ecc\MathAdapterInterface
      */
-    protected $math;
+    private $math;
 
     /**
      * @var int
      */
-    protected $position = 0;
+    private $position = 0;
 
     /**
      * Instantiate class, optionally taking a given hex string or Buffer.
@@ -29,49 +30,14 @@ class Parser
      */
     public function __construct($input = null)
     {
+        $this->math = EccFactory::getAdapter();
+        
         if (!$input instanceof Buffer) {
             $input = Buffer::hex($input);
         }
 
         $this->string = $input->getBinary();
         $this->position = 0;
-        $this->math = Bitcoin::getMath();
-    }
-
-    /**
-     * Convert a decimal number into a VarInt Buffer
-     *
-     * @param integer $decimal
-     * @return Buffer
-     * @throws \Exception
-     */
-    public static function numToVarInt($decimal)
-    {
-        if ($decimal < 0xfd) {
-            $bin = chr($decimal);
-        } elseif ($decimal <= 0xffff) {
-            // Uint16
-            $bin = pack("Cv", 0xfd, $decimal);
-        } elseif ($decimal <= 0xffffffff) {
-            // Uint32
-            $bin = pack("CV", 0xfe, $decimal);
-        } else {
-            // Todo, support for 64bit integers
-            throw new \Exception('numToVarInt(): Integer too large');
-        }
-
-        return new Buffer($bin);
-    }
-
-    /**
-     * Flip byte order of this binary string
-     *
-     * @param string $hex
-     * @return string
-     */
-    public static function flipBytes($hex)
-    {
-        return implode('', array_reverse(str_split($hex, 1)));
     }
 
     /**
@@ -168,7 +134,7 @@ class Parser
         $this->position += $bytes;
 
         if ($flipBytes) {
-            $string = $this->flipBytes($string);
+            $string = Buffertools::flipBytes($string);
         }
 
         $buffer = new Buffer($string);
@@ -195,7 +161,7 @@ class Parser
         $data = $newBuffer->getBinary();
 
         if ($flipBytes) {
-            $data = $this->flipBytes($data);
+            $data = Buffertools::flipBytes($data);
         }
 
         $this->string .= $data;
@@ -212,7 +178,7 @@ class Parser
      */
     public function writeWithLength(Buffer $buffer)
     {
-        $varInt = self::numToVarInt($buffer->getSize());
+        $varInt = Buffertools::numToVarInt($buffer->getSize());
         $buffer = new Buffer($varInt->getBinary() . $buffer->getBinary());
         $this->writeBytes($buffer->getSize(), $buffer);
         return $this;
@@ -225,9 +191,9 @@ class Parser
      */
     public function writeArray($serializable)
     {
-        $parser = new Parser(self::numToVarInt(count($serializable)));
+        $parser = new Parser(Buffertools::numToVarInt(count($serializable)));
         foreach ($serializable as $object) {
-            if (in_array('BitWasp\Bitcoin\SerializableInterface', class_implements($object))) {
+            if ($object instanceof SerializableInterface) {
                 $object = $object->getBuffer();
             }
 
@@ -257,7 +223,7 @@ class Parser
         $data = pack("H*", $hex);
 
         if ($flipBytes) {
-            $data = $this->flipBytes($data);
+            $data = Buffertools::flipBytes($data);
         }
 
         $this->string .= $data;

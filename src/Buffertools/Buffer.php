@@ -1,18 +1,25 @@
 <?php
 
-namespace BitWasp\Bitcoin;
+namespace BitWasp\Buffertools;
+
+use Mdanter\Ecc\EccFactory;
 
 class Buffer
 {
     /**
      * @var int|double
      */
-    protected $size;
+    private $size;
 
     /**
      * @var string
      */
-    protected $buffer;
+    private $buffer;
+
+    /**
+     * @var \Mdanter\Ecc\MathAdapterInterface
+     */
+    private $math;
 
     /**
      * @param string $byteString
@@ -21,9 +28,11 @@ class Buffer
      */
     public function __construct($byteString = '', $byteSize = null)
     {
+        $this->math = EccFactory::getAdapter();
+
         if (is_numeric($byteSize)) {
             // Check the integer doesn't overflow its supposed size
-            if (Bitcoin::getMath()->cmp(strlen($byteString), $byteSize) > 0) {
+            if ($this->math->cmp(strlen($byteString), $byteSize) > 0) {
                 throw new \Exception('Byte string exceeds maximum size');
             }
         }
@@ -115,7 +124,7 @@ class Buffer
      */
     public function getInt()
     {
-        return Bitcoin::getMath()->hexDec($this->getHex());
+        return $this->math->hexDec($this->getHex());
     }
 
     /**
@@ -139,7 +148,7 @@ class Buffer
             return $this->__toString();
         } elseif ($type == 'int') {
             $hex = $this->__toString();
-            return Bitcoin::getMath()->hexDec($hex);
+            return $this->math->hexDec($hex);
         } else {
             return $this->buffer;
         }

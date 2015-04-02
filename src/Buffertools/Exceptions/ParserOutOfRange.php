@@ -1,6 +1,6 @@
 <?php
 
-namespace BitWasp\Bitcoin\Exceptions;
+namespace BitWasp\Buffertools\Exceptions;
 
 class ParserOutOfRange extends \Exception
 {

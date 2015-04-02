@@ -1,10 +1,9 @@
 <?php
 
-namespace BitWasp\Bitcoin\Tests\Util;
+namespace BitWasp\Buffertools\Tests\Util;
 
-use \BitWasp\Bitcoin\Bitcoin;
-use \BitWasp\Bitcoin\Buffer;
-use \BitWasp\Bitcoin\Util\Math;
+use \BitWasp\Buffertools\Buffer;
+use Mdanter\Ecc\EccFactory;
 
 class BufferTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,7 +19,7 @@ class BufferTest extends \PHPUnit_Framework_TestCase
 
     public function __construct()
     {
-        $this->bufferType = 'BitWasp\Bitcoin\Buffer';
+        $this->bufferType = 'BitWasp\Buffertools\Buffer';
     }
 
     public function setUp()
@@ -53,7 +52,7 @@ class BufferTest extends \PHPUnit_Framework_TestCase
     public function testCreateMaxBuffer()
     {
         $deci = 4294967295;
-        $hex = Bitcoin::getMath()->decHex($deci);
+        $hex = EccFactory::getAdapter()->decHex($deci);
         $lim = 32;
         $this->buffer = Buffer::hex($hex, $lim);
     }
@@ -79,7 +78,7 @@ class BufferTest extends \PHPUnit_Framework_TestCase
     public function testSerialize()
     {
         $hex = '41414141';
-        $dec = Bitcoin::getMath()->hexDec($hex);
+        $dec = EccFactory::getAdapter()->hexDec($hex);
         $bin = pack("H*", $hex);
         $this->buffer = Buffer::hex($hex);
 
