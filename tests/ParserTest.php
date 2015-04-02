@@ -1,21 +1,14 @@
 <?php
 
-namespace BitWasp\Bitcoin\Tests;
+namespace BitWasp\Buffertools\Tests;
 
-use \BitWasp\Bitcoin\Buffer;
-use \BitWasp\Bitcoin\Bitcoin;
-use BitWasp\Bitcoin\Network\Network;
-use \BitWasp\Bitcoin\Parser;
-use \BitWasp\Bitcoin\Transaction\Transaction;
-use BitWasp\Bitcoin\Transaction\TransactionCollection;
-use BitWasp\Bitcoin\Transaction\TransactionFactory;
-use \BitWasp\Bitcoin\Transaction\TransactionInput;
-use \BitWasp\Bitcoin\Transaction\TransactionOutput;
+use \BitWasp\Buffertools\Buffer;
+use \BitWasp\Buffertools\Parser;
 
 class ParserTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \BitWasp\Bitcoin\Parser
+     * @var \BitWasp\Buffertools\Parser
      */
     protected $parser;
 
@@ -31,8 +24,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
     public function __construct()
     {
-        $this->parserType = 'BitWasp\Bitcoin\Parser';
-        $this->bufferType = 'BitWasp\Bitcoin\Buffer';
+        $this->parserType = 'BitWasp\Buffertools\Parser';
+        $this->bufferType = 'BitWasp\Buffertools\Buffer';
     }
 
     public function setUp()
@@ -56,88 +49,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $this->parser = new Parser($buffer);
     }
 
-    public function testNumToVarInt()
-    {
-        // Should not prefix with anything. Just return chr($decimal);
-        for ($i = 0; $i < 253; $i++) {
-            $decimal = 1;
-            $expected = chr($decimal);
-            $val = $this->parser->numToVarInt($decimal)->serialize();
-
-            $this->assertSame($expected, $val);
-        }
-    }
-
-    public function testNumToVarInt1LowerFailure()
-    {
-        // This decimal should NOT return a prefix
-        $decimal  = 0xfc; // 252;
-        $val = $this->parser->numToVarInt($decimal)->serialize();
-        $this->assertSame($val[0], chr(0xfc));
-    }
-
-    public function testNumToVarInt1Lowest()
-    {
-        // Decimal > 253 requires a prefix
-        $decimal  = 0xfd;
-        $expected = chr(0xfd).chr(0xfd).chr(0x00);
-        $val = $this->parser->numToVarInt($decimal);//->serialize();
-        $this->assertSame($expected, $val->serialize());
-    }
-
-    public function testNumToVarInt1Upper()
-    {
-        // This prefix is used up to 0xffff, because if we go higher,
-        // the prefixes are no longer in agreement
-        $decimal  = 0xffff;
-        $expected = chr(0xfd) . chr(0xff) . chr(0xff);
-        $val = $this->parser->numToVarInt($decimal)->serialize();
-        $this->assertSame($expected, $val);
-    }
-
-    public function testNumToVarInt2LowerFailure()
-    {
-        // We can check that numbers this low don't yield a 0xfe prefix
-        $decimal    = 0xfffe;
-        $expected   = chr(0xfe) . chr(0xfe) . chr(0xff);
-        $val        = $this->parser->numToVarInt($decimal);
-
-        $this->assertNotSame($expected, $val);
-    }
-
-    public function testNumToVarInt2Lowest()
-    {
-        // With this prefix, check that the lowest for this field IS prefictable.
-        $decimal    = 0xffff0001;
-        $expected   = chr(0xfe) . chr(0x01) . chr(0x00) . chr(0xff) . chr(0xff) ;
-        $val        = $this->parser->numToVarInt($decimal);
-
-        $this->assertSame($expected, $val->serialize());
-    }
-
-    public function testNumToVarInt2Upper()
-    {
-        // Last number that will share 0xfe prefix: 2^32
-        $decimal    = 0xffffffff;
-        $expected   = chr(0xfe) . chr(0xff) . chr(0xff) . chr(0xff) . chr(0xff);
-        $val        = $this->parser->numToVarInt($decimal);//->serialize();
-
-        $this->assertSame($expected, $val->serialize());
-    }
-
-    // Varint for uint32_t
-
-    /**
-     * @expectedException \Exception
-     */
-    public function testNumToVarIntOutOfRange()
-    {
-        // Check that this is out of range (PHP's fault)
-        $decimal  = Bitcoin::getMath()->pow(2, 32) + 1;
-        $this->parser->numToVarInt($decimal);
-
-    }
-
     /**
      * @depends testCreatesInstance
      */
@@ -159,29 +70,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $parserData = $this->parser->getBuffer()->serialize();
         $bufferData = $buffer->serialize();
         $this->assertSame($parserData, $bufferData);
-    }
-
-    public function testFlipBytes()
-    {
-        $buffer = Buffer::hex('41');
-        $string = $buffer->serialize();
-        $flip   = Parser::flipBytes($string);
-        $this->assertSame($flip, $string);
-
-        $buffer = Buffer::hex('4141');
-        $string = $buffer->serialize();
-        $flip   = Parser::flipBytes($string);
-        $this->assertSame($flip, $string);
-
-        $buffer = Buffer::hex('4142');
-        $string = $buffer->serialize();
-        $flip   = Parser::flipBytes($string);
-        $this->assertSame($flip, chr(0x42) . chr(0x41));
-
-        $buffer = Buffer::hex('0102030405060708');
-        $string = $buffer->serialize();
-        $flip   = Parser::flipBytes($string);
-        $this->assertSame($flip, chr(0x08) . chr(0x07) . chr(0x06) . chr(0x05) . chr(0x04) . chr(0x03) . chr(0x02) . chr(0x01));
     }
 
     public function testWriteBytes()
@@ -229,7 +117,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
         $parser = new Parser();
         $data = $parser->readBytes(0);
-        $this->assertFalse($data);
+        $this->assertFalse(!!$data);
     }
 
     public function testReadBytesEndOfString()
@@ -239,7 +127,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $bytes2 = $parser->readBytes(4);
         $this->assertSame($bytes1->serialize('hex'), '40414141');
         $this->assertSame($bytes2->serialize('hex'), '42414141');
-        $this->assertFalse($parser->readBytes(1));
+        $this->assertFalse(!!$parser->readBytes(1));
     }
 
     /**
@@ -249,7 +137,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     {
         $bytes = '41424344';
         $parser = new Parser($bytes);
-        $read   = $parser->readBytes(5);
+        $parser->readBytes(5);
     }
 
     public function testParseBytes()
@@ -324,18 +212,21 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
     public function testGetArray()
     {
+        /** @var Buffer[] $expected */
         $expected = array(
             Buffer::hex('09020304'),
             Buffer::hex('08020304'),
             Buffer::hex('07020304')
         );
 
-        $parser   = new Parser(Buffer::hex('03090203040802030407020304'));
+        $parser = new Parser(Buffer::hex('03090203040802030407020304'));
         $callback = function() use (&$parser) {
             return $parser->readBytes(4);
         };
 
-        $actual   = $parser->getArray($callback);
+        /** @var Buffer[] $expected */
+        $actual = $parser->getArray($callback);
+
         for ($i = 0; $i < count($expected); $i++) {
             $this->assertEquals($expected[$i]->serialize(), $actual[$i]->serialize());
         }
@@ -343,6 +234,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
     public function testWriteArray()
     {
+        $this->markTestSkipped("@TODO: tests which don't rely on bitcoin-php classes");
+
         $transaction = TransactionFactory::create();
         $input  = new TransactionInput('0000000000000000000000000000000000000000000000000000000000000000', 0);
         $output = new TransactionOutput(1, null);
@@ -368,6 +261,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testWriteArrayFailure()
     {
+        $this->markTestSkipped("@TODO: tests which don't rely on bitcoin-php classes");
+
         $network = new Network('00','05','80');
         $array = array($network);
 
