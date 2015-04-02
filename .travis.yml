@@ -13,9 +13,8 @@ install:
   - composer install --prefer-source --dev
 
 script:
-  - php vendor/bin/phpunit -c build/ --coverage-clover build/logs/clover.xml
+  - php vendor/bin/phpunit --coverage-clover build/logs/clover.xml
   - php vendor/bin/phpcs -n --standard=PSR1,PSR2 --report=full src/
-##  - php bin/phpmd src/ text build/rulesets/phpmd.xml
 
 after_script:
   - php vendor/bin/coveralls
