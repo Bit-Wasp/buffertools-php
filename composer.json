@@ -1,7 +1,6 @@
 {
   "name": "bitwasp/buffertools",
   "description": "Toolbox for working with binary and hex data. Similar to NodeJS Buffer.",
-  "type": "library",
   "license": "MIT",
   "authors": [
     {
@@ -24,5 +23,10 @@
   "require": {
     "php": ">=5.4.0",
     "mdanter/ecc": "dev-master"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.3.1",
+    "squizlabs/php_codesniffer": "~2.0",
+    "satooshi/php-coveralls": "~0.6.1"
   }
 }
