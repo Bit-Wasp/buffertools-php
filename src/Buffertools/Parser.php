@@ -154,6 +154,10 @@ class Parser
     public function writeBytes($bytes, $data, $flipBytes = false)
     {
         // Treat $data to ensure it's a buffer, with the correct size
+        if ($data instanceof SerializableInterface) {
+            $data = $data->getBuffer();
+        }
+
         if ($data instanceof Buffer) {
             // only create a new buffer if the size does not match
             if ($data->getSize() != $bytes) {
