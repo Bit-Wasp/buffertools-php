@@ -151,14 +151,14 @@ class Parser
      */
     public function writeBytes($bytes, $data, $flipBytes = false)
     {
-        // Create a new buffer, ensuring that were within the limit set by $bytes
-        if ($data instanceof Buffer) {
+        // create a new buffer if the size does not match
+        if ($data instanceof Buffer && $data->getSize() != $bytes) {
             $newBuffer = new Buffer($data->getBinary(), $bytes);
-        } else {
+            $data = $newBuffer->getBinary();
+        } else if (!$data instanceof Buffer) {
             $newBuffer = Buffer::hex($data, $bytes);
+            $data = $newBuffer->getBinary();
         }
-
-        $data = $newBuffer->getBinary();
 
         if ($flipBytes) {
             $data = Buffertools::flipBytes($data);
