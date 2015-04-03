@@ -40,7 +40,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(0, $this->parser->getPosition());
         $this->assertInstanceOf($this->bufferType, $this->parser->getBuffer());
-        $this->assertEmpty($this->parser->getBuffer()->serialize('hex'));
+        $this->assertEmpty($this->parser->getBuffer()->getHex());
     }
 
     public function testCreatesInstance()
@@ -57,7 +57,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $buffer = Buffer::hex('41414141');
 
         $this->parser = new Parser($buffer);
-        $this->assertSame($this->parser->getBuffer()->serialize(), $buffer->serialize());
+        $this->assertSame($this->parser->getBuffer()->getBinary(), $buffer->getBinary());
     }
 
     /**
@@ -67,8 +67,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     {
         $buffer = new Buffer();
         $this->parser = new Parser($buffer);
-        $parserData = $this->parser->getBuffer()->serialize();
-        $bufferData = $buffer->serialize();
+        $parserData = $this->parser->getBuffer()->getBinary();
+        $bufferData = $buffer->getBinary();
         $this->assertSame($parserData, $bufferData);
     }
 
@@ -77,7 +77,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $bytes = '41424344';
         $parser = new Parser();
         $parser->writeBytes(4, Buffer::hex($bytes));
-        $returned = $parser->getBuffer()->serialize('hex');
+        $returned = $parser->getBuffer()->getHex();
         $this->assertSame($returned, '41424344');
     }
 
@@ -86,7 +86,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $bytes = '41424344';
         $parser = new Parser();
         $parser->writeBytes(4, Buffer::hex($bytes), true);
-        $returned = $parser->getBuffer()->serialize('hex');
+        $returned = $parser->getBuffer()->getHex();
         $this->assertSame($returned, '44434241');
     }
 
@@ -96,7 +96,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $parser = new Parser($bytes);
         $read   = $parser->readBytes(4);
         $this->assertInstanceOf($this->bufferType, $read);
-        $hex    = $read->serialize('hex');
+        $hex    = $read->getHex();
         $this->assertSame($bytes, $hex);
     }
 
@@ -106,7 +106,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $parser = new Parser($bytes);
         $read   = $parser->readBytes(4, true);
         $this->assertInstanceOf($this->bufferType, $read);
-        $hex    = $read->serialize('hex');
+        $hex    = $read->getHex();
         $this->assertSame('44434241', $hex);
     }
 
@@ -125,8 +125,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $parser = new Parser('4041414142414141');
         $bytes1 = $parser->readBytes(4);
         $bytes2 = $parser->readBytes(4);
-        $this->assertSame($bytes1->serialize('hex'), '40414141');
-        $this->assertSame($bytes2->serialize('hex'), '42414141');
+        $this->assertSame($bytes1->getHex(), '40414141');
+        $this->assertSame($bytes2->getHex(), '42414141');
         $this->assertFalse(!!$parser->readBytes(1));
     }
 
@@ -149,13 +149,13 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $bs3    = $parser->parseBytes(4);
         $bs4    = $parser->parseBytes(1);
         $this->assertInstanceOf($this->parserType, $bs1);
-        $this->assertSame('41', $bs1->getBuffer()->serialize('hex'));
+        $this->assertSame('41', $bs1->getBuffer()->getHex());
         $this->assertInstanceOf($this->parserType, $bs2);
-        $this->assertSame('4243', $bs2->getBuffer()->serialize('hex'));
+        $this->assertSame('4243', $bs2->getBuffer()->getHex());
         $this->assertInstanceOf($this->parserType, $bs3);
-        $this->assertSame('44454647', $bs3->getBuffer()->serialize('hex'));
+        $this->assertSame('44454647', $bs3->getBuffer()->getHex());
         $this->assertInstanceOf($this->parserType, $bs4);
-        $this->assertSame('48', $bs4->getBuffer()->serialize('hex'));
+        $this->assertSame('48', $bs4->getBuffer()->getHex());
     }
 
     public function testWriteWithLength()
@@ -163,34 +163,34 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $str1 = Buffer::hex('01020304050607080909');
         $parser1 = new Parser();
         $parser1->writeWithLength($str1);
-        $this->assertSame('0a', $parser1->readBytes(1)->serialize('hex'));
-        $this->assertSame('01020304050607080909', $parser1->readBytes(10)->serialize('hex'));
+        $this->assertSame('0a', $parser1->readBytes(1)->getHex());
+        $this->assertSame('01020304050607080909', $parser1->readBytes(10)->getHex());
 
         $str2 = Buffer::hex('00010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102');
         $parser2 = new Parser();
         $parser2->writeWithLength($str2);
-        $this->assertSame('fdfd00', $parser2->readBytes(3)->serialize('hex'));
-        $this->assertSame('00010203040506070809', $parser2->readBytes(10)->serialize('hex'));
+        $this->assertSame('fdfd00', $parser2->readBytes(3)->getHex());
+        $this->assertSame('00010203040506070809', $parser2->readBytes(10)->getHex());
 
     }
 
     public function testGetVarInt()
     {
         $p1 = new Parser('0141');
-        $this->assertSame('01', $p1->getVarInt()->serialize('hex'));
-        $this->assertSame('41', $p1->readBytes(1)->serialize('hex'));
+        $this->assertSame('01', $p1->getVarInt()->getHex());
+        $this->assertSame('41', $p1->readBytes(1)->getHex());
         $this->assertSame(false, $p1->readBytes(1));
 
         $p2 = new Parser('022345');
-        $this->assertSame('02', $p2->getVarInt()->serialize('hex'));
-        $this->assertSame('2345', $p2->readBytes(2)->serialize('hex'));
+        $this->assertSame('02', $p2->getVarInt()->getHex());
+        $this->assertSame('2345', $p2->readBytes(2)->getHex());
         $this->assertSame(false, $p2->readBytes(1));
 
         $s3 = Buffer::hex('00010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102');
         $p3 = new Parser();
         $p3->writeWithLength($s3);
         $p3 = new Parser($p3->getBuffer());
-        $this->assertSame('253', $p3->getVarInt()->serialize('int'));
+        $this->assertSame('253', $p3->getVarInt()->getInt());
     }
 
     public function testGetVarString()
@@ -206,7 +206,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             $p = new Parser();
             $p->writeWithLength(Buffer::hex($string));
             $np = new Parser($p->getBuffer());
-            $this->assertSame($string, $np->getVarString()->serialize('hex'));
+            $this->assertSame($string, $np->getVarString()->getHex());
         }
     }
 
@@ -228,7 +228,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $actual = $parser->getArray($callback);
 
         for ($i = 0; $i < count($expected); $i++) {
-            $this->assertEquals($expected[$i]->serialize(), $actual[$i]->serialize());
+            $this->assertEquals($expected[$i]->getBinary(), $actual[$i]->getBinary());
         }
     }
 
@@ -251,8 +251,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $parser = new Parser();
         $parser->writeArray($array->getBuffer());
 
-        $this->assertSame('010000000100000000000000000000000000000000000000000000000000000000000000000000000000ffffffff0101000000000000000000000000', $transaction->getBuffer()->serialize('hex'));
-        $this->assertSame('02010000000100000000000000000000000000000000000000000000000000000000000000000000000000ffffffff0101000000000000000000000000010000000100000000000000000000000000000000000000000000000000000000000000000000000000ffffffff0101000000000000000000000000', $parser->getBuffer()->serialize('hex'));
+        $this->assertSame('010000000100000000000000000000000000000000000000000000000000000000000000000000000000ffffffff0101000000000000000000000000', $transaction->getBuffer()->getHex());
+        $this->assertSame('02010000000100000000000000000000000000000000000000000000000000000000000000000000000000ffffffff0101000000000000000000000000010000000100000000000000000000000000000000000000000000000000000000000000000000000000ffffffff0101000000000000000000000000', $parser->getBuffer()->getHex());
 
     }
 
