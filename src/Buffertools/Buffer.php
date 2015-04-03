@@ -96,10 +96,9 @@ class Buffer
      * @param string|null $type
      * @return int
      */
-    public function getSize($type = null)
+    public function getSize()
     {
-        $string = $this->serialize($type);
-        $size   = strlen($string);
+        $size   = strlen($this->getBinary());
         return $size;
     }
 
