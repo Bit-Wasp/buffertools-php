@@ -35,12 +35,16 @@ class Buffertools
     /**
      * Flip byte order of this binary string
      *
-     * @param string $hex
+     * @param string|Buffer $bytes
      * @return string
      */
-    public static function flipBytes($hex)
+    public static function flipBytes($bytes)
     {
-        return implode('', array_reverse(str_split($hex, 1)));
+        if ($bytes instanceof Buffer) {
+            $bytes = $bytes->getBinary();
+        }
+
+        return implode('', array_reverse(str_split($bytes, 1)));
     }
 
     /**
