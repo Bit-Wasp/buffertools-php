@@ -115,4 +115,18 @@ class BuffertoolsTest extends \PHPUnit_Framework_TestCase
         $flip   = Buffertools::flipBytes($string);
         $this->assertSame($flip, chr(0x08) . chr(0x07) . chr(0x06) . chr(0x05) . chr(0x04) . chr(0x03) . chr(0x02) . chr(0x01));
     }
+
+
+    public function testConcat()
+    {
+        $a = Buffer::hex("1100");
+        $b = Buffer::hex("0011");
+        $c = Buffer::hex("11", 2);
+
+        $this->assertEquals("11000011", Buffertools::concat($a, $b)->getHex());
+        $this->assertEquals("00111100", Buffertools::concat($b, $a)->getHex());
+
+        $this->assertEquals("11000011", Buffertools::concat($a, $c)->getHex());
+        $this->assertEquals("00111100", Buffertools::concat($c, $a)->getHex());
+    }
 }

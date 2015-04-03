@@ -3,11 +3,12 @@
 namespace BitWasp\Buffertools;
 
 use Mdanter\Ecc\EccFactory;
+use Mdanter\Ecc\MathAdapterInterface;
 
 class Buffer
 {
     /**
-     * @var int|double
+     * @var int|string
      */
     private $size;
 
@@ -24,31 +25,24 @@ class Buffer
     /**
      * @param string $byteString
      * @param null|integer $byteSize
+     * @param MathAdapterInterface $math
      * @throws \Exception
      */
-    public function __construct($byteString = '', $byteSize = null)
+    public function __construct($byteString = '', $byteSize = null, MathAdapterInterface $math = null)
     {
-        $this->math = EccFactory::getAdapter();
+        $this->math = $math ?: EccFactory::getAdapter();
 
-        if (is_numeric($byteSize)) {
+        if ($byteSize !== null) {
             // Check the integer doesn't overflow its supposed size
             if ($this->math->cmp(strlen($byteString), $byteSize) > 0) {
                 throw new \Exception('Byte string exceeds maximum size');
             }
+        } else {
+            $byteSize = strlen($byteString);
         }
 
         $this->size   = $byteSize;
         $this->buffer = $byteString;
-    }
-
-    /**
-     * Return the max size of this buffer
-     *
-     * @return int|null
-     */
-    public function getMaxSize()
-    {
-        return $this->size;
     }
 
     /**
@@ -60,8 +54,7 @@ class Buffer
      */
     public static function hex($hex = '', $bitSize = null)
     {
-        $buffer = pack("H*", $hex);
-        return new self($buffer, $bitSize);
+        return new self(pack("H*", $hex), $bitSize);
     }
 
     /**
@@ -72,53 +65,39 @@ class Buffer
      */
     public function slice($start, $end = null)
     {
-        $binary = $this->getBinary();
-        $length = strlen($binary);
-        if ($start > $length) {
+        if ($start > $this->getSize()) {
             throw new \Exception('Start exceeds buffer length');
         }
 
         if ($end === null) {
-            return new self(substr($binary, $start));
+            return new self(substr($this->getBinary(), $start));
         }
 
-        if ($end > $length) {
+        if ($end > $this->getSize()) {
             throw new \Exception('Length exceeds buffer length');
         }
 
-        $binary = substr($binary, $start, $end);
-        return new self($binary);
+        return new self(substr($this->getBinary(), $start, $end));
     }
 
     /**
-     * @param Buffer $buffer
-     * @return $this
-     */
-    public function append(Buffer $buffer)
-    {
-        $this->buffer = $this->buffer . $buffer->getBinary();
-        return $this;
-    }
-
-    /**
-     * @param Buffer $buffer
-     * @return $this
-     */
-    public function prepend(Buffer $buffer)
-    {
-        $this->buffer = $buffer->getBinary() . $this->buffer;
-        return $this;
-    }
-
-    /**
-     * Get the size of the buffer to be returned, depending on the $type
+     * Get the size of the buffer to be returned
      *
      * @return int
      */
     public function getSize()
     {
-        $size   = strlen($this->getBinary());
-        return $size;
+        return $this->size;
+    }
+
+    /**
+     * Get the size of the value stored in the buffer
+     *
+     * @return int
+     */
+    public function getInternalSize()
+    {
+        return strlen($this->buffer);
     }
 
     /**
@@ -126,6 +105,15 @@ class Buffer
      */
     public function getBinary()
     {
+        // if a size is specified we'll make sure the value returned is that size
+        if ($this->size !== null) {
+            if (strlen($this->buffer) < $this->size) {
+                return str_pad($this->buffer, $this->size, chr(0), STR_PAD_LEFT);
+            } else if (strlen($this->buffer) > $this->size) {
+                return substr($this->buffer, 0, $this->size);
+            }
+        }
+
         return $this->buffer;
     }
 
@@ -152,6 +140,6 @@ class Buffer
      */
     public function __toString()
     {
-        return unpack("H*", $this->buffer)[1];
+        return $this->getHex();
     }
 }

@@ -90,6 +90,22 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($returned, '44434241');
     }
 
+    public function testWriteBytesPadded()
+    {
+        $parser = new Parser();
+
+        $parser->writeBytes(4, Buffer::hex('34'));
+        $this->assertEquals("00000034", $parser->getBuffer()->getHex());
+    }
+
+    public function testWriteBytesFlipPadded()
+    {
+        $parser = new Parser();
+
+        $parser->writeBytes(4, Buffer::hex('34'), true);
+        $this->assertEquals("34000000", $parser->getBuffer()->getHex());
+    }
+
     public function testReadBytes()
     {
         $bytes  = '41424344';
