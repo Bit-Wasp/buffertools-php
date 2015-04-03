@@ -125,7 +125,9 @@ class Parser
         $string = substr($this->string, $this->getPosition(), $bytes);
         $length = strlen($string);
 
-        if ($length == 0) {
+        if ($this->getPosition() === strlen($this->string)) {
+            return false;
+        } else if ($length == 0) {
             throw new ParserOutOfRange('Could not parse string of required length (empty)');
         } elseif ($this->math->cmp($length, $bytes) !== 0) {
             throw new ParserOutOfRange('Could not parse string of required length (too short)');
@@ -151,20 +153,25 @@ class Parser
      */
     public function writeBytes($bytes, $data, $flipBytes = false)
     {
-        // create a new buffer if the size does not match
-        if ($data instanceof Buffer && $data->getSize() != $bytes) {
-            $newBuffer = new Buffer($data->getBinary(), $bytes);
-            $data = $newBuffer->getBinary();
-        } else if (!$data instanceof Buffer) {
-            $newBuffer = Buffer::hex($data, $bytes);
-            $data = $newBuffer->getBinary();
+        // Treat $data to ensure it's a buffer, with the correct size
+        if ($data instanceof Buffer) {
+            // only create a new buffer if the size does not match
+            if ($data->getSize() != $bytes) {
+                $data = new Buffer($data->getBinary(), $bytes);
+            }
+        } else {
+            // Convert to a buffer
+            $data = Buffer::hex($data, $bytes);
         }
+
+        // At this point $data will be a Buffer
+        $binary = $data->getBinary();
 
         if ($flipBytes) {
-            $data = Buffertools::flipBytes($data);
+            $binary = Buffertools::flipBytes($binary);
         }
 
-        $this->string .= $data;
+        $this->string .= $binary;
         return $this;
     }
 
