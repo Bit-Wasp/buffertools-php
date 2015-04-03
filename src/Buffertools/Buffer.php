@@ -91,9 +91,28 @@ class Buffer
     }
 
     /**
+     * @param Buffer $buffer
+     * @return $this
+     */
+    public function append(Buffer $buffer)
+    {
+        $this->buffer = $this->buffer . $buffer->getBinary();
+        return $this;
+    }
+
+    /**
+     * @param Buffer $buffer
+     * @return $this
+     */
+    public function prepend(Buffer $buffer)
+    {
+        $this->buffer = $buffer->getBinary() . $this->buffer;
+        return $this;
+    }
+
+    /**
      * Get the size of the buffer to be returned, depending on the $type
      *
-     * @param string|null $type
      * @return int
      */
     public function getSize()
