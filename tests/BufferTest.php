@@ -87,12 +87,10 @@ class BufferTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($bin, $retBinary);
 
         // Check Hex
-        $retHex = $this->buffer->getBinary('hex');
-        $this->assertSame($hex, $retHex);
+        $this->assertSame($hex, $this->buffer->getHex());
 
         // Check Decimal
-        $retInt = $this->buffer->getBinary('int');
-        $this->assertSame($dec, $retInt);
+        $this->assertSame($dec, $this->buffer->getInt());
     }
 
     public function testGetSize()
@@ -101,8 +99,7 @@ class BufferTest extends \PHPUnit_Framework_TestCase
         $bin = pack("H*", $hex);
         $this->buffer = Buffer::hex($hex);
 
-        $binSize = $this->buffer->getSize();
-        $this->assertSame($binSize, strlen($bin));
+        $this->assertSame(strlen($bin), $this->buffer->getSize());
     }
 
     public function testGetMaxSizeDefault()
