@@ -96,10 +96,9 @@ class Buffer
      * @param string|null $type
      * @return int
      */
-    public function getSize($type = null)
+    public function getSize()
     {
-        $string = $this->serialize($type);
-        $size   = strlen($string);
+        $size   = strlen($this->getBinary());
         return $size;
     }
 
@@ -125,24 +124,6 @@ class Buffer
     public function getInt()
     {
         return $this->math->hexDec($this->getHex());
-    }
-
-    /**
-     * Serialize a the buffer to hex, an integer, or a byte string
-     *
-     * @param string|null $type
-     * @return string
-     */
-    public function serialize($type = null)
-    {
-        if ($type == 'hex') {
-            return $this->__toString();
-        } elseif ($type == 'int') {
-            $hex = $this->__toString();
-            return $this->math->hexDec($hex);
-        } else {
-            return $this->buffer;
-        }
     }
 
     /**

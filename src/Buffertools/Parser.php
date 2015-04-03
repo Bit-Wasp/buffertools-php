@@ -61,7 +61,7 @@ class Parser
     {
         $results = array();
         $varInt  = $this->getVarInt();
-        $txCount = $varInt->serialize('int');
+        $txCount = $varInt->getInt();
 
         for ($i = 0; $i < $txCount; $i++) {
             $results[] = $callback($this);
@@ -204,7 +204,7 @@ class Parser
             }
         }
 
-        $this->string .= $parser->getBuffer()->serialize();
+        $this->string .= $parser->getBuffer()->getBinary();
 
         return $this;
     }

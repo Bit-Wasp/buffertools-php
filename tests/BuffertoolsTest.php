@@ -20,7 +20,7 @@ class BuffertoolsTest extends \PHPUnit_Framework_TestCase
         for ($i = 0; $i < 253; $i++) {
             $decimal = 1;
             $expected = chr($decimal);
-            $val = Buffertools::numToVarInt($decimal)->serialize();
+            $val = Buffertools::numToVarInt($decimal)->getBinary();
 
             $this->assertSame($expected, $val);
         }
@@ -30,7 +30,7 @@ class BuffertoolsTest extends \PHPUnit_Framework_TestCase
     {
         // This decimal should NOT return a prefix
         $decimal  = 0xfc; // 252;
-        $val = Buffertools::numToVarInt($decimal)->serialize();
+        $val = Buffertools::numToVarInt($decimal)->getBinary();
         $this->assertSame($val[0], chr(0xfc));
     }
 
@@ -39,8 +39,8 @@ class BuffertoolsTest extends \PHPUnit_Framework_TestCase
         // Decimal > 253 requires a prefix
         $decimal  = 0xfd;
         $expected = chr(0xfd).chr(0xfd).chr(0x00);
-        $val = Buffertools::numToVarInt($decimal);//->serialize();
-        $this->assertSame($expected, $val->serialize());
+        $val = Buffertools::numToVarInt($decimal);//->getBinary();
+        $this->assertSame($expected, $val->getBinary());
     }
 
     public function testNumToVarInt1Upper()
@@ -49,7 +49,7 @@ class BuffertoolsTest extends \PHPUnit_Framework_TestCase
         // the prefixes are no longer in agreement
         $decimal  = 0xffff;
         $expected = chr(0xfd) . chr(0xff) . chr(0xff);
-        $val = Buffertools::numToVarInt($decimal)->serialize();
+        $val = Buffertools::numToVarInt($decimal)->getBinary();
         $this->assertSame($expected, $val);
     }
 
@@ -70,7 +70,7 @@ class BuffertoolsTest extends \PHPUnit_Framework_TestCase
         $expected   = chr(0xfe) . chr(0x01) . chr(0x00) . chr(0xff) . chr(0xff) ;
         $val        = Buffertools::numToVarInt($decimal);
 
-        $this->assertSame($expected, $val->serialize());
+        $this->assertSame($expected, $val->getBinary());
     }
 
     public function testNumToVarInt2Upper()
@@ -78,9 +78,9 @@ class BuffertoolsTest extends \PHPUnit_Framework_TestCase
         // Last number that will share 0xfe prefix: 2^32
         $decimal    = 0xffffffff;
         $expected   = chr(0xfe) . chr(0xff) . chr(0xff) . chr(0xff) . chr(0xff);
-        $val        = Buffertools::numToVarInt($decimal);//->serialize();
+        $val        = Buffertools::numToVarInt($decimal);//->getBinary();
 
-        $this->assertSame($expected, $val->serialize());
+        $this->assertSame($expected, $val->getBinary());
     }
 
     /**
@@ -96,22 +96,22 @@ class BuffertoolsTest extends \PHPUnit_Framework_TestCase
     public function testFlipBytes()
     {
         $buffer = Buffer::hex('41');
-        $string = $buffer->serialize();
+        $string = $buffer->getBinary();
         $flip   = Buffertools::flipBytes($string);
         $this->assertSame($flip, $string);
 
         $buffer = Buffer::hex('4141');
-        $string = $buffer->serialize();
+        $string = $buffer->getBinary();
         $flip   = Buffertools::flipBytes($string);
         $this->assertSame($flip, $string);
 
         $buffer = Buffer::hex('4142');
-        $string = $buffer->serialize();
+        $string = $buffer->getBinary();
         $flip   = Buffertools::flipBytes($string);
         $this->assertSame($flip, chr(0x42) . chr(0x41));
 
         $buffer = Buffer::hex('0102030405060708');
-        $string = $buffer->serialize();
+        $string = $buffer->getBinary();
         $flip   = Buffertools::flipBytes($string);
         $this->assertSame($flip, chr(0x08) . chr(0x07) . chr(0x06) . chr(0x05) . chr(0x04) . chr(0x03) . chr(0x02) . chr(0x01));
     }
