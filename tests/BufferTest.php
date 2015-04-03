@@ -101,9 +101,6 @@ class BufferTest extends \PHPUnit_Framework_TestCase
         $bin = pack("H*", $hex);
         $this->buffer = Buffer::hex($hex);
 
-        $hexSize = $this->buffer->getSize('hex');
-        $this->assertSame($hexSize, strlen($hex));
-
         $binSize = $this->buffer->getSize();
         $this->assertSame($binSize, strlen($bin));
     }
