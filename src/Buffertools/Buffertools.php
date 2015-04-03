@@ -35,11 +35,26 @@ class Buffertools
     /**
      * Flip byte order of this binary string
      *
-     * @param string $hex
+     * @param string|Buffer $bytes
      * @return string
      */
-    public static function flipBytes($hex)
+    public static function flipBytes($bytes)
     {
-        return implode('', array_reverse(str_split($hex, 1)));
+        if ($bytes instanceof Buffer) {
+            $bytes = $bytes->getBinary();
+        }
+
+        return implode('', array_reverse(str_split($bytes, 1)));
+    }
+
+    /**
+     * @param Buffer $buffer1
+     * @param Buffer $buffer2
+     * @param int $size
+     * @return Buffer
+     */
+    public static function concat(Buffer $buffer1, Buffer $buffer2, $size = null)
+    {
+        return new Buffer($buffer1->getBinary() . $buffer2->getBinary(), $size);
     }
 }
