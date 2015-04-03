@@ -132,14 +132,4 @@ class Buffer
     {
         return $this->math->hexDec($this->getHex());
     }
-
-    /**
-     * Print the contents of the buffer as a string
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->getHex();
-    }
 }
