@@ -127,24 +127,6 @@ class Buffer
     }
 
     /**
-     * Serialize a the buffer to hex, an integer, or a byte string
-     *
-     * @param string|null $type
-     * @return string
-     */
-    public function serialize($type = null)
-    {
-        if ($type == 'hex') {
-            return $this->__toString();
-        } elseif ($type == 'int') {
-            $hex = $this->__toString();
-            return $this->math->hexDec($hex);
-        } else {
-            return $this->buffer;
-        }
-    }
-
-    /**
      * Print the contents of the buffer as a string
      *
      * @return string
