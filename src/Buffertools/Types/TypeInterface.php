@@ -28,10 +28,10 @@ interface TypeInterface
     public function write($integer);
 
     /**
-     * @param Parser $value
+     * @param Parser $parser
      * @return string|int
      */
-    public function read(Parser & $input);
+    public function read(Parser & $parser);
 
     /**
      * @return int|string
