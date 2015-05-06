@@ -32,6 +32,8 @@ class Template implements \Countable
     }
 
     /**
+     * Return an array of type serializers in the template
+     *
      * @return Types\TypeInterface[]
      */
     public function getItems()
@@ -40,6 +42,8 @@ class Template implements \Countable
     }
 
     /**
+     * Add a new TypeInterface to the Template
+     *
      * @param TypeInterface $item
      * @return $this
      */
@@ -50,6 +54,8 @@ class Template implements \Countable
     }
 
     /**
+     * Parse a sequence of objects from binary, using the current template.
+     *
      * @param Parser $parser
      * @return array
      */
@@ -68,6 +74,9 @@ class Template implements \Countable
     }
 
     /**
+     * Write the array of $items to binary according to the template. They must
+     * each be an instance of Buffer or implement SerializableInterface.
+     *
      * @param array $items
      * @return string
      */
