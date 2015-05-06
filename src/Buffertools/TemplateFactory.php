@@ -205,7 +205,7 @@ class TemplateFactory
      * Add a byte string serializer to the template. This serializer requires a length to
      * pad/truncate to.
      *
-     * @param $length
+     * @param  $length
      * @return $this
      */
     public function bytestring($length)
@@ -218,7 +218,7 @@ class TemplateFactory
      * Add a little-endian byte string serializer to the template. This serializer requires
      * a length to pad/truncate to.
      *
-     * @param $length
+     * @param  $length
      * @return $this
      */
     public function bytestringle($length)
@@ -234,7 +234,7 @@ class TemplateFactory
      * The $readHandler should operate on the parser reference, reading the bytes for each
      * item in the collection.
      *
-     * @param callable $readHandler
+     * @param  callable $readHandler
      * @return $this
      */
     public function vector(callable $readHandler)

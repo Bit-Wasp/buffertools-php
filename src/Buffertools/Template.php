@@ -44,7 +44,7 @@ class Template implements \Countable
     /**
      * Add a new TypeInterface to the Template
      *
-     * @param TypeInterface $item
+     * @param  TypeInterface $item
      * @return $this
      */
     public function addItem(TypeInterface $item)
@@ -56,7 +56,7 @@ class Template implements \Countable
     /**
      * Parse a sequence of objects from binary, using the current template.
      *
-     * @param Parser $parser
+     * @param  Parser $parser
      * @return array
      */
     public function parse(Parser & $parser)
@@ -77,7 +77,7 @@ class Template implements \Countable
      * Write the array of $items to binary according to the template. They must
      * each be an instance of Buffer or implement SerializableInterface.
      *
-     * @param array $items
+     * @param  array $items
      * @return string
      */
     public function write(array $items)

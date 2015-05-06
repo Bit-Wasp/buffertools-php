@@ -17,8 +17,8 @@ class ByteString extends AbstractType
 
     /**
      * @param MathAdapterInterface $math
-     * @param int|string $length
-     * @param int|string $byteOrder
+     * @param int|string           $length
+     * @param int|string           $byteOrder
      */
     public function __construct(MathAdapterInterface $math, $length, $byteOrder = ByteOrder::BE)
     {

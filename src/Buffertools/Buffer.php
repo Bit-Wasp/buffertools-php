@@ -23,8 +23,8 @@ class Buffer
     private $math;
 
     /**
-     * @param string $byteString
-     * @param null|integer $byteSize
+     * @param string               $byteString
+     * @param null|integer         $byteSize
      * @param MathAdapterInterface $math
      * @throws \Exception
      */
@@ -58,7 +58,7 @@ class Buffer
     }
 
     /**
-     * @param integer $start
+     * @param integer      $start
      * @param integer|null $end
      * @return Buffer
      * @throws \Exception

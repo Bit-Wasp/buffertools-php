@@ -127,17 +127,23 @@ class TemplateTest extends BinaryTest
         $txinParser = new Parser($txinBuf);
 
         $math = EccFactory::getAdapter();
-        $template = new Template([
+        $template = new Template(
+            [
             new ByteString($math, 32, ByteOrder::LE),
             new Uint32($math, ByteOrder::LE),
             new VarString(new VarInt($math))
-        ]);
+            ]
+        );
 
         $out = $template->parse($txinParser);
 
-        /** @var Buffer $txhash */
+        /**
+ * @var Buffer $txhash 
+*/
         $txhash = $out[0];
-        /** @var Buffer $script */
+        /**
+ * @var Buffer $script 
+*/
         $script = $out[2];
 
         $this->assertEquals('b8abff4fa6a36cbfbd61d0351be3433a95c34538f5174446420610288f1e8958', $txhash->getHex());

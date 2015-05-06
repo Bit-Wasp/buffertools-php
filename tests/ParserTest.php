@@ -212,7 +212,9 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
     public function testGetArray()
     {
-        /** @var Buffer[] $expected */
+        /**
+ * @var Buffer[] $expected 
+*/
         $expected = array(
             Buffer::hex('09020304'),
             Buffer::hex('08020304'),
@@ -220,11 +222,13 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         );
 
         $parser = new Parser(Buffer::hex('03090203040802030407020304'));
-        $callback = function() use (&$parser) {
+        $callback = function () use (&$parser) {
             return $parser->readBytes(4);
         };
 
-        /** @var Buffer[] $expected */
+        /**
+ * @var Buffer[] $expected 
+*/
         $actual = $parser->getArray($callback);
 
         for ($i = 0; $i < count($expected); $i++) {

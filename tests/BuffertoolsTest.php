@@ -67,7 +67,7 @@ class BuffertoolsTest extends \PHPUnit_Framework_TestCase
     {
         // With this prefix, check that the lowest for this field IS prefictable.
         $decimal    = 0xffff0001;
-        $expected   = chr(0xfe) . chr(0x01) . chr(0x00) . chr(0xff) . chr(0xff) ;
+        $expected   = chr(0xfe) . chr(0x01) . chr(0x00) . chr(0xff) . chr(0xff);
         $val        = Buffertools::numToVarInt($decimal);
 
         $this->assertSame($expected, $val->getBinary());
