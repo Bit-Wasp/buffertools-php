@@ -217,7 +217,7 @@ class TemplateFactory
     /**
      * Add a little-endian byte string serializer to the template. This serializer requires
      * a length to pad/truncate to.
-     * 
+     *
      * @param $length
      * @return $this
      */
