@@ -19,19 +19,19 @@ class TemplateFactoryTest extends BinaryTest
             foreach (array('', 'le') as $byteOrder) {
                 $vectors[] = [
                     'uint' . $i . $byteOrder,
-                    '\BitWasp\Binary\Types\Uint' . $i,
+                    '\BitWasp\Buffertools\Types\Uint' . $i,
                 ];
             }
         }
 
         $vectors[] = [
             'varint',
-            '\BitWasp\Binary\Types\VarInt'
+            '\BitWasp\Buffertools\Types\VarInt'
         ];
 
         $vectors[] = [
             'varstring',
-            '\BitWasp\Binary\Types\VarString'
+            '\BitWasp\Buffertools\Types\VarString'
         ];
 
         return $vectors;
@@ -63,6 +63,6 @@ class TemplateFactoryTest extends BinaryTest
         $template = $factory->getTemplate();
         $this->assertEquals(1, count($template));
         $template = $factory->getTemplate()->getItems();
-        $this->assertInstanceOf('BitWasp\Binary\Types\Vector', $template[0]);
+        $this->assertInstanceOf('BitWasp\Buffertools\Types\Vector', $template[0]);
     }
 }
