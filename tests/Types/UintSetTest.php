@@ -5,7 +5,7 @@ namespace BitWasp\Buffertools\Tests\Types;
 
 use BitWasp\Buffertools\ByteOrder;
 use BitWasp\Buffertools\Tests\BinaryTest;
-use BitWasp\Buffertools\Types\IntTypeInterface;
+use BitWasp\Buffertools\Types\UintInterface;
 use BitWasp\Buffertools\Types\Uint8;
 use BitWasp\Buffertools\Types\Uint16;
 use BitWasp\Buffertools\Types\Uint32;
@@ -53,7 +53,7 @@ class UintSetTest extends BinaryTest
 
     /**
      * @param $math
-     * @return IntTypeInterface[]
+     * @return UintInterface[]
      */
     public function getUintClasses($math)
     {
@@ -94,7 +94,7 @@ class UintSetTest extends BinaryTest
      * @param $int
      * @param $eHex
      */
-    public function testUint(IntTypeInterface $comp, $int, $eHex)
+    public function testUint(UintInterface $comp, $int, $eHex)
     {
         $binary = $comp->write($int);
         $this->assertEquals($eHex, str_pad(bin2hex($binary), $comp->getBitSize() / 4, '0', STR_PAD_LEFT));

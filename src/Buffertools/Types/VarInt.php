@@ -54,7 +54,7 @@ class VarInt extends AbstractType
 
     /**
      * @param int|string $givenPrefix
-     * @return IntTypeInterface[]
+     * @return UintInterface[]
      * @throws \InvalidArgumentException
      */
     public function solveReadSize($givenPrefix)

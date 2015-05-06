@@ -2,7 +2,7 @@
 
 namespace BitWasp\Buffertools\Types;
 
-interface IntTypeInterface extends TypeInterface
+interface UintInterface extends TypeInterface
 {
     /**
      * @return int

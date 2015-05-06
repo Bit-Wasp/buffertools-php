@@ -6,7 +6,7 @@ use BitWasp\Buffertools\ByteOrder;
 use BitWasp\Buffertools\Parser;
 use Mdanter\Ecc\Math\MathAdapterInterface;
 
-abstract class AbstractIntType extends AbstractType implements IntTypeInterface
+abstract class AbstractUint extends AbstractType implements UintInterface
 {
     /**
      * @param MathAdapterInterface $math
