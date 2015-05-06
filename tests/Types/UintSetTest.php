@@ -33,7 +33,7 @@ class UintSetTest extends BinaryTest
         $test = function ($integer) use ($bitSize, $math, $byteOrder) {
             $hex = str_pad($math->baseConvert($integer, 10, 16), $bitSize / 4, '0', STR_PAD_LEFT);
 
-            if ($byteOrder == ByteOrder::LittleEndian) {
+            if ($byteOrder == ByteOrder::LE) {
                 $hex = bin2hex(Buffertools::flipBytes(Buffer::hex($hex)));
             }
             return [
@@ -64,12 +64,12 @@ class UintSetTest extends BinaryTest
             new Uint64($math),
             new Uint128($math),
             new Uint256($math),
-            new Uint8($math, ByteOrder::LittleEndian),
-            new Uint16($math, ByteOrder::LittleEndian),
-            new Uint32($math, ByteOrder::LittleEndian),
-            new Uint64($math, ByteOrder::LittleEndian),
-            new Uint128($math, ByteOrder::LittleEndian),
-            new Uint256($math, ByteOrder::LittleEndian),
+            new Uint8($math, ByteOrder::LE),
+            new Uint16($math, ByteOrder::LE),
+            new Uint32($math, ByteOrder::LE),
+            new Uint64($math, ByteOrder::LE),
+            new Uint128($math, ByteOrder::LE),
+            new Uint256($math, ByteOrder::LE),
         ];
     }
 

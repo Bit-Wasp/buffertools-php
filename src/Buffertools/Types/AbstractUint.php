@@ -12,7 +12,7 @@ abstract class AbstractUint extends AbstractType implements UintInterface
      * @param MathAdapterInterface $math
      * @param int                  $byteOrder
      */
-    public function __construct(MathAdapterInterface $math, $byteOrder = ByteOrder::BigEndian)
+    public function __construct(MathAdapterInterface $math, $byteOrder = ByteOrder::BE)
     {
         parent::__construct($math, $byteOrder);
     }

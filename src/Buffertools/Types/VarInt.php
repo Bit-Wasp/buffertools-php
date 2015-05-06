@@ -12,7 +12,7 @@ class VarInt extends AbstractType
      * @param MathAdapterInterface $math
      * @param int                  $byteOrder
      */
-    public function __construct(MathAdapterInterface $math, $byteOrder = ByteOrder::BigEndian)
+    public function __construct(MathAdapterInterface $math, $byteOrder = ByteOrder::BE)
     {
         parent::__construct($math, $byteOrder);
     }
@@ -43,7 +43,7 @@ class VarInt extends AbstractType
             list($uint, $limit, $prefix) = $config;
             if ($math->cmp($integer, $limit) < 0) {
                 return [
-                    new $uint($math, ByteOrder::LittleEndian),
+                    new $uint($math, ByteOrder::LE),
                     $prefix
                 ];
             }
@@ -66,7 +66,7 @@ class VarInt extends AbstractType
             $prefix = $config[2];
             if ($math->cmp($givenPrefix, $prefix) == 0) {
                 return [
-                    new $uint($math, ByteOrder::LittleEndian)
+                    new $uint($math, ByteOrder::LE)
                 ];
             }
         }

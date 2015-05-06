@@ -66,7 +66,7 @@ class TemplateTest extends BinaryTest
         $parser = new Parser($buffer);
 
         $math = \Mdanter\Ecc\EccFactory::getAdapter();
-        $uint64le = new Uint64($math, ByteOrder::LittleEndian);
+        $uint64le = new Uint64($math, ByteOrder::LE);
         $varstring = new VarString(new VarInt($math));
         $template = new Template([$uint64le, $varstring]);
 
@@ -94,7 +94,7 @@ class TemplateTest extends BinaryTest
         $hex = $value . $varint . $script;
 
         $math = \Mdanter\Ecc\EccFactory::getAdapter();
-        $uint64le = new Uint64($math, ByteOrder::LittleEndian);
+        $uint64le = new Uint64($math, ByteOrder::LE);
         $varstring = new VarString(new VarInt($math));
         $template = new Template([$uint64le, $varstring]);
 
@@ -109,7 +109,7 @@ class TemplateTest extends BinaryTest
     public function testWriteIncomplete()
     {
         $math = \Mdanter\Ecc\EccFactory::getAdapter();
-        $uint64le = new Uint64($math, ByteOrder::LittleEndian);
+        $uint64le = new Uint64($math, ByteOrder::LE);
         $varstring = new VarString(new VarInt($math));
         $template = new Template([$uint64le, $varstring]);
 

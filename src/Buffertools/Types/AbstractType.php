@@ -21,9 +21,9 @@ abstract class AbstractType implements TypeInterface
      * @param MathAdapterInterface $math
      * @param int                  $byteOrder
      */
-    public function __construct(MathAdapterInterface $math, $byteOrder = ByteOrder::BigEndian)
+    public function __construct(MathAdapterInterface $math, $byteOrder = ByteOrder::BE)
     {
-        if (false === in_array($byteOrder, [ByteOrder::BigEndian, ByteOrder::LittleEndian])) {
+        if (false === in_array($byteOrder, [ByteOrder::BE, ByteOrder::LE])) {
             throw new \InvalidArgumentException('Must pass valid flag for endianness');
         }
 
@@ -44,7 +44,7 @@ abstract class AbstractType implements TypeInterface
      */
     public function isBigEndian()
     {
-        return $this->getByteOrder() == ByteOrder::BigEndian;
+        return $this->getByteOrder() == ByteOrder::BE;
     }
 
     /**

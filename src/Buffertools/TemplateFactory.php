@@ -51,7 +51,7 @@ class TemplateFactory
      */
     public function uint8()
     {
-        $this->template->addItem(new Uint8($this->math, ByteOrder::BigEndian));
+        $this->template->addItem(new Uint8($this->math, ByteOrder::BE));
 
         return $this;
     }
@@ -63,7 +63,7 @@ class TemplateFactory
      */
     public function uint8le()
     {
-        $this->template->addItem(new Uint8($this->math, ByteOrder::LittleEndian));
+        $this->template->addItem(new Uint8($this->math, ByteOrder::LE));
         return $this;
     }
 
@@ -74,7 +74,7 @@ class TemplateFactory
      */
     public function uint16()
     {
-        $this->template->addItem(new Uint16($this->math, ByteOrder::BigEndian));
+        $this->template->addItem(new Uint16($this->math, ByteOrder::BE));
         return $this;
     }
 
@@ -85,7 +85,7 @@ class TemplateFactory
      */
     public function uint16le()
     {
-        $this->template->addItem(new Uint16($this->math, ByteOrder::LittleEndian));
+        $this->template->addItem(new Uint16($this->math, ByteOrder::LE));
         return $this;
     }
 
@@ -96,7 +96,7 @@ class TemplateFactory
      */
     public function uint32()
     {
-        $this->template->addItem(new Uint32($this->math, ByteOrder::BigEndian));
+        $this->template->addItem(new Uint32($this->math, ByteOrder::BE));
         return $this;
     }
 
@@ -107,7 +107,7 @@ class TemplateFactory
      */
     public function uint32le()
     {
-        $this->template->addItem(new Uint32($this->math, ByteOrder::LittleEndian));
+        $this->template->addItem(new Uint32($this->math, ByteOrder::LE));
         return $this;
     }
 
@@ -118,7 +118,7 @@ class TemplateFactory
      */
     public function uint64()
     {
-        $this->template->addItem(new Uint64($this->math, ByteOrder::BigEndian));
+        $this->template->addItem(new Uint64($this->math, ByteOrder::BE));
         return $this;
     }
 
@@ -129,7 +129,7 @@ class TemplateFactory
      */
     public function uint64le()
     {
-        $this->template->addItem(new Uint64($this->math, ByteOrder::LittleEndian));
+        $this->template->addItem(new Uint64($this->math, ByteOrder::LE));
         return $this;
     }
 
@@ -140,7 +140,7 @@ class TemplateFactory
      */
     public function uint128()
     {
-        $this->template->addItem(new Uint128($this->math, ByteOrder::BigEndian));
+        $this->template->addItem(new Uint128($this->math, ByteOrder::BE));
         return $this;
     }
 
@@ -151,7 +151,7 @@ class TemplateFactory
      */
     public function uint128le()
     {
-        $this->template->addItem(new Uint128($this->math, ByteOrder::LittleEndian));
+        $this->template->addItem(new Uint128($this->math, ByteOrder::LE));
         return $this;
     }
 
@@ -162,7 +162,7 @@ class TemplateFactory
      */
     public function uint256()
     {
-        $this->template->addItem(new Uint256($this->math, ByteOrder::BigEndian));
+        $this->template->addItem(new Uint256($this->math, ByteOrder::BE));
         return $this;
     }
 
@@ -173,7 +173,7 @@ class TemplateFactory
      */
     public function uint256le()
     {
-        $this->template->addItem(new Uint256($this->math, ByteOrder::LittleEndian));
+        $this->template->addItem(new Uint256($this->math, ByteOrder::LE));
         return $this;
     }
 
@@ -195,7 +195,7 @@ class TemplateFactory
      */
     public function varstring()
     {
-        $this->template->addItem(new VarString(new VarInt($this->math), ByteOrder::BigEndian));
+        $this->template->addItem(new VarString(new VarInt($this->math), ByteOrder::BE));
         return $this;
     }
 
