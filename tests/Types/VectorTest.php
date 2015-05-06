@@ -2,7 +2,6 @@
 
 namespace BitWasp\Buffertools\Tests\Types;
 
-
 use BitWasp\Buffertools\Tests\BinaryTest;
 use BitWasp\Buffertools\Types\VarInt;
 use BitWasp\Buffertools\Types\Vector;
@@ -17,8 +16,9 @@ class VectorTest extends BinaryTest
         $math = EccFactory::getAdapter();
         $varint = new VarInt($math);
         $vector = new Vector(
-            $varint, function () {
-                return; 
+            $varint,
+            function () {
+                return;
             }
         );
 
@@ -36,8 +36,9 @@ class VectorTest extends BinaryTest
         $math = EccFactory::getAdapter();
         $varint = new VarInt($math);
         $vector = new Vector(
-            $varint, function () {
-                return; 
+            $varint,
+            function () {
+                return;
             }
         );
         $buffer = Buffer::hex('010203040506070809000a0b0c0d0e0f');
@@ -49,8 +50,9 @@ class VectorTest extends BinaryTest
         $math = EccFactory::getAdapter();
         $varint = new VarInt($math);
         $vector = new Vector(
-            $varint, function (Parser & $parser) {
-                return $parser->readBytes(16); 
+            $varint,
+            function (Parser & $parser) {
+                return $parser->readBytes(16);
             }
         );
 

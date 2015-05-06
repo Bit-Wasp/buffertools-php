@@ -2,7 +2,6 @@
 
 namespace BitWasp\Buffertools\Types;
 
-
 use BitWasp\Buffertools\Buffer;
 use BitWasp\Buffertools\ByteOrder;
 use BitWasp\Buffertools\Parser;

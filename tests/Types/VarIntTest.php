@@ -2,7 +2,6 @@
 
 namespace BitWasp\Buffertools\Tests\Types;
 
-
 use BitWasp\Buffertools\Tests\BinaryTest;
 use BitWasp\Buffertools\Types\VarInt;
 use Mdanter\Ecc\EccFactory;

@@ -2,7 +2,6 @@
 
 namespace BitWasp\Buffertools\Tests;
 
-
 use BitWasp\Buffertools\TemplateFactory;
 use Mdanter\Ecc\EccFactory;
 
@@ -57,7 +56,7 @@ class TemplateFactoryTest extends BinaryTest
         $factory = new TemplateFactory($math);
         $factory->vector(
             function () {
-                return; 
+                return;
             }
         );
         $template = $factory->getTemplate();

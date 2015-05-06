@@ -213,7 +213,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     public function testGetArray()
     {
         /**
- * @var Buffer[] $expected 
+ * @var Buffer[] $expected
 */
         $expected = array(
             Buffer::hex('09020304'),
@@ -227,7 +227,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         };
 
         /**
- * @var Buffer[] $expected 
+ * @var Buffer[] $expected
 */
         $actual = $parser->getArray($callback);
 
@@ -235,4 +235,4 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($expected[$i]->getBinary(), $actual[$i]->getBinary());
         }
     }
-} 
+}

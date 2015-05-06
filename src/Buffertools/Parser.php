@@ -127,7 +127,7 @@ class Parser
 
         if ($this->getPosition() === strlen($this->string)) {
             return false;
-        } else if ($length == 0) {
+        } elseif ($length == 0) {
             throw new ParserOutOfRange('Could not parse string of required length (empty)');
         } elseif ($this->math->cmp($length, $bytes) !== 0) {
             throw new ParserOutOfRange('Could not parse string of required length (too short)');
