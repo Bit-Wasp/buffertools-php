@@ -19,8 +19,8 @@ abstract class AbstractIntType extends AbstractType implements IntTypeInterface
     }
 
     /**
-     * {@inheritdoc}
-     * @see \BitWasp\Binary\Types\TypeInterface::writeBits()
+     * @param $integer
+     * @return string
      */
     public function writeBits($integer)
     {
@@ -35,15 +35,17 @@ abstract class AbstractIntType extends AbstractType implements IntTypeInterface
     }
 
     /**
-     * {@inheritdoc}
-     * @see \BitWasp\Binary\Types\TypeInterface::readBits()
+     * @param Parser $parser
+     * @return int|string
+     * @throws \BitWasp\Buffertools\Exceptions\ParserOutOfRange
+     * @throws \Exception
      */
-    public function readBits(Parser & $string)
+    public function readBits(Parser & $parser)
     {
         $math = $this->getMath();
         $bitSize = $this->getBitSize();
         $bits = str_pad(
-            $math->baseConvert($string->readBytes($bitSize / 8)->getHex(), 16, 2),
+            $math->baseConvert($parser->readBytes($bitSize / 8)->getHex(), 16, 2),
             $bitSize,
             '0',
             STR_PAD_LEFT
@@ -61,8 +63,8 @@ abstract class AbstractIntType extends AbstractType implements IntTypeInterface
     }
 
     /**
-     * @param $integer
-     * @return string
+     * {@inheritdoc}
+     * @see \BitWasp\Buffertools\Types\TypeInterface::write()
      */
     public function write($integer)
     {
@@ -84,8 +86,8 @@ abstract class AbstractIntType extends AbstractType implements IntTypeInterface
     }
 
     /**
-     * @param $binary
-     * @return int|string
+     * {@inheritdoc}
+     * @see \BitWasp\Buffertools\Types\TypeInterface::read()
      */
     public function read(Parser & $binary)
     {

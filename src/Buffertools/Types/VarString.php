@@ -23,8 +23,8 @@ class VarString extends AbstractType
     }
 
     /**
-     * @param Buffer $buffer
-     * @return string
+     * {@inheritdoc}
+     * @see \BitWasp\Buffertools\Types\TypeInterface::write()
      */
     public function write($buffer)
     {
@@ -37,6 +37,8 @@ class VarString extends AbstractType
     }
 
     /**
+     * {@inheritdoc}
+     * @see \BitWasp\Buffertools\Types\TypeInterface::write()
      * @param Parser $parser
      * @return \BitWasp\Buffertools\Buffer
      * @throws \BitWasp\Buffertools\Exceptions\ParserOutOfRange

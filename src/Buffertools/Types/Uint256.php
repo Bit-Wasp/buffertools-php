@@ -3,15 +3,14 @@
 namespace BitWasp\Buffertools\Types;
 
 
-class Uint8 extends AbstractIntType
+class Uint256 extends AbstractIntType
 {
     /**
      * {@inheritdoc}
-     * @see \BitWasp\Binary\Types\TypeInterface::getBitSize()
+     * @see \BitWasp\Buffertools\Types\TypeInterface::getBitSize()
      */
     public function getBitSize()
     {
-        return 8;
+        return 256;
     }
-
 }

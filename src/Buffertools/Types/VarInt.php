@@ -26,14 +26,14 @@ class VarInt extends AbstractType
         $math = $this->getMath();
 
         return [
-            ['\BitWasp\Binary\Types\Uint16', $math->pow(2, 16), 0xfd],
-            ['\BitWasp\Binary\Types\Uint32', $math->pow(2, 32), 0xfe],
-            ['\BitWasp\Binary\Types\Uint64', $math->pow(2, 64), 0xff],
+            ['\BitWasp\Buffertools\Types\Uint16', $math->pow(2, 16), 0xfd],
+            ['\BitWasp\Buffertools\Types\Uint32', $math->pow(2, 32), 0xfe],
+            ['\BitWasp\Buffertools\Types\Uint64', $math->pow(2, 64), 0xff],
         ];
     }
 
     /**
-     * @param $integer
+     * @param int|string $integer
      * @return array
      */
     public function solveWriteSize($integer)
@@ -54,7 +54,7 @@ class VarInt extends AbstractType
     }
 
     /**
-     * @param $givenPrefix
+     * @param int|string $givenPrefix
      * @return IntTypeInterface[]
      * @throws \InvalidArgumentException
      */
@@ -77,7 +77,7 @@ class VarInt extends AbstractType
 
     /**
      * {@inheritdoc}
-     * @see \BitWasp\Binary\Types\TypeInterface::writeBits()
+     * @see \BitWasp\Buffertools\Types\TypeInterface::write()
      */
     public function write($integer)
     {
@@ -98,19 +98,19 @@ class VarInt extends AbstractType
 
     /**
      * {@inheritdoc}
-     * @see \BitWasp\Binary\Types\TypeInterface::readBits()
+     * @see \BitWasp\Buffertools\Types\TypeInterface::read()
      */
-    public function read(Parser & $bits)
+    public function read(Parser & $parser)
     {
         $math = $this->getMath();
         $uint8 = new Uint8($math);
-        $int = $uint8->readBits($bits);
+        $int = $uint8->readBits($parser);
 
         if ($math->cmp($int, 0xfd) < 0) {
             return $int;
         } else {
             $uint = $this->solveReadSize($int)[0];
-            return $uint->read($bits);
+            return $uint->read($parser);
         }
     }
 }

@@ -29,8 +29,8 @@ class Vector extends AbstractType
     }
 
     /**
-     * @param $items
-     * @return string
+     * {@inheritdoc}
+     * @see \BitWasp\Buffertools\Types\TypeInterface::write()
      */
     public function write($items)
     {
@@ -46,6 +46,8 @@ class Vector extends AbstractType
     }
 
     /**
+     * {@inheritdoc}
+     * @see \BitWasp\Buffertools\Types\TypeInterface::read()
      * @param Parser $parser
      * @return array
      * @throws \Exception

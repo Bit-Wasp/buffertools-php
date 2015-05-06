@@ -3,14 +3,14 @@
 namespace BitWasp\Buffertools\Types;
 
 
-class Uint256 extends AbstractIntType
+class Uint32 extends AbstractIntType
 {
     /**
      * {@inheritdoc}
-     * @see \BitWasp\Binary\Types\TypeInterface::getBitSize()
+     * @see \BitWasp\Buffertools\Types\TypeInterface::getBitSize()
      */
     public function getBitSize()
     {
-        return 256;
+        return 32;
     }
 }

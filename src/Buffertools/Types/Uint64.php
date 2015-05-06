@@ -8,7 +8,7 @@ class Uint64 extends AbstractIntType
 
     /**
      * {@inheritdoc}
-     * @see \BitWasp\Binary\Types\TypeInterface::getBitSize()
+     * @see \BitWasp\Buffertools\Types\TypeInterface::getBitSize()
      */
     public function getBitSize()
     {
