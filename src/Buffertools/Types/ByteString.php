@@ -93,6 +93,9 @@ class ByteString extends AbstractType
             $bits = $this->flipBits($bits);
         }
 
-        return Buffer::hex($this->getMath()->baseConvert($bits, 16, 2), $this->length);
+        return Buffer::hex(
+            $this->getMath()->baseConvert($bits, 2, 16),
+            $this->length
+        );
     }
 }
