@@ -35,7 +35,9 @@ class TemplateFactory
     }
 
     /**
-     * @return Template|Types\TypeInterface[]
+     * Return the Template as it stands.
+     *
+     * @return Template
      */
     public function getTemplate()
     {
@@ -43,6 +45,8 @@ class TemplateFactory
     }
 
     /**
+     * Add a Uint8 serializer to the template
+     *
      * @return $this
      */
     public function uint8()
@@ -53,6 +57,8 @@ class TemplateFactory
     }
 
     /**
+     * Add a little-endian Uint8 serializer to the template
+     *
      * @return $this
      */
     public function uint8le()
@@ -62,6 +68,8 @@ class TemplateFactory
     }
 
     /**
+     * Add a Uint16 serializer to the template
+     *
      * @return $this
      */
     public function uint16()
@@ -71,6 +79,8 @@ class TemplateFactory
     }
 
     /**
+     * Add a little-endian Uint16 serializer to the template
+     *
      * @return $this
      */
     public function uint16le()
@@ -80,6 +90,8 @@ class TemplateFactory
     }
 
     /**
+     * Add a Uint32 serializer to the template
+     *
      * @return $this
      */
     public function uint32()
@@ -89,6 +101,8 @@ class TemplateFactory
     }
 
     /**
+     * Add a little-endian Uint32 serializer to the template
+     *
      * @return $this
      */
     public function uint32le()
@@ -98,6 +112,8 @@ class TemplateFactory
     }
 
     /**
+     * Add a Uint64 serializer to the template
+     *
      * @return $this
      */
     public function uint64()
@@ -107,6 +123,8 @@ class TemplateFactory
     }
 
     /**
+     * Add a little-endian Uint64 serializer to the template
+     *
      * @return $this
      */
     public function uint64le()
@@ -116,6 +134,8 @@ class TemplateFactory
     }
 
     /**
+     * Add a Uint128 serializer to the template
+     *
      * @return $this
      */
     public function uint128()
@@ -125,6 +145,8 @@ class TemplateFactory
     }
 
     /**
+     * Add a little-endian Uint128 serializer to the template
+     *
      * @return $this
      */
     public function uint128le()
@@ -134,6 +156,8 @@ class TemplateFactory
     }
 
     /**
+     * Add a Uint256 serializer to the template
+     *
      * @return $this
      */
     public function uint256()
@@ -143,6 +167,8 @@ class TemplateFactory
     }
 
     /**
+     * Add a little-endian Uint256 serializer to the template
+     *
      * @return $this
      */
     public function uint256le()
@@ -152,6 +178,8 @@ class TemplateFactory
     }
 
     /**
+     * Add a VarInt serializer to the template
+     *
      * @return $this
      */
     public function varint()
@@ -161,6 +189,8 @@ class TemplateFactory
     }
 
     /**
+     * Add a VarString serializer to the template
+     *
      * @return $this
      */
     public function varstring()
@@ -170,6 +200,12 @@ class TemplateFactory
     }
 
     /**
+     * Add a vector serializer to the template. A $readHandler must be provided if the
+     * template will be used to deserialize a vector, since it's contents are not known.
+     *
+     * The $readHandler should operate on the parser reference, reading the bytes for each
+     * item in the collection.
+     *
      * @param callable $readHandler
      * @return $this
      */
