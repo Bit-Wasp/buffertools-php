@@ -2,7 +2,8 @@
 
 namespace BitWasp\Buffertools;
 
-use BitWasp\Buffertools\Types\Vector;
+
+use BitWasp\Buffertools\Types\ByteString;
 use BitWasp\Buffertools\Types\Uint8;
 use BitWasp\Buffertools\Types\Uint16;
 use BitWasp\Buffertools\Types\Uint32;
@@ -11,6 +12,7 @@ use BitWasp\Buffertools\Types\Uint128;
 use BitWasp\Buffertools\Types\Uint256;
 use BitWasp\Buffertools\Types\VarInt;
 use BitWasp\Buffertools\Types\VarString;
+use BitWasp\Buffertools\Types\Vector;
 use Mdanter\Ecc\Math\MathAdapterInterface;
 
 class TemplateFactory
@@ -196,6 +198,32 @@ class TemplateFactory
     public function varstring()
     {
         $this->template->addItem(new VarString(new VarInt($this->math), ByteOrder::BE));
+        return $this;
+    }
+
+    /**
+     * Add a byte string serializer to the template. This serializer requires a length to
+     * pad/truncate to.
+     *
+     * @param $length
+     * @return $this
+     */
+    public function bytestring($length)
+    {
+        $this->template->addItem(new ByteString($this->math, $length, ByteOrder::BE));
+        return $this;
+    }
+
+    /**
+     * Add a little-endian byte string serializer to the template. This serializer requires
+     * a length to pad/truncate to.
+     * 
+     * @param $length
+     * @return $this
+     */
+    public function bytestringle($length)
+    {
+        $this->template->addItem(new ByteString($this->math, $length, ByteOrder::LE));
         return $this;
     }
 
