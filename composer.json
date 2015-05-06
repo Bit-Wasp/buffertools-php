@@ -15,7 +15,11 @@
   "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
-      "BitWasp\\Buffertools\\": "src/Buffertools/",
+      "BitWasp\\Buffertools\\": "src/Buffertools/"
+    }, 
+  },
+  "autoload-dev": {
+    "psr-4": {
       "BitWasp\\Buffertools\\Tests\\": "tests/"
     }
   },
