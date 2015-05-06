@@ -2,8 +2,6 @@
 
 namespace BitWasp\Buffertools\Types;
 
-
-
 class Uint128 extends AbstractIntType
 {
 

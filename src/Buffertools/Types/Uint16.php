@@ -2,7 +2,6 @@
 
 namespace BitWasp\Buffertools\Types;
 
-
 class Uint16 extends AbstractIntType
 {
     /**
@@ -13,5 +12,4 @@ class Uint16 extends AbstractIntType
     {
         return 16;
     }
-
 }

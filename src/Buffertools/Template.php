@@ -2,7 +2,6 @@
 
 namespace BitWasp\Buffertools;
 
-
 use BitWasp\Buffertools\Types\TypeInterface;
 
 class Template implements \Countable

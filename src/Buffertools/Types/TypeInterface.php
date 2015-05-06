@@ -37,5 +37,4 @@ interface TypeInterface
      * @return int|string
      */
     public function getByteOrder();
-
 }

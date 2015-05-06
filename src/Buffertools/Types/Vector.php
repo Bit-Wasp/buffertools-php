@@ -2,7 +2,6 @@
 
 namespace BitWasp\Buffertools\Types;
 
-
 use BitWasp\Buffertools\Parser;
 
 class Vector extends AbstractType

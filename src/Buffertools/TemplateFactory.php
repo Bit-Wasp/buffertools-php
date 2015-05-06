@@ -2,7 +2,6 @@
 
 namespace BitWasp\Buffertools;
 
-
 use BitWasp\Buffertools\Types\Vector;
 use BitWasp\Buffertools\Types\Uint8;
 use BitWasp\Buffertools\Types\Uint16;

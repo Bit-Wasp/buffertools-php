@@ -2,7 +2,6 @@
 
 namespace BitWasp\Buffertools;
 
-
 class ByteOrder
 {
     /**

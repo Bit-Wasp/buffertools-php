@@ -2,7 +2,6 @@
 
 namespace BitWasp\Buffertools\Types;
 
-
 use BitWasp\Buffertools\Buffer;
 use BitWasp\Buffertools\Parser;
 
@@ -54,5 +53,4 @@ class VarString extends AbstractType
 
         return $parser->readBytes($length);
     }
-
 }

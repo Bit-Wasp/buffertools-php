@@ -2,7 +2,6 @@
 
 namespace BitWasp\Buffertools\Types;
 
-
 use BitWasp\Buffertools\ByteOrder;
 use Mdanter\Ecc\Math\MathAdapterInterface;
 

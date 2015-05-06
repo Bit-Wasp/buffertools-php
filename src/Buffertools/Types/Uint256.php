@@ -2,7 +2,6 @@
 
 namespace BitWasp\Buffertools\Types;
 
-
 class Uint256 extends AbstractIntType
 {
     /**
