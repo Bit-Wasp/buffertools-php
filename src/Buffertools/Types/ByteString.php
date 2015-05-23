@@ -58,7 +58,7 @@ class ByteString extends AbstractType
 
         $hex = str_pad(
             $this->getMath()->baseConvert($bits, 2, 16),
-            $this->length,
+            $this->length * 2,
             '0',
             STR_PAD_LEFT
         );

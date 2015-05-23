@@ -23,7 +23,6 @@
       "BitWasp\\Buffertools\\Tests\\": "tests/"
     }
   },
-  "minimum-stability": "stable",
   "require": {
     "php": ">=5.4.0",
     "mdanter/ecc": "dev-master"
