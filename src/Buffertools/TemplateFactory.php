@@ -12,6 +12,7 @@ use BitWasp\Buffertools\Types\Uint256;
 use BitWasp\Buffertools\Types\VarInt;
 use BitWasp\Buffertools\Types\VarString;
 use BitWasp\Buffertools\Types\Vector;
+use Mdanter\Ecc\EccFactory;
 use Mdanter\Ecc\Math\MathAdapterInterface;
 
 class TemplateFactory
@@ -27,11 +28,12 @@ class TemplateFactory
     private $template;
 
     /**
+     * @param Template $template
      * @param MathAdapterInterface $math
      */
-    public function __construct(MathAdapterInterface $math, Template $template = null)
+    public function __construct(Template $template = null, MathAdapterInterface $math = null)
     {
-        $this->math = $math;
+        $this->math = $math ?: EccFactory::getAdapter();
         $this->template = $template ?: new Template();
     }
 
