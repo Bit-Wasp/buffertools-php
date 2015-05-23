@@ -78,7 +78,7 @@ class Template implements \Countable
      * each be an instance of Buffer or implement SerializableInterface.
      *
      * @param  array $items
-     * @return string
+     * @return Buffer
      */
     public function write(array $items)
     {
@@ -93,6 +93,6 @@ class Template implements \Countable
             $binary .= $serializer->write($item);
         }
 
-        return $binary;
+        return new Buffer($binary);
     }
 }

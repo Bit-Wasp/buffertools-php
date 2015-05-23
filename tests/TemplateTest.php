@@ -103,7 +103,7 @@ class TemplateTest extends BinaryTest
         $template = new Template([$uint64le, $varstring]);
 
         $binary = $template->write([50000, Buffer::hex($script)]);
-        $this->assertEquals(pack("H*", $hex), $binary);
+        $this->assertEquals(pack("H*", $hex), $binary->getBinary());
     }
 
     /**
