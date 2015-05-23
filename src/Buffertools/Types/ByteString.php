@@ -97,9 +97,7 @@ class ByteString extends AbstractType
                 $this->getMath()->baseConvert($bits, 2, 16),
                 $this->length * 2,
                 '0',
-                $this->isBigEndian()
-                ? STR_PAD_RIGHT
-                : STR_PAD_LEFT
+                STR_PAD_LEFT
             ),
             $this->length
         );
