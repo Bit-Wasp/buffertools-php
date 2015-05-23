@@ -23,8 +23,8 @@ class Buffer
     private $math;
 
     /**
-     * @param string $byteString
-     * @param null|integer $byteSize
+     * @param string               $byteString
+     * @param null|integer         $byteSize
      * @param MathAdapterInterface $math
      * @throws \Exception
      */
@@ -58,7 +58,7 @@ class Buffer
     }
 
     /**
-     * @param integer $start
+     * @param integer      $start
      * @param integer|null $end
      * @return Buffer
      * @throws \Exception
@@ -109,7 +109,7 @@ class Buffer
         if ($this->size !== null) {
             if (strlen($this->buffer) < $this->size) {
                 return str_pad($this->buffer, $this->size, chr(0), STR_PAD_LEFT);
-            } else if (strlen($this->buffer) > $this->size) {
+            } elseif (strlen($this->buffer) > $this->size) {
                 return substr($this->buffer, 0, $this->size);
             }
         }

@@ -25,7 +25,7 @@ class Parser
     /**
      * Instantiate class, optionally taking a given hex string or Buffer.
      *
-     * @param string|Buffer|null $input
+     * @param  string|Buffer|null $input
      * @throws \Exception
      */
     public function __construct($input = null)
@@ -54,7 +54,7 @@ class Parser
      * Parse a vector from a string of data. Vectors are arrays, prefixed
      * by the number of items in the list.
      *
-     * @param callable $callback
+     * @param  callable $callback
      * @return array
      */
     public function getArray(callable $callback)
@@ -115,8 +115,8 @@ class Parser
     /**
      * Parse $bytes bytes from the string, and return the obtained buffer
      *
-     * @param integer $bytes
-     * @param bool $flipBytes
+     * @param  integer $bytes
+     * @param  bool    $flipBytes
      * @return Buffer
      * @throws \Exception
      */
@@ -127,7 +127,7 @@ class Parser
 
         if ($this->getPosition() === strlen($this->string)) {
             return false;
-        } else if ($length == 0) {
+        } elseif ($length == 0) {
             throw new ParserOutOfRange('Could not parse string of required length (empty)');
         } elseif ($this->math->cmp($length, $bytes) !== 0) {
             throw new ParserOutOfRange('Could not parse string of required length (too short)');
@@ -146,9 +146,9 @@ class Parser
     /**
      * Write $data as $bytes bytes. Can be flipped if needed.
      *
-     * @param integer $bytes
-     * @param $data
-     * @param bool $flipBytes
+     * @param  integer $bytes
+     * @param  $data
+     * @param  bool    $flipBytes
      * @return $this
      */
     public function writeBytes($bytes, $data, $flipBytes = false)
@@ -183,7 +183,7 @@ class Parser
      * Write with length - Writes a buffer and prefixes it with it's length,
      * as a VarInt
      *
-     * @param Buffer $buffer
+     * @param  Buffer $buffer
      * @return $this
      * @throws \Exception
      */
@@ -223,9 +223,9 @@ class Parser
     /**
      * Write an integer to the buffer
      *
-     * @param integer $bytes
-     * @param $int
-     * @param bool $flipBytes
+     * @param  integer $bytes
+     * @param  $int
+     * @param  bool    $flipBytes
      * @return $this
      */
     public function writeInt($bytes, $int, $flipBytes = false)
@@ -256,8 +256,8 @@ class Parser
     /**
      * Extract $bytes from the parser, and return them as a new Parser instance.
      *
-     * @param $bytes
-     * @param bool $flipBytes
+     * @param  $bytes
+     * @param  bool  $flipBytes
      * @return Parser
      * @throws \Exception
      */

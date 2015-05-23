@@ -15,18 +15,12 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     /**
      * @var string
      */
-    protected $parserType;
+    protected $parserType = 'BitWasp\Buffertools\Parser';
 
     /**
      * @var string
      */
-    protected $bufferType;
-
-    public function __construct()
-    {
-        $this->parserType = 'BitWasp\Buffertools\Parser';
-        $this->bufferType = 'BitWasp\Buffertools\Buffer';
-    }
+    protected $bufferType = 'BitWasp\Buffertools\Buffer';
 
     public function setUp()
     {
@@ -38,31 +32,19 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $parser = new Parser();
         $this->assertInstanceOf($this->parserType, $parser);
 
-        $this->assertSame(0, $this->parser->getPosition());
-        $this->assertInstanceOf($this->bufferType, $this->parser->getBuffer());
-        $this->assertEmpty($this->parser->getBuffer()->getHex());
+        $this->assertSame(0, $parser->getPosition());
+        $this->assertInstanceOf($this->bufferType, $parser->getBuffer());
+        $this->assertEmpty($parser->getBuffer()->getHex());
     }
 
-    public function testCreatesInstance()
-    {
-        $buffer = Buffer::hex('41414141');
-        $this->parser = new Parser($buffer);
-    }
-
-    /**
-     * @depends testCreatesInstance
-     */
     public function testGetBuffer()
     {
         $buffer = Buffer::hex('41414141');
 
-        $this->parser = new Parser($buffer);
-        $this->assertSame($this->parser->getBuffer()->getBinary(), $buffer->getBinary());
+        $parser = new Parser($buffer);
+        $this->assertSame($parser->getBuffer()->getBinary(), $buffer->getBinary());
     }
 
-    /**
-     *
-     */
     public function testGetBufferEmptyNull()
     {
         $buffer = new Buffer();
@@ -93,7 +75,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     public function testWriteBytesPadded()
     {
         $parser = new Parser();
-
         $parser->writeBytes(4, Buffer::hex('34'));
         $this->assertEquals("00000034", $parser->getBuffer()->getHex());
     }
@@ -101,28 +82,31 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     public function testWriteBytesFlipPadded()
     {
         $parser = new Parser();
-
         $parser->writeBytes(4, Buffer::hex('34'), true);
         $this->assertEquals("34000000", $parser->getBuffer()->getHex());
     }
 
     public function testReadBytes()
     {
-        $bytes  = '41424344';
+        $bytes = '41424344';
+
         $parser = new Parser($bytes);
-        $read   = $parser->readBytes(4);
+        $read = $parser->readBytes(4);
         $this->assertInstanceOf($this->bufferType, $read);
-        $hex    = $read->getHex();
+
+        $hex = $read->getHex();
         $this->assertSame($bytes, $hex);
     }
 
     public function testReadBytesFlip()
     {
-        $bytes  = '41424344';
+        $bytes = '41424344';
+
         $parser = new Parser($bytes);
-        $read   = $parser->readBytes(4, true);
+        $read = $parser->readBytes(4, true);
         $this->assertInstanceOf($this->bufferType, $read);
-        $hex    = $read->getHex();
+
+        $hex = $read->getHex();
         $this->assertSame('44434241', $hex);
     }
 
@@ -228,7 +212,9 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
     public function testGetArray()
     {
-        /** @var Buffer[] $expected */
+        /**
+ * @var Buffer[] $expected
+*/
         $expected = array(
             Buffer::hex('09020304'),
             Buffer::hex('08020304'),
@@ -236,53 +222,17 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         );
 
         $parser = new Parser(Buffer::hex('03090203040802030407020304'));
-        $callback = function() use (&$parser) {
+        $callback = function () use (&$parser) {
             return $parser->readBytes(4);
         };
 
-        /** @var Buffer[] $expected */
+        /**
+ * @var Buffer[] $expected
+*/
         $actual = $parser->getArray($callback);
 
         for ($i = 0; $i < count($expected); $i++) {
             $this->assertEquals($expected[$i]->getBinary(), $actual[$i]->getBinary());
         }
     }
-
-    public function testWriteArray()
-    {
-        $this->markTestSkipped("@TODO: tests which don't rely on bitcoin-php classes");
-
-        $transaction = TransactionFactory::create();
-        $input  = new TransactionInput('0000000000000000000000000000000000000000000000000000000000000000', 0);
-        $output = new TransactionOutput(1, null);
-        $transaction
-            ->getInputs()
-            ->addInput($input);
-
-        $transaction
-            ->getOutputs()
-            ->addOutput($output);
-
-        $array  = new TransactionCollection(array($transaction, $transaction));
-        $parser = new Parser();
-        $parser->writeArray($array->getBuffer());
-
-        $this->assertSame('010000000100000000000000000000000000000000000000000000000000000000000000000000000000ffffffff0101000000000000000000000000', $transaction->getBuffer()->getHex());
-        $this->assertSame('02010000000100000000000000000000000000000000000000000000000000000000000000000000000000ffffffff0101000000000000000000000000010000000100000000000000000000000000000000000000000000000000000000000000000000000000ffffffff0101000000000000000000000000', $parser->getBuffer()->getHex());
-
-    }
-
-    /**
-     * @expectedException \RuntimeException
-     */
-    public function testWriteArrayFailure()
-    {
-        $this->markTestSkipped("@TODO: tests which don't rely on bitcoin-php classes");
-
-        $network = new Network('00','05','80');
-        $array = array($network);
-
-        $parser = new Parser();
-        $parser->writeArray($array);
-    }
-} 
+}

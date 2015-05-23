@@ -10,7 +10,7 @@ class Buffertools
     /**
      * Convert a decimal number into a VarInt Buffer
      *
-     * @param integer $decimal
+     * @param  integer $decimal
      * @return Buffer
      * @throws \Exception
      */
@@ -35,7 +35,7 @@ class Buffertools
     /**
      * Flip byte order of this binary string
      *
-     * @param string|Buffer $bytes
+     * @param  string|Buffer $bytes
      * @return string
      */
     public static function flipBytes($bytes)
@@ -50,7 +50,7 @@ class Buffertools
     /**
      * @param Buffer $buffer1
      * @param Buffer $buffer2
-     * @param int $size
+     * @param int    $size
      * @return Buffer
      */
     public static function concat(Buffer $buffer1, Buffer $buffer2, $size = null)
