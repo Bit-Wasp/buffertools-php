@@ -93,7 +93,12 @@ class ByteString extends AbstractType
         }
 
         return Buffer::hex(
-            $this->getMath()->baseConvert($bits, 2, 16),
+            str_pad(
+                $this->getMath()->baseConvert($bits, 2, 16),
+                $this->length * 2,
+                '0',
+                STR_PAD_LEFT
+            ),
             $this->length
         );
     }
