@@ -59,7 +59,7 @@ class BuffertoolsTest extends \PHPUnit_Framework_TestCase
         }
         return $results;
     }
-    
+
     public function testSortDefault()
     {
         $items = $this->getUnsortedBufferList();
