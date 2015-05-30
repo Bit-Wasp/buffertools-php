@@ -6,12 +6,76 @@ use Mdanter\Ecc\EccFactory;
 
 class BuffertoolsTest extends \PHPUnit_Framework_TestCase
 {
-    public function __construct()
+    /**
+     * @return array
+     */
+    private function getUnsortedList()
     {
+        return [
+            '0101',
+            '4102',
+            'a43e',
+            '0000',
+            '0120',
+            'd01b'
+        ];
     }
 
-    public function setUp()
+    /**
+     * @return array
+     */
+    private function getSortedList()
     {
+        return [
+            '0000',
+            '0101',
+            '0120',
+            '4102',
+            'a43e',
+            'd01b'
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function getUnsortedBufferList()
+    {
+        $results = [];
+        foreach ($this->getUnsortedList() as $hex) {
+            $results[] = Buffer::hex($hex);
+        }
+        return $results;
+    }
+
+    /**
+     * @return array
+     */
+    private function getSortedBufferList()
+    {
+        $results = [];
+        foreach ($this->getSortedList() as $hex) {
+            $results[] = Buffer::hex($hex);
+        }
+        return $results;
+    }
+    
+    public function testSortDefault()
+    {
+        $items = $this->getUnsortedBufferList();
+        $v = Buffertools::sort($items);
+
+        $this->assertEquals($this->getSortedBufferList(), $v);
+    }
+
+    public function testSortCallable()
+    {
+        $items = $this->getUnsortedList();
+        $sorted = Buffertools::sort($items, function ($a) {
+            return Buffer::hex($a);
+        });
+
+        $this->assertEquals($this->getSortedList(), $sorted);
     }
 
     public function testNumToVarInt()
