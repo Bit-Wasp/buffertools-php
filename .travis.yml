@@ -14,7 +14,7 @@ install:
   - composer install --prefer-source --dev
 
 script:
-  - php vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+  - php vendor/bin/phpunit
   - php vendor/bin/phpcs -n --standard=PSR1,PSR2 --report=full src/
 
 after_script:
@@ -24,5 +24,5 @@ after_script:
 
 matrix:
     fast_finish: true
-    allow_failures:
-      - php: nightly
+    allow_failures: 
+        - php: hhvm
