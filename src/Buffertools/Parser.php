@@ -31,7 +31,7 @@ class Parser
     public function __construct($input = null)
     {
         $this->math = EccFactory::getAdapter();
-        
+
         if (!$input instanceof Buffer) {
             $input = Buffer::hex($input);
         }
@@ -125,9 +125,7 @@ class Parser
         $string = substr($this->string, $this->getPosition(), $bytes);
         $length = strlen($string);
 
-        if ($this->getPosition() === strlen($this->string)) {
-            return false;
-        } elseif ($length == 0) {
+        if ($length == 0) {
             throw new ParserOutOfRange('Could not parse string of required length (empty)');
         } elseif ($this->math->cmp($length, $bytes) !== 0) {
             throw new ParserOutOfRange('Could not parse string of required length (too short)');
