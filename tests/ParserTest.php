@@ -110,6 +110,10 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('44434241', $hex);
     }
 
+    /**
+     * @expectedException \BitWasp\Buffertools\Exceptions\ParserOutOfRange
+     * @expectedExceptionMessage Could not parse string of required length (empty)
+     */
     public function testReadBytesEmpty()
     {
         // Should return false because position is zero,
@@ -119,7 +123,10 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $data = $parser->readBytes(0);
         $this->assertFalse(!!$data);
     }
-
+    /**
+     * @expectedException \BitWasp\Buffertools\Exceptions\ParserOutOfRange
+     * @expectedExceptionMessage Could not parse string of required length (empty)
+     */
     public function testReadBytesEndOfString()
     {
         $parser = new Parser('4041414142414141');
@@ -127,7 +134,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $bytes2 = $parser->readBytes(4);
         $this->assertSame($bytes1->getHex(), '40414141');
         $this->assertSame($bytes2->getHex(), '42414141');
-        $this->assertFalse(!!$parser->readBytes(1));
+        $parser->readBytes(1);
     }
 
     /**
@@ -179,12 +186,10 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $p1 = new Parser('0141');
         $this->assertSame('01', $p1->getVarInt()->getHex());
         $this->assertSame('41', $p1->readBytes(1)->getHex());
-        $this->assertSame(false, $p1->readBytes(1));
 
         $p2 = new Parser('022345');
         $this->assertSame('02', $p2->getVarInt()->getHex());
         $this->assertSame('2345', $p2->readBytes(2)->getHex());
-        $this->assertSame(false, $p2->readBytes(1));
 
         $s3 = Buffer::hex('00010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102');
         $p3 = new Parser();
@@ -213,8 +218,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     public function testGetArray()
     {
         /**
- * @var Buffer[] $expected
-*/
+         * @var Buffer[] $expected
+         */
         $expected = array(
             Buffer::hex('09020304'),
             Buffer::hex('08020304'),
