@@ -19,7 +19,7 @@ script:
 
 after_success:
   - wget https://scrutinizer-ci.com/ocular.phar
-  - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" || "$TRAVIS_PHP_VERSION" != "7"]; then php ocular.phar code-coverage:upload --format=php-clover build/docs/clover.xml; fi;'
+  - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm"] || ["$TRAVIS_PHP_VERSION" != "7"]; then php ocular.phar code-coverage:upload --format=php-clover build/docs/clover.xml; fi;'
 
 matrix:
     fast_finish: true
