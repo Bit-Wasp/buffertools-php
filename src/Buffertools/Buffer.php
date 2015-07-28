@@ -132,4 +132,12 @@ class Buffer
     {
         return $this->math->hexDec($this->getHex());
     }
+
+    /**
+     * @return Buffer
+     */
+    public function flip()
+    {
+        return Buffertools::flipBytes($this);
+    }
 }
