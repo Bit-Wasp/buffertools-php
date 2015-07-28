@@ -70,9 +70,6 @@ class Buffer
     {
         $math = EccFactory::getAdapter();
         $hex = $math->decHex($int);
-        if (strlen($hex) % 2 == 1) {
-            $hex = '0' . $hex;
-        }
 
         return self::hex($hex, $byteSize, $math);
     }
