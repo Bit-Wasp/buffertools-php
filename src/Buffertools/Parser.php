@@ -13,7 +13,7 @@ class Parser
     private $string;
 
     /**
-     * @var \Mdanter\Ecc\MathAdapterInterface
+     * @var \Mdanter\Ecc\Math\MathAdapterInterface
      */
     private $math;
 
