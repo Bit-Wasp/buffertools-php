@@ -33,7 +33,7 @@ class UintSetTest extends BinaryTest
             $hex = str_pad($math->baseConvert($integer, 10, 16), $bitSize / 4, '0', STR_PAD_LEFT);
 
             if ($byteOrder == ByteOrder::LE) {
-                $hex = bin2hex(Buffertools::flipBytes(Buffer::hex($hex)));
+                $hex = Buffertools::flipBytes(Buffer::hex($hex))->getHex();
             }
             return [
                 $integer,

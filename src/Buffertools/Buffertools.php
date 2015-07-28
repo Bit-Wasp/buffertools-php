@@ -30,18 +30,25 @@ class Buffertools
     }
 
     /**
-     * Flip byte order of this binary string
+     * Flip byte order of this binary string. Accepts a string or Buffer,
+     * and will return whatever type it was given.
      *
      * @param  string|Buffer $bytes
-     * @return string
+     * @return string|Buffer
      */
     public static function flipBytes($bytes)
     {
-        if ($bytes instanceof Buffer) {
+        $isBuffer = $bytes instanceof Buffer;
+        if ($isBuffer) {
             $bytes = $bytes->getBinary();
         }
 
-        return implode('', array_reverse(str_split($bytes, 1)));
+        $flipped = implode('', array_reverse(str_split($bytes, 1)));
+        if ($isBuffer) {
+            $flipped = new Buffer($flipped);
+        }
+
+        return $flipped;
     }
 
     /**
