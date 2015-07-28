@@ -3,7 +3,7 @@
 namespace BitWasp\Buffertools;
 
 use Mdanter\Ecc\EccFactory;
-use Mdanter\Ecc\MathAdapterInterface;
+use Mdanter\Ecc\Math\MathAdapterInterface;
 
 class Buffer
 {
@@ -18,7 +18,7 @@ class Buffer
     private $buffer;
 
     /**
-     * @var \Mdanter\Ecc\MathAdapterInterface
+     * @var MathAdapterInterface
      */
     private $math;
 
@@ -31,7 +31,6 @@ class Buffer
     public function __construct($byteString = '', $byteSize = null, MathAdapterInterface $math = null)
     {
         $this->math = $math ?: EccFactory::getAdapter();
-
         if ($byteSize !== null) {
             // Check the integer doesn't overflow its supposed size
             if ($this->math->cmp(strlen($byteString), $byteSize) > 0) {
@@ -47,14 +46,32 @@ class Buffer
 
     /**
      * Create a new buffer from a hex string
+     *
      * @param $hex
-     * @param integer $bitSize
+     * @param integer $byteSize
+     * @param MathAdapterInterface $math
      * @return Buffer
      * @throws \Exception
      */
-    public static function hex($hex = '', $bitSize = null)
+    public static function hex($hex = '', $byteSize = null, MathAdapterInterface $math = null)
     {
-        return new self(pack("H*", $hex), $bitSize);
+        return new self(pack("H*", $hex), $byteSize, $math);
+    }
+
+    /**
+     * Create a new buffer from an integer
+     *
+     * @param $int
+     * @param null $byteSize
+     * @param MathAdapterInterface $math
+     * @return Buffer
+     */
+    public static function int($int, $byteSize = null, MathAdapterInterface $math = null)
+    {
+        $math = EccFactory::getAdapter();
+        $hex = $math->decHex($int);
+
+        return self::hex($hex, $byteSize, $math);
     }
 
     /**
@@ -77,7 +94,9 @@ class Buffer
             throw new \Exception('Length exceeds buffer length');
         }
 
-        return new self(substr($this->getBinary(), $start, $end));
+        $string = substr($this->getBinary(), $start, $end);
+        $length = strlen($string);
+        return new self($string, $length, $this->math);
     }
 
     /**

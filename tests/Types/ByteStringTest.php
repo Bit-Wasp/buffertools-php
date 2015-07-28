@@ -15,7 +15,6 @@ class ByteStringTest extends BinaryTest
 {
     public function getVectors()
     {
-        echo 'called';
         $math = MathAdapterFactory::getAdapter();
         return [
             [$math, 1, '04'],

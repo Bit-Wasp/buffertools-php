@@ -15,12 +15,7 @@ class BufferTest extends \PHPUnit_Framework_TestCase
     /**
      * @var string
      */
-    protected $bufferType;
-
-    public function __construct()
-    {
-        $this->bufferType = 'BitWasp\Buffertools\Buffer';
-    }
+    protected $bufferType= 'BitWasp\Buffertools\Buffer';
 
     public function setUp()
     {
@@ -107,6 +102,26 @@ class BufferTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, Buffer::hex('41')->getSize());
         $this->assertEquals(4, Buffer::hex('41414141')->getSize());
         $this->assertEquals(4, Buffer::hex('41', 4)->getSize());
+    }
+
+    public function IntVectors()
+    {
+        $math = EccFactory::getAdapter();
+
+        return array(
+            array('1',  1,      '01', $math),
+            array('1',  null,   '01', $math),
+            array('20', 1,      '14', $math)
+        );
+    }
+
+    /**
+     * @dataProvider IntVectors
+     */
+    public function testIntConstruct($int, $size, $expectedHex, $math)
+    {
+        $buffer = Buffer::int($int, $size, $math);
+        $this->assertEquals($expectedHex, $buffer->getHex());
     }
 
     public function testSlice()
