@@ -55,6 +55,9 @@ class Buffer
      */
     public static function hex($hex = '', $byteSize = null, MathAdapterInterface $math = null)
     {
+        if ($byteSize > 0 && !ctype_xdigit($hex)) {
+            throw new \InvalidArgumentException('Buffer::hex(): non-hex character passed');
+        }
         return new self(pack("H*", $hex), $byteSize, $math);
     }
 
@@ -68,7 +71,7 @@ class Buffer
      */
     public static function int($int, $byteSize = null, MathAdapterInterface $math = null)
     {
-        $math = EccFactory::getAdapter();
+        $math = $math ?: EccFactory::getAdapter();
         $hex = $math->decHex($int);
 
         return self::hex($hex, $byteSize, $math);
