@@ -68,7 +68,7 @@ class Buffer
      */
     public static function int($int, $byteSize = null, MathAdapterInterface $math = null)
     {
-        $math = EccFactory::getAdapter();
+        $math = $math ?: EccFactory::getAdapter();
         $hex = $math->decHex($int);
 
         return self::hex($hex, $byteSize, $math);
