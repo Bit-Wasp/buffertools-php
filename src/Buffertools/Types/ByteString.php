@@ -99,7 +99,8 @@ class ByteString extends AbstractType
                 '0',
                 STR_PAD_LEFT
             ),
-            $this->length
+            $this->length,
+            $this->getMath()
         );
     }
 }

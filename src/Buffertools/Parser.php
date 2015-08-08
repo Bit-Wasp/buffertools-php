@@ -4,6 +4,7 @@ namespace BitWasp\Buffertools;
 
 use BitWasp\Buffertools\Exceptions\ParserOutOfRange;
 use Mdanter\Ecc\EccFactory;
+use Mdanter\Ecc\Math\MathAdapterInterface;
 
 class Parser
 {
