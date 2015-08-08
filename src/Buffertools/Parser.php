@@ -28,12 +28,12 @@ class Parser
      * @param  string|Buffer|null $input
      * @throws \Exception
      */
-    public function __construct($input = null)
+    public function __construct($input = null, MathAdapterInterface $math = null)
     {
-        $this->math = EccFactory::getAdapter();
+        $this->math = $math ?: EccFactory::getAdapter();
 
         if (!$input instanceof Buffer) {
-            $input = Buffer::hex($input);
+            $input = Buffer::hex($input, null, $this->math);
         }
 
         $this->string = $input->getBinary();
@@ -106,7 +106,7 @@ class Parser
     {
         $varInt = $this->getVarInt()->getInt();
         if ($this->math->cmp($varInt, 0) == 0) {
-            return new Buffer();
+            return new Buffer('', 0, $this->math);
         }
         $string = $this->readBytes($varInt);
         return $string;
@@ -137,8 +137,7 @@ class Parser
             $string = Buffertools::flipBytes($string);
         }
 
-        $buffer = new Buffer($string);
-        return $buffer;
+        return new Buffer($string, $length, $this->math);
     }
 
     /**
@@ -159,16 +158,15 @@ class Parser
         if ($data instanceof Buffer) {
             // only create a new buffer if the size does not match
             if ($data->getSize() != $bytes) {
-                $data = new Buffer($data->getBinary(), $bytes);
+                $data = new Buffer($data->getBinary(), $bytes, $this->math);
             }
         } else {
             // Convert to a buffer
-            $data = Buffer::hex($data, $bytes);
+            $data = Buffer::hex($data, $bytes, $this->math);
         }
 
         // At this point $data will be a Buffer
         $binary = $data->getBinary();
-
         if ($flipBytes) {
             $binary = Buffertools::flipBytes($binary);
         }
@@ -188,7 +186,7 @@ class Parser
     public function writeWithLength(Buffer $buffer)
     {
         $varInt = Buffertools::numToVarInt($buffer->getSize());
-        $buffer = new Buffer($varInt->getBinary() . $buffer->getBinary());
+        $buffer = new Buffer($varInt->getBinary() . $buffer->getBinary(), null, $this->math);
         $this->writeBytes($buffer->getSize(), $buffer);
         return $this;
     }
@@ -200,7 +198,7 @@ class Parser
      */
     public function writeArray($serializable)
     {
-        $parser = new Parser(Buffertools::numToVarInt(count($serializable)));
+        $parser = new Parser(Buffertools::numToVarInt(count($serializable)), $this->math);
         foreach ($serializable as $object) {
             if ($object instanceof SerializableInterface) {
                 $object = $object->getBuffer();
@@ -228,15 +226,12 @@ class Parser
      */
     public function writeInt($bytes, $int, $flipBytes = false)
     {
-        $hex  = str_pad($this->math->decHex($int), $bytes * 2, '0', STR_PAD_LEFT);
-        $data = pack("H*", $hex);
-
+        $binary = Buffer::int($int, $bytes)->getBinary();
         if ($flipBytes) {
             $data = Buffertools::flipBytes($data);
         }
 
         $this->string .= $data;
-
         return $this;
     }
 
@@ -247,8 +242,7 @@ class Parser
      */
     public function getBuffer()
     {
-        $buffer = new Buffer($this->string);
-        return $buffer;
+        return new Buffer($this->string, null, $this->math);
     }
 
     /**
@@ -262,7 +256,6 @@ class Parser
     public function parseBytes($bytes, $flipBytes = false)
     {
         $buffer = $this->readBytes($bytes, $flipBytes);
-        $parser = new Parser($buffer);
-        return $parser;
+        return new Parser($buffer, $this->math);
     }
 }
