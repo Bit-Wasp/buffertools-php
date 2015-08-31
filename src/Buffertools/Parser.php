@@ -227,7 +227,7 @@ class Parser
      */
     public function writeInt($bytes, $int, $flipBytes = false)
     {
-        $binary = Buffer::int($int, $bytes)->getBinary();
+        $data = Buffer::int($int, $bytes)->getBinary();
         if ($flipBytes) {
             $data = Buffertools::flipBytes($data);
         }
