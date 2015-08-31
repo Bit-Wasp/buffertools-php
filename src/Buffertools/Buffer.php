@@ -10,17 +10,17 @@ class Buffer
     /**
      * @var int|string
      */
-    private $size;
+    protected $size;
 
     /**
      * @var string
      */
-    private $buffer;
+    protected $buffer;
 
     /**
      * @var MathAdapterInterface
      */
-    private $math;
+    protected $math;
 
     /**
      * @param string               $byteString
