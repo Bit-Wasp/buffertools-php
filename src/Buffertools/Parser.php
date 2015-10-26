@@ -52,68 +52,6 @@ class Parser
     }
 
     /**
-     * Parse a vector from a string of data. Vectors are arrays, prefixed
-     * by the number of items in the list.
-     *
-     * @param  callable $callback
-     * @return array
-     */
-    public function getArray(callable $callback)
-    {
-        $results = array();
-        $varInt  = $this->getVarInt();
-        $txCount = $varInt->getInt();
-
-        for ($i = 0; $i < $txCount; $i++) {
-            $results[] = $callback($this);
-        }
-
-        return $results;
-    }
-
-    /**
-     * Parse a variable length integer
-     *
-     * @return Buffer
-     * @throws \Exception
-     */
-    public function getVarInt()
-    {
-        // Return the length encoded in this var int
-        $byte   = $this->readBytes(1);
-        $int    = $byte->getInt();
-
-        if ($this->math->cmp($int, 0xfd) < 0) {
-            return $byte;
-        } elseif ($this->math->cmp($int, 0xfd) == 0) {
-            return $this->readBytes(2, true);
-        } elseif ($this->math->cmp($int, 0xfe) == 0) {
-            return $this->readBytes(4, true);
-        } elseif ($this->math->cmp($int, 0xff) == 0) {
-            return $this->readBytes(8, true);
-        }
-
-        throw new \Exception('Data too large');
-    }
-
-    /**
-     * Return a variable length string. This is a variable length string,
-     * prefixed with it's length encoded as a VarInt.
-     *
-     * @return Buffer
-     * @throws \Exception
-     */
-    public function getVarString()
-    {
-        $varInt = $this->getVarInt()->getInt();
-        if ($this->math->cmp($varInt, 0) == 0) {
-            return new Buffer('', 0, $this->math);
-        }
-        $string = $this->readBytes($varInt);
-        return $string;
-    }
-
-    /**
      * Parse $bytes bytes from the string, and return the obtained buffer
      *
      * @param  integer $bytes
@@ -216,7 +154,7 @@ class Parser
 
         return $this;
     }
-    
+
     /**
      * Return the string as a buffer
      *
