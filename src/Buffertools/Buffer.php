@@ -70,7 +70,7 @@ class Buffer
      * @param MathAdapterInterface|null $math
      * @return Buffer
      */
-    public function int($integer, $byteSize = null, MathAdapterInterface $math = null)
+    public static function int($integer, $byteSize = null, MathAdapterInterface $math = null)
     {
         $math = $math ?: EccFactory::getAdapter();
         $binary = pack("H*", $math->decHex($integer));
