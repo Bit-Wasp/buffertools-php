@@ -47,28 +47,34 @@ class Buffer
     /**
      * Create a new buffer from a hex string
      *
-     * @param $hex
+     * @param string $hexString
      * @param integer $byteSize
      * @param MathAdapterInterface $math
      * @return Buffer
      * @throws \Exception
      */
-    public static function hex($hex = '', $byteSize = null, MathAdapterInterface $math = null)
+    public static function hex($hexString = '', $byteSize = null, MathAdapterInterface $math = null)
     {
-        return new BufferHex($hex, $byteSize, $math);
+        if (strlen($hexString) > 0 && !ctype_xdigit($hexString)) {
+            throw new \InvalidArgumentException('BufferHex: non-hex character passed: ' . $hexString);
+        }
+
+        $math = $math ?: EccFactory::getAdapter();
+        $binary = pack("H*", $hexString);
+        return new self($binary, $byteSize, $math);
     }
 
     /**
-     * Create a new buffer from an integer
-     *
-     * @param $int
-     * @param null $byteSize
-     * @param MathAdapterInterface $math
+     * @param int|string $integer
+     * @param null|int $byteSize
+     * @param MathAdapterInterface|null $math
      * @return Buffer
      */
-    public static function int($int, $byteSize = null, MathAdapterInterface $math = null)
+    public function int($integer, $byteSize = null, MathAdapterInterface $math = null)
     {
-        return new BufferInt($int, $byteSize, $math);
+        $math = $math ?: EccFactory::getAdapter();
+        $binary = pack("H*", $math->decHex($integer));
+        return new self($binary, $byteSize, $math);
     }
 
     /**
