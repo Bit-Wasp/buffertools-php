@@ -59,7 +59,7 @@ class BufferTest extends \PHPUnit_Framework_TestCase
     public function testCreateMaxBufferExceeded()
     {
         $lim = 4;
-        $this->buffer = Buffer::hex('414141411', $lim);
+        $this->buffer = Buffer::hex('4141414111', $lim);
     }
 
     public function testCreateHexBuffer()
