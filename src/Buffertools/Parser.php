@@ -216,26 +216,7 @@ class Parser
 
         return $this;
     }
-
-    /**
-     * Write an integer to the buffer
-     *
-     * @param  integer $bytes
-     * @param  $int
-     * @param  bool    $flipBytes
-     * @return $this
-     */
-    public function writeInt($bytes, $int, $flipBytes = false)
-    {
-        $data = Buffer::int($int, $bytes)->getBinary();
-        if ($flipBytes) {
-            $data = Buffertools::flipBytes($data);
-        }
-
-        $this->string .= $data;
-        return $this;
-    }
-
+    
     /**
      * Return the string as a buffer
      *
