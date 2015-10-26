@@ -2,7 +2,6 @@
 
 namespace BitWasp\Buffertools\Tests\Types;
 
-
 use BitWasp\Buffertools\Buffer;
 use BitWasp\Buffertools\Buffertools;
 use BitWasp\Buffertools\ByteOrder;

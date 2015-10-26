@@ -2,7 +2,6 @@
 
 namespace BitWasp\Buffertools\Tests;
 
-
 use BitWasp\Buffertools\BufferInt;
 
 class BufferIntTest extends \PHPUnit_Framework_TestCase

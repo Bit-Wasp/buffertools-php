@@ -2,7 +2,6 @@
 
 namespace BitWasp\Buffertools\Tests;
 
-
 use BitWasp\Buffertools\BufferHex;
 
 class BufferHexTest extends \PHPUnit_Framework_TestCase
