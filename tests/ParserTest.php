@@ -147,38 +147,4 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $parser->readBytes(5);
     }
 
-    public function testParseBytes()
-    {
-        $bytes  = '4142434445464748';
-        $parser = new Parser($bytes);
-        $bs1    = $parser->parseBytes(1);
-        $bs2    = $parser->parseBytes(2);
-        $bs3    = $parser->parseBytes(4);
-        $bs4    = $parser->parseBytes(1);
-        $this->assertInstanceOf($this->parserType, $bs1);
-        $this->assertSame('41', $bs1->getBuffer()->getHex());
-        $this->assertInstanceOf($this->parserType, $bs2);
-        $this->assertSame('4243', $bs2->getBuffer()->getHex());
-        $this->assertInstanceOf($this->parserType, $bs3);
-        $this->assertSame('44454647', $bs3->getBuffer()->getHex());
-        $this->assertInstanceOf($this->parserType, $bs4);
-        $this->assertSame('48', $bs4->getBuffer()->getHex());
-    }
-
-    public function testWriteWithLength()
-    {
-        $str1 = Buffer::hex('01020304050607080909');
-        $parser1 = new Parser();
-        $parser1->writeWithLength($str1);
-        $this->assertSame('0a', $parser1->readBytes(1)->getHex());
-        $this->assertSame('01020304050607080909', $parser1->readBytes(10)->getHex());
-
-        $str2 = Buffer::hex('00010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102');
-        $parser2 = new Parser();
-        $parser2->writeWithLength($str2);
-        $this->assertSame('fdfd00', $parser2->readBytes(3)->getHex());
-        $this->assertSame('00010203040506070809', $parser2->readBytes(10)->getHex());
-
-    }
-
 }

@@ -24,10 +24,10 @@ class Parser
     private $position = 0;
 
     /**
-     * Instantiate class, optionally taking a given hex string or Buffer.
+     * Instantiate class, optionally taking Buffer or HEX.
      *
-     * @param  string|Buffer|null $input
-     * @throws \Exception
+     * @param null|string $input
+     * @param MathAdapterInterface|null $math
      */
     public function __construct($input = null, MathAdapterInterface $math = null)
     {
@@ -55,7 +55,7 @@ class Parser
      * Parse $bytes bytes from the string, and return the obtained buffer
      *
      * @param  integer $bytes
-     * @param  bool    $flipBytes
+     * @param  bool $flipBytes
      * @return Buffer
      * @throws \Exception
      */
@@ -84,7 +84,7 @@ class Parser
      *
      * @param  integer $bytes
      * @param  $data
-     * @param  bool    $flipBytes
+     * @param  bool $flipBytes
      * @return $this
      */
     public function writeBytes($bytes, $data, $flipBytes = false)
@@ -115,24 +115,8 @@ class Parser
     }
 
     /**
-     * Write with length - Writes a buffer and prefixes it with it's length,
-     * as a VarInt
-     *
-     * @param  Buffer $buffer
-     * @return $this
-     * @throws \Exception
-     */
-    public function writeWithLength(Buffer $buffer)
-    {
-        $varInt = Buffertools::numToVarInt($buffer->getSize());
-        $buffer = new Buffer($varInt->getBinary() . $buffer->getBinary(), null, $this->math);
-        $this->writeBytes($buffer->getSize(), $buffer);
-        return $this;
-    }
-
-    /**
      * Take an array containing serializable objects.
-     * @param SerializableInterface[]|Buffer[]
+     * @param SerializableInterface []|Buffer[]
      * @return $this
      */
     public function writeArray($serializable)
@@ -163,19 +147,5 @@ class Parser
     public function getBuffer()
     {
         return new Buffer($this->string, null, $this->math);
-    }
-
-    /**
-     * Extract $bytes from the parser, and return them as a new Parser instance.
-     *
-     * @param  $bytes
-     * @param  bool  $flipBytes
-     * @return Parser
-     * @throws \Exception
-     */
-    public function parseBytes($bytes, $flipBytes = false)
-    {
-        $buffer = $this->readBytes($bytes, $flipBytes);
-        return new Parser($buffer, $this->math);
     }
 }
