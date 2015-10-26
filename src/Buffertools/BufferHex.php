@@ -11,8 +11,8 @@ class BufferHex extends Buffer
     public function __construct($hexString = '', $byteSize = null, MathAdapterInterface $math = null)
     {
         $strlen = strlen($hexString);
-        if ($strlen > 0 && $strlen % 2 == 0 && ctype_xdigit($hexString)) {
-            throw new \InvalidArgumentException('BufferHex: non-hex character passed');
+        if ($strlen > 0 && ($strlen % 2 != 0 || !ctype_xdigit($hexString))) {
+            throw new \InvalidArgumentException('BufferHex: non-hex character passed: ' . $hexString);
         }
 
         $math = $math ?: EccFactory::getAdapter();
