@@ -76,17 +76,8 @@ class TemplateTest extends BinaryTest
 
         list ($foundValue, $foundScript) = $template->parse($parser);
 
-        $secondParser = new Parser($buffer);
-        $secondValue = $secondParser->readBytes(8, true)->getInt();
-        $secondScript = $secondParser->getVarString();
-
         $this->assertInternalType('string', $foundValue);
-        $this->assertInstanceOf('BitWasp\Buffertools\Buffer', $secondScript);
-
-        $this->assertEquals(50000, $secondValue);
         $this->assertEquals(50000, $foundValue);
-
-        $this->assertEquals($script, $secondScript->getHex());
         $this->assertEquals($script, $foundScript->getHex());
     }
 

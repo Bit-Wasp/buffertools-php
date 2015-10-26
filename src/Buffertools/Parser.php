@@ -24,10 +24,10 @@ class Parser
     private $position = 0;
 
     /**
-     * Instantiate class, optionally taking a given hex string or Buffer.
+     * Instantiate class, optionally taking Buffer or HEX.
      *
-     * @param  string|Buffer|null $input
-     * @throws \Exception
+     * @param null|string $input
+     * @param MathAdapterInterface|null $math
      */
     public function __construct($input = null, MathAdapterInterface $math = null)
     {
@@ -52,72 +52,10 @@ class Parser
     }
 
     /**
-     * Parse a vector from a string of data. Vectors are arrays, prefixed
-     * by the number of items in the list.
-     *
-     * @param  callable $callback
-     * @return array
-     */
-    public function getArray(callable $callback)
-    {
-        $results = array();
-        $varInt  = $this->getVarInt();
-        $txCount = $varInt->getInt();
-
-        for ($i = 0; $i < $txCount; $i++) {
-            $results[] = $callback($this);
-        }
-
-        return $results;
-    }
-
-    /**
-     * Parse a variable length integer
-     *
-     * @return Buffer
-     * @throws \Exception
-     */
-    public function getVarInt()
-    {
-        // Return the length encoded in this var int
-        $byte   = $this->readBytes(1);
-        $int    = $byte->getInt();
-
-        if ($this->math->cmp($int, 0xfd) < 0) {
-            return $byte;
-        } elseif ($this->math->cmp($int, 0xfd) == 0) {
-            return $this->readBytes(2, true);
-        } elseif ($this->math->cmp($int, 0xfe) == 0) {
-            return $this->readBytes(4, true);
-        } elseif ($this->math->cmp($int, 0xff) == 0) {
-            return $this->readBytes(8, true);
-        }
-
-        throw new \Exception('Data too large');
-    }
-
-    /**
-     * Return a variable length string. This is a variable length string,
-     * prefixed with it's length encoded as a VarInt.
-     *
-     * @return Buffer
-     * @throws \Exception
-     */
-    public function getVarString()
-    {
-        $varInt = $this->getVarInt()->getInt();
-        if ($this->math->cmp($varInt, 0) == 0) {
-            return new Buffer('', 0, $this->math);
-        }
-        $string = $this->readBytes($varInt);
-        return $string;
-    }
-
-    /**
      * Parse $bytes bytes from the string, and return the obtained buffer
      *
      * @param  integer $bytes
-     * @param  bool    $flipBytes
+     * @param  bool $flipBytes
      * @return Buffer
      * @throws \Exception
      */
@@ -146,7 +84,7 @@ class Parser
      *
      * @param  integer $bytes
      * @param  $data
-     * @param  bool    $flipBytes
+     * @param  bool $flipBytes
      * @return $this
      */
     public function writeBytes($bytes, $data, $flipBytes = false)
@@ -177,24 +115,8 @@ class Parser
     }
 
     /**
-     * Write with length - Writes a buffer and prefixes it with it's length,
-     * as a VarInt
-     *
-     * @param  Buffer $buffer
-     * @return $this
-     * @throws \Exception
-     */
-    public function writeWithLength(Buffer $buffer)
-    {
-        $varInt = Buffertools::numToVarInt($buffer->getSize());
-        $buffer = new Buffer($varInt->getBinary() . $buffer->getBinary(), null, $this->math);
-        $this->writeBytes($buffer->getSize(), $buffer);
-        return $this;
-    }
-
-    /**
      * Take an array containing serializable objects.
-     * @param SerializableInterface[]|Buffer[]
+     * @param SerializableInterface []|Buffer[]
      * @return $this
      */
     public function writeArray($serializable)
@@ -218,25 +140,6 @@ class Parser
     }
 
     /**
-     * Write an integer to the buffer
-     *
-     * @param  integer $bytes
-     * @param  $int
-     * @param  bool    $flipBytes
-     * @return $this
-     */
-    public function writeInt($bytes, $int, $flipBytes = false)
-    {
-        $data = Buffer::int($int, $bytes)->getBinary();
-        if ($flipBytes) {
-            $data = Buffertools::flipBytes($data);
-        }
-
-        $this->string .= $data;
-        return $this;
-    }
-
-    /**
      * Return the string as a buffer
      *
      * @return Buffer
@@ -244,19 +147,5 @@ class Parser
     public function getBuffer()
     {
         return new Buffer($this->string, null, $this->math);
-    }
-
-    /**
-     * Extract $bytes from the parser, and return them as a new Parser instance.
-     *
-     * @param  $bytes
-     * @param  bool  $flipBytes
-     * @return Parser
-     * @throws \Exception
-     */
-    public function parseBytes($bytes, $flipBytes = false)
-    {
-        $buffer = $this->readBytes($bytes, $flipBytes);
-        return new Parser($buffer, $this->math);
     }
 }
