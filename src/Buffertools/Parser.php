@@ -26,7 +26,7 @@ class Parser
     /**
      * Instantiate class, optionally taking Buffer or HEX.
      *
-     * @param null|string $input
+     * @param null|string|Buffer $input
      * @param MathAdapterInterface|null $math
      */
     public function __construct($input = null, MathAdapterInterface $math = null)
