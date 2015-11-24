@@ -8,7 +8,7 @@ use Mdanter\Ecc\Math\MathAdapterInterface;
 class Buffer
 {
     /**
-     * @var int|string
+     * @var int
      */
     protected $size;
 
