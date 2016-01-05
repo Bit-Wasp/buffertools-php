@@ -3,6 +3,12 @@
 namespace BitWasp\Buffertools;
 
 use BitWasp\Buffertools\Types\ByteString;
+use BitWasp\Buffertools\Types\Int128;
+use BitWasp\Buffertools\Types\Int16;
+use BitWasp\Buffertools\Types\Int256;
+use BitWasp\Buffertools\Types\Int32;
+use BitWasp\Buffertools\Types\Int64;
+use BitWasp\Buffertools\Types\Int8;
 use BitWasp\Buffertools\Types\Uint8;
 use BitWasp\Buffertools\Types\Uint16;
 use BitWasp\Buffertools\Types\Uint32;
@@ -177,6 +183,138 @@ class TemplateFactory
     public function uint256le()
     {
         $this->template->addItem(new Uint256($this->math, ByteOrder::LE));
+        return $this;
+    }
+
+    /**
+     * Add a int8 serializer to the template
+     *
+     * @return $this
+     */
+    public function int8()
+    {
+        $this->template->addItem(new Int8($this->math, ByteOrder::BE));
+        return $this;
+    }
+
+    /**
+     * Add a little-endian Int8 serializer to the template
+     *
+     * @return $this
+     */
+    public function int8le()
+    {
+        $this->template->addItem(new Int8($this->math, ByteOrder::LE));
+        return $this;
+    }
+
+    /**
+     * Add a int16 serializer to the template
+     *
+     * @return $this
+     */
+    public function int16()
+    {
+        $this->template->addItem(new Int16($this->math, ByteOrder::BE));
+        return $this;
+    }
+
+    /**
+     * Add a little-endian Int16 serializer to the template
+     *
+     * @return $this
+     */
+    public function int16le()
+    {
+        $this->template->addItem(new Int16($this->math, ByteOrder::LE));
+        return $this;
+    }
+
+    /**
+     * Add a int32 serializer to the template
+     *
+     * @return $this
+     */
+    public function int32()
+    {
+        $this->template->addItem(new Int32($this->math, ByteOrder::BE));
+        return $this;
+    }
+
+    /**
+     * Add a little-endian Int serializer to the template
+     *
+     * @return $this
+     */
+    public function int32le()
+    {
+        $this->template->addItem(new Int32($this->math, ByteOrder::LE));
+        return $this;
+    }
+
+    /**
+     * Add a int64 serializer to the template
+     *
+     * @return $this
+     */
+    public function int64()
+    {
+        $this->template->addItem(new Int64($this->math, ByteOrder::BE));
+        return $this;
+    }
+
+    /**
+     * Add a little-endian Int64 serializer to the template
+     *
+     * @return $this
+     */
+    public function int64le()
+    {
+        $this->template->addItem(new Int64($this->math, ByteOrder::LE));
+        return $this;
+    }
+
+    /**
+     * Add a int128 serializer to the template
+     *
+     * @return $this
+     */
+    public function int128()
+    {
+        $this->template->addItem(new Int128($this->math, ByteOrder::BE));
+        return $this;
+    }
+
+    /**
+     * Add a little-endian Int128 serializer to the template
+     *
+     * @return $this
+     */
+    public function int128le()
+    {
+        $this->template->addItem(new Int128($this->math, ByteOrder::LE));
+        return $this;
+    }
+
+    /**
+     * Add a int256 serializer to the template
+     *
+     * @return $this
+     */
+    public function int256()
+    {
+        $this->template->addItem(new Int256($this->math, ByteOrder::BE));
+        return $this;
+    }
+
+    /**
+     * Add a little-endian Int256 serializer to the template
+     *
+     * @return $this
+     */
+    public function int256le()
+    {
+        $this->template->addItem(new Int256($this->math, ByteOrder::LE));
         return $this;
     }
 
