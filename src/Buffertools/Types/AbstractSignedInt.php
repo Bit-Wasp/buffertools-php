@@ -52,7 +52,7 @@ abstract class AbstractSignedInt extends AbstractType implements SignedIntInterf
         $isNegative = (ord($chars[$offsetIndex]) & 0x80) != 0x00;
         $number = gmp_init(ord($chars[$offsetIndex++]) & 0x7F, 10);
 
-        for ($i = 0; $i < $byteSize-1 ; $i++) {
+        for ($i = 0; $i < $byteSize-1; $i++) {
             $number = gmp_or(gmp_mul($number, 0x100), ord($chars[$offsetIndex++]));
         }
 
