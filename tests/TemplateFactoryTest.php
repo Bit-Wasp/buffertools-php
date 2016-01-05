@@ -5,6 +5,7 @@ namespace BitWasp\Buffertools\Tests;
 use BitWasp\Buffertools\TemplateFactory;
 use Mdanter\Ecc\EccFactory;
 
+
 class TemplateFactoryTest extends BinaryTest
 {
     /**
@@ -19,6 +20,10 @@ class TemplateFactoryTest extends BinaryTest
                 $vectors[] = [
                     'uint' . $i . $byteOrder,
                     '\BitWasp\Buffertools\Types\Uint' . $i,
+                ];
+                $vectors[] = [
+                    'int' . $i . $byteOrder,
+                    '\BitWasp\Buffertools\Types\Int' . $i,
                 ];
             }
         }
