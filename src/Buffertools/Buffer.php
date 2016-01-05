@@ -5,7 +5,7 @@ namespace BitWasp\Buffertools;
 use Mdanter\Ecc\EccFactory;
 use Mdanter\Ecc\Math\MathAdapterInterface;
 
-class Buffer
+class Buffer implements BufferInterface
 {
     /**
      * @var int
