@@ -33,12 +33,12 @@ class Buffertools
      * Flip byte order of this binary string. Accepts a string or Buffer,
      * and will return whatever type it was given.
      *
-     * @param  string|Buffer $bytes
-     * @return string|Buffer
+     * @param  string|BufferInterface $bytes
+     * @return string|BufferInterface
      */
     public static function flipBytes($bytes)
     {
-        $isBuffer = $bytes instanceof Buffer;
+        $isBuffer = $bytes instanceof BufferInterface;
         if ($isBuffer) {
             $bytes = $bytes->getBinary();
         }
@@ -52,12 +52,12 @@ class Buffertools
     }
 
     /**
-     * @param Buffer $buffer1
-     * @param Buffer $buffer2
+     * @param BufferInterface $buffer1
+     * @param BufferInterface $buffer2
      * @param int    $size
-     * @return Buffer
+     * @return BufferInterface
      */
-    public static function concat(Buffer $buffer1, Buffer $buffer2, $size = null)
+    public static function concat(BufferInterface $buffer1, BufferInterface $buffer2, $size = null)
     {
         return new Buffer($buffer1->getBinary() . $buffer2->getBinary(), $size);
     }
@@ -83,7 +83,7 @@ class Buffertools
     {
         if (null == $convertToBuffer) {
             $convertToBuffer = function ($value) {
-                if ($value instanceof Buffer) {
+                if ($value instanceof BufferInterface) {
                     return $value;
                 }
                 if ($value instanceof SerializableInterface) {
