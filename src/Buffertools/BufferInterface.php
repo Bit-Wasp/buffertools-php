@@ -7,7 +7,7 @@ interface BufferInterface
     /**
      * @param integer $start
      * @param integer|null $end
-     * @return Buffer
+     * @return BufferInterface
      * @throws \Exception
      */
     public function slice($start, $end = null);
