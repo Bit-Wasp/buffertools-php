@@ -5,7 +5,6 @@ namespace BitWasp\Buffertools\Tests;
 use BitWasp\Buffertools\TemplateFactory;
 use Mdanter\Ecc\EccFactory;
 
-
 class TemplateFactoryTest extends BinaryTest
 {
     /**

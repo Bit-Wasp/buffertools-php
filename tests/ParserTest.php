@@ -146,5 +146,4 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $parser = new Parser($bytes);
         $parser->readBytes(5);
     }
-
 }
