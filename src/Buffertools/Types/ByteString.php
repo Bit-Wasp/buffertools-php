@@ -3,6 +3,7 @@
 namespace BitWasp\Buffertools\Types;
 
 use BitWasp\Buffertools\Buffer;
+use BitWasp\Buffertools\BufferInterface;
 use BitWasp\Buffertools\ByteOrder;
 use BitWasp\Buffertools\Parser;
 use Mdanter\Ecc\Math\MathAdapterInterface;
@@ -26,10 +27,10 @@ class ByteString extends AbstractType
     }
 
     /**
-     * @param Buffer $string
+     * @param BufferInterface $string
      * @return string
      */
-    public function writeBits(Buffer $string)
+    public function writeBits(BufferInterface $string)
     {
         $bits = str_pad(
             $this->getMath()->baseConvert($string->getHex(), 16, 2),
@@ -67,10 +68,10 @@ class ByteString extends AbstractType
     }
 
     /**
-     * @param Buffer $buffer
+     * @param BufferInterface $buffer
      * @return string
      */
-    public function readBits(Buffer $buffer)
+    public function readBits(BufferInterface $buffer)
     {
         return str_pad(
             $this->getMath()->baseConvert($buffer->getHex(), 16, 2),

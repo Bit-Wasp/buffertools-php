@@ -3,6 +3,7 @@
 namespace BitWasp\Buffertools\Types;
 
 use BitWasp\Buffertools\Buffer;
+use BitWasp\Buffertools\BufferInterface;
 use BitWasp\Buffertools\Parser;
 
 class VarString extends AbstractType
@@ -27,7 +28,7 @@ class VarString extends AbstractType
      */
     public function write($buffer)
     {
-        if (!$buffer instanceof Buffer) {
+        if (!$buffer instanceof BufferInterface) {
             throw new \InvalidArgumentException('Must provide a buffer');
         }
 
