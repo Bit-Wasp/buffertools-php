@@ -94,7 +94,7 @@ class Parser
             $data = $data->getBuffer();
         }
 
-        if ($data instanceof Buffer) {
+        if ($data instanceof BufferInterface) {
             // only create a new buffer if the size does not match
             if ($data->getSize() != $bytes) {
                 $data = new Buffer($data->getBinary(), $bytes, $this->math);
@@ -127,7 +127,7 @@ class Parser
                 $object = $object->getBuffer();
             }
 
-            if ($object instanceof Buffer) {
+            if ($object instanceof BufferInterface) {
                 $parser->writeBytes($object->getSize(), $object);
             } else {
                 throw new \RuntimeException('Input to writeArray must be Buffer[], or SerializableInterface[]');
