@@ -138,4 +138,17 @@ class BufferTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("0011", $c->slice(0, 2)->getHex());
         $this->assertEquals("1100", $c->slice(2, 4)->getHex());
     }
+
+    public function testEquals()
+    {
+        $first = Buffer::hex('ab');
+        $second = Buffer::hex('ab');
+        $firstExtraLong = Buffer::hex('ab', 10);
+        $firstShort = new Buffer('', 0);
+        $this->assertTrue($first->equals($second));
+        $this->assertFalse($first->equals($firstExtraLong));
+        $this->assertFalse($first->equals($firstExtraLong));
+        $this->assertFalse($first->equals($firstShort));
+
+    }
 }
