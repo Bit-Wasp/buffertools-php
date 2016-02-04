@@ -33,7 +33,7 @@ class Parser
     {
         $this->math = $math ?: EccFactory::getAdapter();
 
-        if (!$input instanceof Buffer) {
+        if (!$input instanceof BufferInterface) {
             $input = Buffer::hex($input, null, $this->math);
         }
 
@@ -116,7 +116,7 @@ class Parser
 
     /**
      * Take an array containing serializable objects.
-     * @param SerializableInterface []|Buffer[]
+     * @param SerializableInterface[]|Buffer[]
      * @return $this
      */
     public function writeArray($serializable)
@@ -142,7 +142,7 @@ class Parser
     /**
      * Return the string as a buffer
      *
-     * @return Buffer
+     * @return BufferInterface
      */
     public function getBuffer()
     {
