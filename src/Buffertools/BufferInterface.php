@@ -45,4 +45,9 @@ interface BufferInterface
      * @return Buffer
      */
     public function flip();
+
+    /**
+     * @return bool
+     */
+    public function equals(self $other);
 }

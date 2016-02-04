@@ -162,4 +162,13 @@ class Buffer implements BufferInterface
     {
         return Buffertools::flipBytes($this);
     }
+
+    /**
+     * @return bool
+     */
+    public function equals(BufferInterface $other)
+    {
+        return ($other->getSize() === $this->getSize()
+             && $other->getBinary() === $this->getBinary());
+    }
 }
