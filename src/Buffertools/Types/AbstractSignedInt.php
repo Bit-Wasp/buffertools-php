@@ -39,7 +39,7 @@ abstract class AbstractSignedInt extends AbstractType implements SignedIntInterf
      * @throws \BitWasp\Buffertools\Exceptions\ParserOutOfRange
      * @throws \Exception
      */
-    public function readBits(Parser & $parser)
+    public function readBits(Parser $parser)
     {
         $bitSize = $this->getBitSize();
         $byteSize = $bitSize / 8;
@@ -88,7 +88,7 @@ abstract class AbstractSignedInt extends AbstractType implements SignedIntInterf
      * {@inheritdoc}
      * @see \BitWasp\Buffertools\Types\TypeInterface::read()
      */
-    public function read(Parser & $binary)
+    public function read(Parser $binary)
     {
         return $this->readBits($binary);
     }

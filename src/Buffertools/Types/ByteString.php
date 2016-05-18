@@ -86,7 +86,7 @@ class ByteString extends AbstractType
      * @return Buffer
      * @throws \BitWasp\Buffertools\Exceptions\ParserOutOfRange
      */
-    public function read(Parser & $parser)
+    public function read(Parser $parser)
     {
         $bits = $this->readBits($parser->readBytes($this->length));
         if (!$this->isBigEndian()) {

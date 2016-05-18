@@ -51,7 +51,7 @@ class VectorTest extends BinaryTest
         $varint = new VarInt($math);
         $vector = new Vector(
             $varint,
-            function (Parser & $parser) {
+            function (Parser $parser) {
                 return $parser->readBytes(16);
             }
         );

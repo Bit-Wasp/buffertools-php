@@ -22,7 +22,7 @@ interface TypeInterface
     public function flipBits($bitString);
 
     /**
-     * @param $integer
+     * @param int $integer
      * @return mixed
      */
     public function write($integer);
@@ -31,7 +31,7 @@ interface TypeInterface
      * @param Parser $parser
      * @return string|int
      */
-    public function read(Parser & $parser);
+    public function read(Parser $parser);
 
     /**
      * @return int|string

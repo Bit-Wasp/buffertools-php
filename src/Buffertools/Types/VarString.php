@@ -44,7 +44,7 @@ class VarString extends AbstractType
      * @throws \BitWasp\Buffertools\Exceptions\ParserOutOfRange
      * @throws \Exception
      */
-    public function read(Parser & $parser)
+    public function read(Parser $parser)
     {
         $length = $this->varint->read($parser);
 
