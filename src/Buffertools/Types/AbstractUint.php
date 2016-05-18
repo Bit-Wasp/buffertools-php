@@ -39,7 +39,7 @@ abstract class AbstractUint extends AbstractType implements UintInterface
      * @throws \BitWasp\Buffertools\Exceptions\ParserOutOfRange
      * @throws \Exception
      */
-    public function readBits(Parser & $parser)
+    public function readBits(Parser $parser)
     {
         $math = $this->getMath();
         $bitSize = $this->getBitSize();
@@ -88,7 +88,7 @@ abstract class AbstractUint extends AbstractType implements UintInterface
      * {@inheritdoc}
      * @see \BitWasp\Buffertools\Types\TypeInterface::read()
      */
-    public function read(Parser & $binary)
+    public function read(Parser $binary)
     {
         return $this->readBits($binary);
     }

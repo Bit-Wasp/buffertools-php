@@ -51,7 +51,7 @@ class Vector extends AbstractType
      * @return array
      * @throws \Exception
      */
-    public function read(Parser & $parser)
+    public function read(Parser $parser)
     {
         $results = array();
         $handler = $this->readFxn;

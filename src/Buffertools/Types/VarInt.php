@@ -99,7 +99,7 @@ class VarInt extends AbstractType
      * {@inheritdoc}
      * @see \BitWasp\Buffertools\Types\TypeInterface::read()
      */
-    public function read(Parser & $parser)
+    public function read(Parser $parser)
     {
         $math = $this->getMath();
         $uint8 = new Uint8($math);
