@@ -3,7 +3,7 @@
 namespace BitWasp\Buffertools;
 
 use Mdanter\Ecc\EccFactory;
-use Mdanter\Ecc\Math\MathAdapterInterface;
+use Mdanter\Ecc\Math\GmpMathInterface;
 
 class Buffer implements BufferInterface
 {
@@ -18,22 +18,22 @@ class Buffer implements BufferInterface
     protected $buffer;
 
     /**
-     * @var MathAdapterInterface
+     * @var GmpMathInterface
      */
     protected $math;
 
     /**
      * @param string               $byteString
      * @param null|integer         $byteSize
-     * @param MathAdapterInterface $math
+     * @param GmpMathInterface     $math
      * @throws \Exception
      */
-    public function __construct($byteString = '', $byteSize = null, MathAdapterInterface $math = null)
+    public function __construct($byteString = '', $byteSize = null, GmpMathInterface $math = null)
     {
         $this->math = $math ?: EccFactory::getAdapter();
         if ($byteSize !== null) {
             // Check the integer doesn't overflow its supposed size
-            if ($this->math->cmp(strlen($byteString), $byteSize) > 0) {
+            if (strlen($byteString) > $byteSize) {
                 throw new \Exception('Byte string exceeds maximum size');
             }
         } else {
@@ -49,11 +49,11 @@ class Buffer implements BufferInterface
      *
      * @param string $hexString
      * @param integer $byteSize
-     * @param MathAdapterInterface $math
+     * @param GmpMathInterface $math
      * @return Buffer
      * @throws \Exception
      */
-    public static function hex($hexString = '', $byteSize = null, MathAdapterInterface $math = null)
+    public static function hex($hexString = '', $byteSize = null, GmpMathInterface $math = null)
     {
         if (strlen($hexString) > 0 && !ctype_xdigit($hexString)) {
             throw new \InvalidArgumentException('BufferHex: non-hex character passed: ' . $hexString);
@@ -67,10 +67,10 @@ class Buffer implements BufferInterface
     /**
      * @param int|string $integer
      * @param null|int $byteSize
-     * @param MathAdapterInterface|null $math
+     * @param GmpMathInterface|null $math
      * @return Buffer
      */
-    public static function int($integer, $byteSize = null, MathAdapterInterface $math = null)
+    public static function int($integer, $byteSize = null, GmpMathInterface $math = null)
     {
         $math = $math ?: EccFactory::getAdapter();
         $binary = pack("H*", $math->decHex($integer));
@@ -164,6 +164,7 @@ class Buffer implements BufferInterface
     }
 
     /**
+     * @param BufferInterface $other
      * @return bool
      */
     public function equals(BufferInterface $other)

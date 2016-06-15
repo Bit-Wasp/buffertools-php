@@ -2,17 +2,18 @@
 
 namespace BitWasp\Buffertools\Types;
 
+use BitWasp\Buffertools\Buffer;
 use BitWasp\Buffertools\ByteOrder;
 use BitWasp\Buffertools\Parser;
-use Mdanter\Ecc\Math\MathAdapterInterface;
+use Mdanter\Ecc\Math\GmpMathInterface;
 
 abstract class AbstractSignedInt extends AbstractType implements SignedIntInterface
 {
     /**
-     * @param MathAdapterInterface $math
+     * @param GmpMathInterface     $math
      * @param int                  $byteOrder
      */
-    public function __construct(MathAdapterInterface $math, $byteOrder = ByteOrder::BE)
+    public function __construct(GmpMathInterface $math, $byteOrder = ByteOrder::BE)
     {
         parent::__construct($math, $byteOrder);
     }
@@ -75,7 +76,7 @@ abstract class AbstractSignedInt extends AbstractType implements SignedIntInterf
             $integer = gmp_add($integer, 1);
         }
 
-        $binary = \BitWasp\Buffertools\Buffer::hex(str_pad(gmp_strval($integer, 16), $bitSize/4, '0', STR_PAD_LEFT), $bitSize/8);
+        $binary = Buffer::hex(str_pad(gmp_strval($integer, 16), $bitSize/4, '0', STR_PAD_LEFT), $bitSize/8);
 
         if (!$this->isBigEndian()) {
             $binary = $binary->flip();

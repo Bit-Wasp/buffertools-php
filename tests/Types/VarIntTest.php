@@ -16,7 +16,7 @@ class VarIntTest extends BinaryTest
     {
         $math = EccFactory::getAdapter();
         $varint = new VarInt($math);
-        $disallowed = $math->add($math->pow(2, 64), 1);
+        $disallowed = $math->add($math->pow(gmp_init(2, 10), 64), gmp_init(1, 10));
         $varint->solveWriteSize($disallowed);
     }
 
@@ -28,7 +28,7 @@ class VarIntTest extends BinaryTest
     {
         $math = EccFactory::getAdapter();
         $varint = new VarInt($math);
-        $disallowed = $math->add($math->pow(2, 64), 1);
+        $disallowed = $math->add($math->pow(gmp_init(2, 10), 64), gmp_init(1, 10));
         $varint->solveReadSize($disallowed);
     }
 }

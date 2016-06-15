@@ -9,7 +9,7 @@ interface TypeInterface
     /**
      * Return the math adapter
      *
-     * @return \Mdanter\Ecc\Math\MathAdapterInterface
+     * @return \Mdanter\Ecc\Math\GmpMathInterface
      */
     public function getMath();
 
@@ -22,7 +22,7 @@ interface TypeInterface
     public function flipBits($bitString);
 
     /**
-     * @param int $integer
+     * @param mixed $integer
      * @return mixed
      */
     public function write($integer);

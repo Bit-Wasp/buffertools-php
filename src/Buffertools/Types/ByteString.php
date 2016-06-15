@@ -6,7 +6,7 @@ use BitWasp\Buffertools\Buffer;
 use BitWasp\Buffertools\BufferInterface;
 use BitWasp\Buffertools\ByteOrder;
 use BitWasp\Buffertools\Parser;
-use Mdanter\Ecc\Math\MathAdapterInterface;
+use Mdanter\Ecc\Math\GmpMathInterface;
 
 class ByteString extends AbstractType
 {
@@ -16,11 +16,11 @@ class ByteString extends AbstractType
     private $length;
 
     /**
-     * @param MathAdapterInterface $math
+     * @param GmpMathInterface     $math
      * @param int|string           $length
      * @param int|string           $byteOrder
      */
-    public function __construct(MathAdapterInterface $math, $length, $byteOrder = ByteOrder::BE)
+    public function __construct(GmpMathInterface $math, $length, $byteOrder = ByteOrder::BE)
     {
         $this->length = $length;
         parent::__construct($math, $byteOrder);

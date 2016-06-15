@@ -48,7 +48,7 @@ class VarString extends AbstractType
     {
         $length = $this->varint->read($parser);
 
-        if ($this->varint->getMath()->cmp($length, 0) == 0) {
+        if ($this->varint->getMath()->cmp(gmp_init($length, 10), gmp_init(0, 10)) == 0) {
             return new Buffer();
         }
 

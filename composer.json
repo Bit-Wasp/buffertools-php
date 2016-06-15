@@ -22,12 +22,15 @@
       "BitWasp\\Buffertools\\Tests\\": "tests/"
     }
   },
+  "repositories": [{
+    "type":"vcs",
+    "url":"/home/user/git/b/phpecc"
+  }],
   "require": {
-    "php": ">=5.4.0",
-    "mdanter/ecc": "0.3.0"
+    "mdanter/ecc": "dev-master"
   },
   "require-dev": {
-    "phpunit/phpunit": "~4.3.1",
+    "phpunit/phpunit": "~5.0",
     "squizlabs/php_codesniffer": "~2.0",
     "satooshi/php-coveralls": "~0.6.1"
   }

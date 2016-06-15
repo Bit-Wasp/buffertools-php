@@ -4,42 +4,36 @@ namespace BitWasp\Buffertools\Types;
 
 use BitWasp\Buffertools\ByteOrder;
 use BitWasp\Buffertools\Parser;
-use Mdanter\Ecc\Math\MathAdapterInterface;
+use Mdanter\Ecc\Math\GmpMathInterface;
 
 class VarInt extends AbstractType
 {
+    private $sizeInfo = [];
+
     /**
-     * @param MathAdapterInterface $math
+     * @param GmpMathInterface $math
      * @param int                  $byteOrder
      */
-    public function __construct(MathAdapterInterface $math, $byteOrder = ByteOrder::BE)
+    public function __construct(GmpMathInterface $math, $byteOrder = ByteOrder::BE)
     {
         parent::__construct($math, $byteOrder);
-    }
-
-    /**
-     * @return array
-     */
-    private function getSizeInfo()
-    {
-        $math = $this->getMath();
-
-        return [
-            ['\BitWasp\Buffertools\Types\Uint16', $math->pow(2, 16), 0xfd],
-            ['\BitWasp\Buffertools\Types\Uint32', $math->pow(2, 32), 0xfe],
-            ['\BitWasp\Buffertools\Types\Uint64', $math->pow(2, 64), 0xff],
+        $two = gmp_init(2, 10);
+        $this->sizeInfo = [
+            [Uint16::class, $math->pow($two, 16), 0xfd],
+            [Uint32::class, $math->pow($two, 32), 0xfe],
+            [Uint64::class, $math->pow($two, 64), 0xff],
         ];
     }
 
     /**
-     * @param int|string $integer
+     * @param \GMP $integer
      * @return array
      */
-    public function solveWriteSize($integer)
+    public function solveWriteSize(\GMP $integer)
     {
         $math = $this->getMath();
 
-        foreach ($this->getSizeInfo() as $config) {
+        foreach ($this->sizeInfo as $config) {
             list($uint, $limit, $prefix) = $config;
             if ($math->cmp($integer, $limit) < 0) {
                 return [
@@ -61,10 +55,10 @@ class VarInt extends AbstractType
     {
         $math = $this->getMath();
 
-        foreach ($this->getSizeInfo() as $config) {
+        foreach ($this->sizeInfo as $config) {
             $uint = $config[0];
             $prefix = $config[2];
-            if ($math->cmp($givenPrefix, $prefix) == 0) {
+            if ($givenPrefix == $prefix) {
                 return [
                     new $uint($math, ByteOrder::LE)
                 ];
@@ -82,11 +76,12 @@ class VarInt extends AbstractType
     {
         $math = $this->getMath();
 
+        $gmp = gmp_init($integer, 10);
         $uint8 = new Uint8($math);
-        if ($math->cmp($integer, 0xfd) < 0) {
+        if ($math->cmp($gmp, gmp_init(0xfd, 10)) < 0) {
             $int = $uint8;
         } else {
-            list ($int, $prefix) = $this->solveWriteSize($integer);
+            list ($int, $prefix) = $this->solveWriteSize($gmp);
         }
 
         $prefix = isset($prefix) ? $uint8->write($prefix) : '';
@@ -105,7 +100,7 @@ class VarInt extends AbstractType
         $uint8 = new Uint8($math);
         $int = $uint8->readBits($parser);
 
-        if ($math->cmp($int, 0xfd) < 0) {
+        if ($math->cmp(gmp_init($int, 10), gmp_init(0xfd, 10)) < 0) {
             return $int;
         } else {
             $uint = $this->solveReadSize($int)[0];

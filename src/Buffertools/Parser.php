@@ -4,7 +4,7 @@ namespace BitWasp\Buffertools;
 
 use BitWasp\Buffertools\Exceptions\ParserOutOfRange;
 use Mdanter\Ecc\EccFactory;
-use Mdanter\Ecc\Math\MathAdapterInterface;
+use Mdanter\Ecc\Math\GmpMathInterface;
 
 class Parser
 {
@@ -14,7 +14,7 @@ class Parser
     private $string;
 
     /**
-     * @var \Mdanter\Ecc\Math\MathAdapterInterface
+     * @var \Mdanter\Ecc\Math\GmpMathInterface
      */
     private $math;
 
@@ -27,9 +27,9 @@ class Parser
      * Instantiate class, optionally taking Buffer or HEX.
      *
      * @param null|string|BufferInterface $input
-     * @param MathAdapterInterface|null $math
+     * @param GmpMathInterface|null $math
      */
-    public function __construct($input = null, MathAdapterInterface $math = null)
+    public function __construct($input = null, GmpMathInterface $math = null)
     {
         $this->math = $math ?: EccFactory::getAdapter();
 
@@ -66,7 +66,7 @@ class Parser
 
         if ($length == 0) {
             throw new ParserOutOfRange('Could not parse string of required length (empty)');
-        } elseif ($this->math->cmp($length, $bytes) !== 0) {
+        } elseif ($length < $bytes) {
             throw new ParserOutOfRange('Could not parse string of required length (too short)');
         }
 

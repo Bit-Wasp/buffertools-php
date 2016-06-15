@@ -19,12 +19,12 @@ use BitWasp\Buffertools\Types\VarInt;
 use BitWasp\Buffertools\Types\VarString;
 use BitWasp\Buffertools\Types\Vector;
 use Mdanter\Ecc\EccFactory;
-use Mdanter\Ecc\Math\MathAdapterInterface;
+use Mdanter\Ecc\Math\GmpMathInterface;
 
 class TemplateFactory
 {
     /**
-     * @var MathAdapterInterface
+     * @var GmpMathInterface
      */
     private $math;
 
@@ -35,9 +35,9 @@ class TemplateFactory
 
     /**
      * @param Template $template
-     * @param MathAdapterInterface $math
+     * @param GmpMathInterface $math
      */
-    public function __construct(Template $template = null, MathAdapterInterface $math = null)
+    public function __construct(Template $template = null, GmpMathInterface $math = null)
     {
         $this->math = $math ?: EccFactory::getAdapter();
         $this->template = $template ?: new Template();
