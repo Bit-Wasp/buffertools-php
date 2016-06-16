@@ -22,12 +22,8 @@
       "BitWasp\\Buffertools\\Tests\\": "tests/"
     }
   },
-  "repositories": [{
-    "type":"vcs",
-    "url":"/home/user/git/b/phpecc"
-  }],
   "require": {
-    "mdanter/ecc": "dev-master"
+    "afk11/ecc": "~0.0.2"
   },
   "require-dev": {
     "phpunit/phpunit": "~5.0",
