@@ -95,6 +95,7 @@ class BufferTest extends \PHPUnit_Framework_TestCase
 
         // Check Decimal
         $this->assertSame($dec, $this->buffer->getInt());
+        $this->assertInstanceOf(\GMP::class, $this->buffer->getGmp());
     }
 
     public function testGetSize()
