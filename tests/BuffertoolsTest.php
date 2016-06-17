@@ -155,7 +155,7 @@ class BuffertoolsTest extends \PHPUnit_Framework_TestCase
         // Check that this is out of range (PHP's fault)
         $adapter = EccFactory::getAdapter();
         $two = gmp_init(2, 10);
-        $decimal  = $adapter->add($adapter->pow($two, 32), gmp_init(1));
+        $decimal  = $adapter->toString($adapter->add($adapter->pow($two, 32), gmp_init(1)));
         Buffertools::numToVarInt($decimal);
     }
 
