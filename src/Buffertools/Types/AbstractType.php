@@ -3,12 +3,12 @@
 namespace BitWasp\Buffertools\Types;
 
 use BitWasp\Buffertools\ByteOrder;
-use Mdanter\Ecc\Math\MathAdapterInterface;
+use Mdanter\Ecc\Math\GmpMathInterface;
 
 abstract class AbstractType implements TypeInterface
 {
     /**
-     * @var MathAdapterInterface
+     * @var GmpMathInterface
      */
     private $math;
 
@@ -18,10 +18,10 @@ abstract class AbstractType implements TypeInterface
     private $byteOrder;
 
     /**
-     * @param MathAdapterInterface $math
+     * @param GmpMathInterface     $math
      * @param int                  $byteOrder
      */
-    public function __construct(MathAdapterInterface $math, $byteOrder = ByteOrder::BE)
+    public function __construct(GmpMathInterface $math, $byteOrder = ByteOrder::BE)
     {
         if (false === in_array($byteOrder, [ByteOrder::BE, ByteOrder::LE])) {
             throw new \InvalidArgumentException('Must pass valid flag for endianness');
@@ -48,7 +48,7 @@ abstract class AbstractType implements TypeInterface
     }
 
     /**
-     * @return MathAdapterInterface
+     * @return GmpMathInterface
      */
     public function getMath()
     {

@@ -153,7 +153,9 @@ class BuffertoolsTest extends \PHPUnit_Framework_TestCase
     public function testNumToVarIntOutOfRange()
     {
         // Check that this is out of range (PHP's fault)
-        $decimal  = EccFactory::getAdapter()->pow(2, 32) + 1;
+        $adapter = EccFactory::getAdapter();
+        $two = gmp_init(2, 10);
+        $decimal  = $adapter->toString($adapter->add($adapter->pow($two, 32), gmp_init(1)));
         Buffertools::numToVarInt($decimal);
     }
 

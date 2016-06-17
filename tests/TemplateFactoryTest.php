@@ -3,6 +3,8 @@
 namespace BitWasp\Buffertools\Tests;
 
 use BitWasp\Buffertools\TemplateFactory;
+use BitWasp\Buffertools\Types\VarInt;
+use BitWasp\Buffertools\Types\VarString;
 use Mdanter\Ecc\EccFactory;
 
 class TemplateFactoryTest extends BinaryTest
@@ -29,12 +31,12 @@ class TemplateFactoryTest extends BinaryTest
 
         $vectors[] = [
             'varint',
-            '\BitWasp\Buffertools\Types\VarInt'
+            VarInt::class
         ];
 
         $vectors[] = [
             'varstring',
-            '\BitWasp\Buffertools\Types\VarString'
+            VarString::class
         ];
 
         return $vectors;
