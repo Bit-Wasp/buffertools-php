@@ -42,6 +42,11 @@ interface BufferInterface
     public function getInt();
 
     /**
+     * @return \GMP
+     */
+    public function getGmp();
+    
+    /**
      * @return Buffer
      */
     public function flip();

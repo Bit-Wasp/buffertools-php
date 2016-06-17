@@ -148,11 +148,20 @@ class Buffer implements BufferInterface
     }
 
     /**
+     * @return \GMP
+     */
+    public function getGmp()
+    {
+        $gmp = gmp_init($this->getHex(), 16);
+        return $gmp;
+    }
+
+    /**
      * @return int|string
      */
     public function getInt()
     {
-        return $this->math->hexDec($this->getHex());
+        return gmp_strval($this->getGmp(), 10);
     }
 
     /**
