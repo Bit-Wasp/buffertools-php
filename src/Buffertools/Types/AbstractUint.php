@@ -24,7 +24,6 @@ abstract class AbstractUint extends AbstractType implements UintInterface
     public function writeBits($integer)
     {
         $math = $this->getMath();
-
         return str_pad(
             $math->baseConvert($integer, 10, 2),
             $this->getBitSize(),

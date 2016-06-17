@@ -19,9 +19,9 @@ class VarInt extends AbstractType
         parent::__construct($math, $byteOrder);
         $two = gmp_init(2, 10);
         $this->sizeInfo = [
-            [Uint16::class, $math->pow($two, 16), 0xfd],
-            [Uint32::class, $math->pow($two, 32), 0xfe],
-            [Uint64::class, $math->pow($two, 64), 0xff],
+            [Uint16::class, $math->pow($two, 16), gmp_init(0xfd)],
+            [Uint32::class, $math->pow($two, 32), gmp_init(0xfe)],
+            [Uint64::class, $math->pow($two, 64), gmp_init(0xff)],
         ];
     }
 
@@ -47,18 +47,18 @@ class VarInt extends AbstractType
     }
 
     /**
-     * @param int|string $givenPrefix
+     * @param \GMP $givenPrefix
      * @return UintInterface[]
      * @throws \InvalidArgumentException
      */
-    public function solveReadSize($givenPrefix)
+    public function solveReadSize(\GMP $givenPrefix)
     {
         $math = $this->getMath();
 
         foreach ($this->sizeInfo as $config) {
             $uint = $config[0];
             $prefix = $config[2];
-            if ($givenPrefix == $prefix) {
+            if ($math->cmp($givenPrefix, $prefix) === 0) {
                 return [
                     new $uint($math, ByteOrder::LE)
                 ];
@@ -82,6 +82,7 @@ class VarInt extends AbstractType
             $int = $uint8;
         } else {
             list ($int, $prefix) = $this->solveWriteSize($gmp);
+            $prefix = gmp_strval($prefix, 10);
         }
 
         $prefix = isset($prefix) ? $uint8->write($prefix) : '';
@@ -98,10 +99,10 @@ class VarInt extends AbstractType
     {
         $math = $this->getMath();
         $uint8 = new Uint8($math);
-        $int = $uint8->readBits($parser);
+        $int = gmp_init($uint8->readBits($parser), 10);
 
-        if ($math->cmp(gmp_init($int, 10), gmp_init(0xfd, 10)) < 0) {
-            return $int;
+        if ($math->cmp($int, gmp_init(0xfd, 10)) < 0) {
+            return gmp_strval($int, 10);
         } else {
             $uint = $this->solveReadSize($int)[0];
             return $uint->read($parser);
