@@ -144,7 +144,7 @@ class Buffer implements BufferInterface
      */
     public function getHex()
     {
-        return bin2hex($this->getBinary());
+        return unpack("H*", $this->getBinary())[1];
     }
 
     /**
