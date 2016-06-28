@@ -23,7 +23,7 @@
     }
   },
   "require": {
-    "afk11/ecc": "~0.0.2"
+    "mdanter/ecc": "~0.4"
   },
   "require-dev": {
     "phpunit/phpunit": "~5.0",
