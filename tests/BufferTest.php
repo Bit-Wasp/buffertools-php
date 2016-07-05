@@ -22,6 +22,18 @@ class BufferTest extends \PHPUnit_Framework_TestCase
         $this->buffer = null;
     }
 
+    public function testBufferDebug()
+    {
+        $buffer = new Buffer('AAAA', 4);
+        $debug = $buffer->__debugInfo();
+        $this->assertTrue(isset($debug['buffer']));
+        $this->assertTrue(isset($debug['size']));
+
+        $str = $debug['buffer'];
+        $this->assertEquals('0x', substr($str, 0, 2));
+        $this->assertEquals('41414141', substr($str, 2));
+    }
+
     public function testCreateEmptyBuffer()
     {
         $this->buffer = new Buffer();
