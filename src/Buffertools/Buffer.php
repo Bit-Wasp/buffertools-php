@@ -45,6 +45,17 @@ class Buffer implements BufferInterface
     }
 
     /**
+     * Return a formatted version for var_dump
+     */
+    public function __debugInfo()
+    {
+        return [
+            'size' => $this->size,
+            'buffer' => '0x' . unpack("H*", $this->buffer)[1],
+        ];
+    }
+
+    /**
      * Create a new buffer from a hex string
      *
      * @param string $hexString
