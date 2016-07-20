@@ -11,7 +11,7 @@ This library provides a `Buffer` and `Parser` class to make dealing with binary 
 
 ## Requirements:
 
- * PHP 5.4+
+ * PHP 5.6+
  * Composer
  * ext-gmp
 

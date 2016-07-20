@@ -3,7 +3,6 @@
 namespace BitWasp\Buffertools\Tests;
 
 use BitWasp\Buffertools\ByteOrder;
-use BitWasp\Buffertools\TemplateFactory;
 use BitWasp\Buffertools\Types\ByteString;
 use BitWasp\Buffertools\Types\Uint64;
 use BitWasp\Buffertools\Types\Uint32;
