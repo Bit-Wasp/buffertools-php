@@ -7,21 +7,6 @@ use Mdanter\Ecc\EccFactory;
 
 class BufferTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var Buffer
-     */
-    protected $buffer;
-
-    /**
-     * @var string
-     */
-    protected $bufferType= 'BitWasp\Buffertools\Buffer';
-
-    public function setUp()
-    {
-        $this->buffer = null;
-    }
-
     public function testBufferDebug()
     {
         $buffer = new Buffer('AAAA', 4);
@@ -36,32 +21,24 @@ class BufferTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateEmptyBuffer()
     {
-        $this->buffer = new Buffer();
-        $this->assertInstanceOf($this->bufferType, $this->buffer);
-        $this->assertEmpty($this->buffer->getBinary());
+        $buffer = new Buffer();
+        $this->assertInstanceOf(Buffer::class, $buffer);
+        $this->assertEmpty($buffer->getBinary());
     }
 
     public function testCreateEmptyHexBuffer()
     {
-        $this->buffer = Buffer::hex();
-        $this->assertInstanceOf($this->bufferType, $this->buffer);
-        $this->assertEmpty($this->buffer->getBinary());
+        $buffer = Buffer::hex();
+        $this->assertInstanceOf(Buffer::class, $buffer);
+        $this->assertEmpty($buffer->getBinary());
     }
 
     public function testCreateBuffer()
     {
         $hex = '80000000';
-        $this->buffer = Buffer::hex($hex);
-        $this->assertInstanceOf($this->bufferType, $this->buffer);
-        $this->assertNotEmpty($this->buffer->getBinary());
-    }
-
-    public function testCreateMaxBuffer()
-    {
-        $deci = 4294967295;
-        $hex = EccFactory::getAdapter()->decHex($deci);
-        $lim = 32;
-        $this->buffer = Buffer::hex($hex, $lim);
+        $buffer = Buffer::hex($hex);
+        $this->assertInstanceOf(Buffer::class, $buffer);
+        $this->assertNotEmpty($buffer->getBinary());
     }
 
     /**
@@ -71,15 +48,15 @@ class BufferTest extends \PHPUnit_Framework_TestCase
     public function testCreateMaxBufferExceeded()
     {
         $lim = 4;
-        $this->buffer = Buffer::hex('4141414111', $lim);
+        Buffer::hex('4141414111', $lim);
     }
 
     public function testCreateHexBuffer()
     {
         $hex = '41414141';
-        $this->buffer = Buffer::hex($hex);
-        $this->assertInstanceOf($this->bufferType, $this->buffer);
-        $this->assertNotEmpty($this->buffer->getBinary());
+        $buffer = Buffer::hex($hex);
+        $this->assertInstanceOf(Buffer::class, $buffer);
+        $this->assertNotEmpty($buffer->getBinary());
     }
 
     public function testPadding()
@@ -96,18 +73,18 @@ class BufferTest extends \PHPUnit_Framework_TestCase
         $hex = '41414141';
         $dec = EccFactory::getAdapter()->hexDec($hex);
         $bin = pack("H*", $hex);
-        $this->buffer = Buffer::hex($hex);
+        $buffer = Buffer::hex($hex);
 
         // Check Binary
-        $retBinary = $this->buffer->getBinary();
+        $retBinary = $buffer->getBinary();
         $this->assertSame($bin, $retBinary);
 
         // Check Hex
-        $this->assertSame($hex, $this->buffer->getHex());
+        $this->assertSame($hex, $buffer->getHex());
 
         // Check Decimal
-        $this->assertSame($dec, $this->buffer->getInt());
-        $this->assertInstanceOf(\GMP::class, $this->buffer->getGmp());
+        $this->assertSame($dec, $buffer->getInt());
+        $this->assertInstanceOf(\GMP::class, $buffer->getGmp());
     }
 
     public function testGetSize()

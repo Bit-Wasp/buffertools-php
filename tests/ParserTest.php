@@ -7,33 +7,13 @@ use \BitWasp\Buffertools\Parser;
 
 class ParserTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var \BitWasp\Buffertools\Parser
-     */
-    protected $parser;
-
-    /**
-     * @var string
-     */
-    protected $parserType = 'BitWasp\Buffertools\Parser';
-
-    /**
-     * @var string
-     */
-    protected $bufferType = 'BitWasp\Buffertools\Buffer';
-
-    public function setUp()
-    {
-        $this->parser = new Parser();
-    }
-
     public function testParserEmpty()
     {
         $parser = new Parser();
-        $this->assertInstanceOf($this->parserType, $parser);
+        $this->assertInstanceOf(Parser::class, $parser);
 
         $this->assertSame(0, $parser->getPosition());
-        $this->assertInstanceOf($this->bufferType, $parser->getBuffer());
+        $this->assertInstanceOf(Buffer::class, $parser->getBuffer());
         $this->assertEmpty($parser->getBuffer()->getHex());
     }
 
@@ -48,8 +28,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     public function testGetBufferEmptyNull()
     {
         $buffer = new Buffer();
-        $this->parser = new Parser($buffer);
-        $parserData = $this->parser->getBuffer()->getBinary();
+        $parser = new Parser($buffer);
+        $parserData = $parser->getBuffer()->getBinary();
         $bufferData = $buffer->getBinary();
         $this->assertSame($parserData, $bufferData);
     }
@@ -92,7 +72,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
         $parser = new Parser($bytes);
         $read = $parser->readBytes(4);
-        $this->assertInstanceOf($this->bufferType, $read);
+        $this->assertInstanceOf(Buffer::class, $read);
 
         $hex = $read->getHex();
         $this->assertSame($bytes, $hex);
@@ -104,7 +84,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
         $parser = new Parser($bytes);
         $read = $parser->readBytes(4, true);
-        $this->assertInstanceOf($this->bufferType, $read);
+        $this->assertInstanceOf(Buffer::class, $read);
 
         $hex = $read->getHex();
         $this->assertSame('44434241', $hex);
