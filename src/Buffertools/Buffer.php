@@ -184,7 +184,7 @@ class Buffer implements BufferInterface
     }
 
     /**
-     * @return Buffer
+     * @return BufferInterface
      */
     public function flip()
     {
