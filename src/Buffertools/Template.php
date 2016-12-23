@@ -57,7 +57,7 @@ class Template implements \Countable
      * Parse a sequence of objects from binary, using the current template.
      *
      * @param  Parser $parser
-     * @return array
+     * @return Buffer[]|int[]|string[]
      */
     public function parse(Parser $parser)
     {
