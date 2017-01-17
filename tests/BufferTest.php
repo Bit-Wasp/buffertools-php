@@ -139,6 +139,5 @@ class BufferTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($first->equals($firstExtraLong));
         $this->assertFalse($first->equals($firstExtraLong));
         $this->assertFalse($first->equals($firstShort));
-
     }
 }

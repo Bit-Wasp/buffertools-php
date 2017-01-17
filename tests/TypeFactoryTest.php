@@ -2,7 +2,6 @@
 
 namespace BitWasp\Buffertools\Tests;
 
-
 use BitWasp\Buffertools\CachingTypeFactory;
 use BitWasp\Buffertools\TypeFactory;
 use BitWasp\Buffertools\TypeFactoryInterface;
@@ -21,7 +20,8 @@ use BitWasp\Buffertools\Types\Int256;
 
 class TypeFactoryTest extends BinaryTest
 {
-    public function getTypeVectors() {
+    public function getTypeVectors()
+    {
         $vectors = [];
         $addPlainAndLe = function ($fxnName, $class, array $params = []) use (& $vectors) {
             $vectors[] = [$fxnName, $class, $params];
@@ -44,7 +44,8 @@ class TypeFactoryTest extends BinaryTest
         return $vectors;
     }
 
-    public function getTypeFactoryVectors() {
+    public function getTypeFactoryVectors()
+    {
         $vectors = [];
         foreach ([new TypeFactory(), new CachingTypeFactory()] as $factory) {
             foreach ($this->getTypeVectors() as $vector) {
@@ -62,7 +63,8 @@ class TypeFactoryTest extends BinaryTest
      * @param array $params
      * @dataProvider getTypeFactoryVectors
      */
-    public function testTypeFactory(TypeFactoryInterface $factory, $function, $expectedClass, array $params = []) {
+    public function testTypeFactory(TypeFactoryInterface $factory, $function, $expectedClass, array $params = [])
+    {
         $this->assertInstanceOf($expectedClass, $factory->{$function}($params));
     }
 }
