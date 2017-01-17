@@ -139,6 +139,5 @@ class TemplateTest extends BinaryTest
         $this->assertEquals('b8abff4fa6a36cbfbd61d0351be3433a95c34538f5174446420610288f1e8958', $txhash->getHex());
         $this->assertEquals(0, $out[1]);
         $this->assertEquals('493046022100a9d501a6f59c45a24e65e5030903cfd80ba33910f24d6a505961d64fa5042b4f02210089fa7cc00ab2b5fc15499fa259a057e6d0911d4e849f1720cc6bc58e941fe7e20141041a2756dd506e45a1142c7f7f03ae9d3d9954f8543f4c3ca56f025df66f1afcba6086cec8d4135cbb5f5f1d731f25ba0884fc06945c9bbf69b9b543ca91866e79', $script->getHex());
-
     }
 }
