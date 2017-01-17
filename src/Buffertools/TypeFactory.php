@@ -2,10 +2,26 @@
 
 namespace BitWasp\Buffertools;
 
+use BitWasp\Buffertools\Types\ByteString;
+use BitWasp\Buffertools\Types\Int128;
+use BitWasp\Buffertools\Types\Int16;
+use BitWasp\Buffertools\Types\Int256;
+use BitWasp\Buffertools\Types\Int32;
+use BitWasp\Buffertools\Types\Int64;
+use BitWasp\Buffertools\Types\Int8;
+use BitWasp\Buffertools\Types\Uint8;
+use BitWasp\Buffertools\Types\Uint16;
+use BitWasp\Buffertools\Types\Uint32;
+use BitWasp\Buffertools\Types\Uint64;
+use BitWasp\Buffertools\Types\Uint128;
+use BitWasp\Buffertools\Types\Uint256;
+use BitWasp\Buffertools\Types\VarInt;
+use BitWasp\Buffertools\Types\VarString;
+use BitWasp\Buffertools\Types\Vector;
 use Mdanter\Ecc\EccFactory;
 use Mdanter\Ecc\Math\GmpMathInterface;
 
-class TemplateFactory
+class TypeFactory implements TypeFactoryInterface
 {
     /**
      * @var GmpMathInterface
@@ -13,322 +29,271 @@ class TemplateFactory
     private $math;
 
     /**
-     * @var \BitWasp\Buffertools\Template
+     * @param GmpMathInterface $math
      */
-    private $template;
-
-    /**
-     * @var TypeFactory
-     */
-    private $types;
-
-    /**
-     * TemplateFactory constructor.
-     * @param Template|null $template
-     * @param GmpMathInterface|null $math
-     * @param TypeFactoryInterface|null $typeFactory
-     */
-    public function __construct(Template $template = null, GmpMathInterface $math = null, TypeFactoryInterface $typeFactory = null)
+    public function __construct(GmpMathInterface $math = null)
     {
         $this->math = $math ?: EccFactory::getAdapter();
-        $this->template = $template ?: new Template();
-        $this->types = $typeFactory ?: new CachingTypeFactory();
-    }
-
-    /**
-     * Return the Template as it stands.
-     *
-     * @return Template
-     */
-    public function getTemplate()
-    {
-        return $this->template;
     }
 
     /**
      * Add a Uint8 serializer to the template
      *
-     * @return $this
+     * @return Uint8
      */
     public function uint8()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Uint8($this->math, ByteOrder::BE);
     }
 
     /**
      * Add a little-endian Uint8 serializer to the template
      *
-     * @return $this
+     * @return Uint8
      */
     public function uint8le()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Uint8($this->math, ByteOrder::LE);
     }
 
     /**
      * Add a Uint16 serializer to the template
      *
-     * @return $this
+     * @return Uint16
      */
     public function uint16()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Uint16($this->math, ByteOrder::BE);
     }
 
     /**
      * Add a little-endian Uint16 serializer to the template
      *
-     * @return $this
+     * @return Uint16
      */
     public function uint16le()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Uint16($this->math, ByteOrder::LE);
     }
 
     /**
      * Add a Uint32 serializer to the template
      *
-     * @return $this
+     * @return Uint32
      */
     public function uint32()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Uint32($this->math, ByteOrder::BE);
     }
 
     /**
      * Add a little-endian Uint32 serializer to the template
      *
-     * @return $this
+     * @return Uint32
      */
     public function uint32le()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Uint32($this->math, ByteOrder::LE);
     }
 
     /**
      * Add a Uint64 serializer to the template
      *
-     * @return $this
+     * @return Uint64
      */
     public function uint64()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Uint64($this->math, ByteOrder::BE);
     }
 
     /**
      * Add a little-endian Uint64 serializer to the template
      *
-     * @return $this
+     * @return Uint64
      */
     public function uint64le()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Uint64($this->math, ByteOrder::LE);
     }
 
     /**
      * Add a Uint128 serializer to the template
      *
-     * @return $this
+     * @return Uint128
      */
     public function uint128()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Uint128($this->math, ByteOrder::BE);
     }
 
     /**
      * Add a little-endian Uint128 serializer to the template
      *
-     * @return $this
+     * @return Uint128
      */
     public function uint128le()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Uint128($this->math, ByteOrder::LE);
     }
 
     /**
      * Add a Uint256 serializer to the template
      *
-     * @return $this
+     * @return Uint256
      */
     public function uint256()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Uint256($this->math, ByteOrder::BE);
     }
 
     /**
      * Add a little-endian Uint256 serializer to the template
      *
-     * @return $this
+     * @return Uint256
      */
     public function uint256le()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Uint256($this->math, ByteOrder::LE);
     }
 
     /**
      * Add a int8 serializer to the template
      *
-     * @return $this
+     * @return Int8
      */
     public function int8()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Int8($this->math, ByteOrder::BE);
     }
 
     /**
      * Add a little-endian Int8 serializer to the template
      *
-     * @return $this
+     * @return Int8
      */
     public function int8le()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Int8($this->math, ByteOrder::LE);
     }
 
     /**
      * Add a int16 serializer to the template
      *
-     * @return $this
+     * @return Int16
      */
     public function int16()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Int16($this->math, ByteOrder::BE);
     }
 
     /**
      * Add a little-endian Int16 serializer to the template
      *
-     * @return $this
+     * @return Int16
      */
     public function int16le()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Int16($this->math, ByteOrder::LE);
     }
 
     /**
      * Add a int32 serializer to the template
      *
-     * @return $this
+     * @return Int32
      */
     public function int32()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Int32($this->math, ByteOrder::BE);
     }
 
     /**
      * Add a little-endian Int serializer to the template
      *
-     * @return $this
+     * @return Int32
      */
     public function int32le()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Int32($this->math, ByteOrder::LE);
     }
 
     /**
      * Add a int64 serializer to the template
      *
-     * @return $this
+     * @return Int64
      */
     public function int64()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Int64($this->math, ByteOrder::BE);
     }
 
     /**
      * Add a little-endian Int64 serializer to the template
      *
-     * @return $this
+     * @return Int64
      */
     public function int64le()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Int64($this->math, ByteOrder::LE);
     }
 
     /**
      * Add a int128 serializer to the template
      *
-     * @return $this
+     * @return Int128
      */
     public function int128()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Int128($this->math, ByteOrder::BE);
     }
 
     /**
      * Add a little-endian Int128 serializer to the template
      *
-     * @return $this
+     * @return Int128
      */
     public function int128le()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Int128($this->math, ByteOrder::LE);
     }
 
     /**
      * Add a int256 serializer to the template
      *
-     * @return $this
+     * @return Int256
      */
     public function int256()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Int256($this->math, ByteOrder::BE);
     }
 
     /**
      * Add a little-endian Int256 serializer to the template
      *
-     * @return $this
+     * @return Int256
      */
     public function int256le()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new Int256($this->math, ByteOrder::LE);
     }
 
     /**
      * Add a VarInt serializer to the template
      *
-     * @return $this
+     * @return VarInt
      */
     public function varint()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new VarInt($this->math);
     }
 
     /**
      * Add a VarString serializer to the template
      *
-     * @return $this
+     * @return VarString
      */
     public function varstring()
     {
-        $this->template->addItem($this->types->{__FUNCTION__}());
-        return $this;
+        return new VarString(new VarInt($this->math), ByteOrder::BE);
     }
 
     /**
@@ -336,12 +301,11 @@ class TemplateFactory
      * pad/truncate to.
      *
      * @param  $length
-     * @return $this
+     * @return ByteString
      */
     public function bytestring($length)
     {
-        $this->template->addItem($this->types->{__FUNCTION__}($length));
-        return $this;
+        return new ByteString($this->math, $length, ByteOrder::BE);
     }
 
     /**
@@ -349,12 +313,11 @@ class TemplateFactory
      * a length to pad/truncate to.
      *
      * @param  $length
-     * @return $this
+     * @return ByteString
      */
     public function bytestringle($length)
     {
-        $this->template->addItem($this->types->{__FUNCTION__}($length));
-        return $this;
+        return new ByteString($this->math, $length, ByteOrder::LE);
     }
 
     /**
@@ -365,11 +328,10 @@ class TemplateFactory
      * item in the collection.
      *
      * @param  callable $readHandler
-     * @return $this
+     * @return Vector
      */
     public function vector(callable $readHandler)
     {
-        $this->template->addItem($this->types->{__FUNCTION__}($readHandler));
-        return $this;
+        return new Vector($this->varint(), $readHandler);
     }
 }
