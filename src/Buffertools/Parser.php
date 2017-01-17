@@ -104,13 +104,36 @@ class Parser
             $data = Buffer::hex($data, $bytes, $this->math);
         }
 
-        // At this point $data will be a Buffer
-        $binary = $data->getBinary();
+        $this->appendBuffer($data, $flipBytes);
+
+        return $this;
+    }
+
+    /**
+     * Write $data as $bytes bytes. Can be flipped if needed.
+     *
+     * @param  integer $bytes
+     * @param  string $data
+     * @param  bool $flipBytes
+     * @return $this
+     */
+    public function writeRawBinary($bytes, $data, $flipBytes = false)
+    {
+        return $this->appendBuffer(new Buffer($data, $bytes), $flipBytes);
+    }
+
+    /**
+     * @param BufferInterface $buffer
+     * @param bool $flipBytes
+     * @return $this
+     */
+    private function appendBuffer(BufferInterface $buffer, $flipBytes = false)
+    {
         if ($flipBytes) {
-            $binary = Buffertools::flipBytes($binary);
+            $buffer = $buffer->flip();
         }
 
-        $this->string .= $binary;
+        $this->string .= $buffer->getBinary();
         return $this;
     }
 
