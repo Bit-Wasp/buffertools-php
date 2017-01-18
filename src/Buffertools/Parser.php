@@ -94,14 +94,11 @@ class Parser
             $data = $data->getBuffer();
         }
 
-        if ($data instanceof BufferInterface) {
-            // only create a new buffer if the size does not match
-            if ($data->getSize() != $bytes) {
-                $data = new Buffer($data->getBinary(), $bytes, $this->math);
-            }
-        } else {
+        if (is_string($data)) {
             // Convert to a buffer
             $data = Buffer::hex($data, $bytes, $this->math);
+        } else if (!($data instanceof BufferInterface)){
+            throw new \RuntimeException('Invalid data passed to Parser::writeBytes');
         }
 
         $this->writeBuffer($bytes, $data, $flipBytes);
@@ -130,13 +127,23 @@ class Parser
      */
     public function writeBuffer($bytes, BufferInterface $buffer, $flipBytes = false)
     {
-        $size = $buffer->getSize();
-        if ($bytes > $size) {
-            throw new \RuntimeException('Bytes is greater than Buffer size');
-        } else if ($bytes < $size) {
-            $buffer = $buffer->slice(0, $bytes);
+        // only create a new buffer if the size does not match
+        if ($buffer->getSize() != $bytes) {
+            $buffer = new Buffer($buffer->getBinary(), $bytes, $this->math);
         }
 
+        $this->appendBuffer($buffer, $flipBytes);
+
+        return $this;
+    }
+
+    /**
+     * @param BufferInterface $buffer
+     * @param bool $flipBytes
+     * @return $this
+     */
+    public function appendBuffer(BufferInterface $buffer, $flipBytes = false)
+    {
         if ($flipBytes) {
             $buffer = $buffer->flip();
         }
