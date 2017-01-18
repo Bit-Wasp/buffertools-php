@@ -97,7 +97,7 @@ class Parser
         if (is_string($data)) {
             // Convert to a buffer
             $data = Buffer::hex($data, $bytes, $this->math);
-        } else if (!($data instanceof BufferInterface)){
+        } else if (!($data instanceof BufferInterface)) {
             throw new \RuntimeException('Invalid data passed to Parser::writeBytes');
         }
 
