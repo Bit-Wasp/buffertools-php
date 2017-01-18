@@ -104,7 +104,7 @@ class Parser
             $data = Buffer::hex($data, $bytes, $this->math);
         }
 
-        $this->appendBuffer($data, $flipBytes);
+        $this->writeBuffer($bytes, $data, $flipBytes);
 
         return $this;
     }
@@ -119,16 +119,22 @@ class Parser
      */
     public function writeRawBinary($bytes, $data, $flipBytes = false)
     {
-        return $this->appendBuffer(new Buffer($data, $bytes), $flipBytes);
+        return $this->writeBuffer($bytes, new Buffer($data, $bytes), $flipBytes);
     }
 
     /**
      * @param BufferInterface $buffer
      * @param bool $flipBytes
+     * @param int $bytes
      * @return $this
      */
-    private function appendBuffer(BufferInterface $buffer, $flipBytes = false)
+    public function writeBuffer($bytes, BufferInterface $buffer, $flipBytes = false)
     {
+        $size = $buffer->getSize();
+        if ($bytes > $size) {
+            throw new \RuntimeException('Bytes is greater than Buffer size');
+        }
+
         if ($flipBytes) {
             $buffer = $buffer->flip();
         }
