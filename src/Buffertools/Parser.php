@@ -133,6 +133,8 @@ class Parser
         $size = $buffer->getSize();
         if ($bytes > $size) {
             throw new \RuntimeException('Bytes is greater than Buffer size');
+        } else if ($bytes < $size) {
+            $buffer = $buffer->slice(0, $bytes);
         }
 
         if ($flipBytes) {
