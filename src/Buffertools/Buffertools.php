@@ -4,6 +4,11 @@ namespace BitWasp\Buffertools;
 
 class Buffertools
 {
+    /**
+     * @param int $decimal
+     * @return string
+     * @throws \Exception
+     */
     public static function numToVarIntBin($decimal)
     {
         if ($decimal < 0xfd) {
