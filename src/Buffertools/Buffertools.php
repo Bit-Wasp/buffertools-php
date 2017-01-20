@@ -5,13 +5,11 @@ namespace BitWasp\Buffertools;
 class Buffertools
 {
     /**
-     * Convert a decimal number into a VarInt Buffer
-     *
-     * @param  integer $decimal
-     * @return Buffer
+     * @param int $decimal
+     * @return string
      * @throws \Exception
      */
-    public static function numToVarInt($decimal)
+    public static function numToVarIntBin($decimal)
     {
         if ($decimal < 0xfd) {
             $bin = chr($decimal);
@@ -26,7 +24,19 @@ class Buffertools
             throw new \Exception('numToVarInt(): Integer too large');
         }
 
-        return new Buffer($bin);
+        return $bin;
+    }
+
+    /**
+     * Convert a decimal number into a VarInt Buffer
+     *
+     * @param  integer $decimal
+     * @return Buffer
+     * @throws \Exception
+     */
+    public static function numToVarInt($decimal)
+    {
+        return new Buffer(static::numToVarIntBin($decimal));
     }
 
     /**

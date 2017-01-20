@@ -144,11 +144,22 @@ class Parser
      */
     public function appendBuffer(BufferInterface $buffer, $flipBytes = false)
     {
+        $this->appendBinary($buffer->getBinary(), $flipBytes);
+        return $this;
+    }
+
+    /**
+     * @param string $binary
+     * @param bool $flipBytes
+     * @return $this
+     */
+    public function appendBinary($binary, $flipBytes = false)
+    {
         if ($flipBytes) {
-            $buffer = $buffer->flip();
+            $binary = Buffertools::flipBytes($binary);
         }
 
-        $this->string .= $buffer->getBinary();
+        $this->string .= $binary;
         return $this;
     }
 
