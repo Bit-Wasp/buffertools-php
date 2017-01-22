@@ -45,7 +45,7 @@ interface BufferInterface
      * @return \GMP
      */
     public function getGmp();
-    
+
     /**
      * @return Buffer
      */
@@ -54,5 +54,5 @@ interface BufferInterface
     /**
      * @return bool
      */
-    public function equals(self $other);
+    public function equals(BufferInterface $other);
 }
