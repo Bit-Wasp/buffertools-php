@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BitWasp\Buffertools\Types;
 
 use BitWasp\Buffertools\ByteOrder;
@@ -12,7 +14,7 @@ abstract class AbstractUint extends AbstractType implements UintInterface
      * @param GmpMathInterface     $math
      * @param int                  $byteOrder
      */
-    public function __construct(GmpMathInterface $math, $byteOrder = ByteOrder::BE)
+    public function __construct(GmpMathInterface $math, int $byteOrder = ByteOrder::BE)
     {
         parent::__construct($math, $byteOrder);
     }
@@ -21,11 +23,10 @@ abstract class AbstractUint extends AbstractType implements UintInterface
      * @param $integer
      * @return string
      */
-    public function writeBits($integer)
+    public function writeBits($integer): string
     {
-        $math = $this->getMath();
         return str_pad(
-            $math->baseConvert($integer, 10, 2),
+            gmp_strval(gmp_init($integer, 10), 2),
             $this->getBitSize(),
             '0',
             STR_PAD_LEFT
@@ -38,24 +39,21 @@ abstract class AbstractUint extends AbstractType implements UintInterface
      * @throws \BitWasp\Buffertools\Exceptions\ParserOutOfRange
      * @throws \Exception
      */
-    public function readBits(Parser $parser)
+    public function readBits(Parser $parser): string
     {
-        $math = $this->getMath();
         $bitSize = $this->getBitSize();
         $bits = str_pad(
-            $math->baseConvert($parser->readBytes($bitSize / 8)->getHex(), 16, 2),
+            gmp_strval(gmp_init($parser->readBytes($bitSize / 8)->getHex(), 16), 2),
             $bitSize,
             '0',
             STR_PAD_LEFT
         );
 
-        $integer = $math->baseConvert(
-            $this->isBigEndian()
+        $finalBits = $this->isBigEndian()
             ? $bits
-            : $this->flipBits($bits),
-            2,
-            10
-        );
+            : $this->flipBits($bits);
+
+        $integer = gmp_strval(gmp_init($finalBits, 2), 10);
 
         return $integer;
     }
@@ -64,16 +62,18 @@ abstract class AbstractUint extends AbstractType implements UintInterface
      * {@inheritdoc}
      * @see \BitWasp\Buffertools\Types\TypeInterface::write()
      */
-    public function write($integer)
+    public function write($integer): string
     {
         return pack(
             "H*",
             str_pad(
-                $this->getMath()->baseConvert(
-                    $this->isBigEndian()
-                    ? $this->writeBits($integer)
-                    : $this->flipBits($this->writeBits($integer)),
-                    2,
+                gmp_strval(
+                    gmp_init(
+                        $this->isBigEndian()
+                        ? $this->writeBits($integer)
+                        : $this->flipBits($this->writeBits($integer)),
+                        2
+                    ),
                     16
                 ),
                 $this->getBitSize()/4,
@@ -87,7 +87,7 @@ abstract class AbstractUint extends AbstractType implements UintInterface
      * {@inheritdoc}
      * @see \BitWasp\Buffertools\Types\TypeInterface::read()
      */
-    public function read(Parser $binary)
+    public function read(Parser $binary): string
     {
         return $this->readBits($binary);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BitWasp\Buffertools\Types;
 
 use BitWasp\Buffertools\Parser;
@@ -31,7 +33,7 @@ class Vector extends AbstractType
      * {@inheritdoc}
      * @see \BitWasp\Buffertools\Types\TypeInterface::write()
      */
-    public function write($items)
+    public function write($items): string
     {
         if (false === is_array($items)) {
             throw new \InvalidArgumentException('Vector::write() must be supplied with an array');
@@ -51,7 +53,7 @@ class Vector extends AbstractType
      * @return array
      * @throws \Exception
      */
-    public function read(Parser $parser)
+    public function read(Parser $parser): array
     {
         $results = array();
         $handler = $this->readFxn;

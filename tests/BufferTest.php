@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BitWasp\Buffertools\Tests\Util;
 
 use \BitWasp\Buffertools\Buffer;
@@ -94,7 +96,7 @@ class BufferTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(4, Buffer::hex('41', 4)->getSize());
     }
 
-    public function IntVectors()
+    public function getIntVectors()
     {
         $math = EccFactory::getAdapter();
 
@@ -106,7 +108,7 @@ class BufferTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider IntVectors
+     * @dataProvider getIntVectors
      */
     public function testIntConstruct($int, $size, $expectedHex, $math)
     {

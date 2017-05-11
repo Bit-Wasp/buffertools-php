@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BitWasp\Buffertools\Tests\Types;
 
 use BitWasp\Buffertools\ByteOrder;
@@ -26,11 +28,11 @@ class UintSetTest extends BinaryTest
     private function generateSizeBasedTests($bitSize, $byteOrder)
     {
         $math = EccFactory::getAdapter();
-        $halfPos = $math->baseConvert(str_pad('7', $bitSize / 4, 'f', STR_PAD_RIGHT), 16, 10);
-        $maxPos = $math->baseConvert(str_pad('', $bitSize / 4, 'f', STR_PAD_RIGHT), 16, 10);
+        $halfPos = gmp_strval(gmp_init(str_pad('7', $bitSize / 4, 'f', STR_PAD_RIGHT), 16), 10);
+        $maxPos = gmp_strval(gmp_init(str_pad('', $bitSize / 4, 'f', STR_PAD_RIGHT), 16), 10);
 
         $test = function ($integer) use ($bitSize, $math, $byteOrder) {
-            $hex = str_pad($math->baseConvert($integer, 10, 16), $bitSize / 4, '0', STR_PAD_LEFT);
+            $hex = str_pad(gmp_strval(gmp_init($integer, 10), 16), $bitSize / 4, '0', STR_PAD_LEFT);
 
             if ($byteOrder == ByteOrder::LE) {
                 $hex = Buffertools::flipBytes(Buffer::hex($hex))->getHex();
@@ -75,7 +77,7 @@ class UintSetTest extends BinaryTest
     /**
      * @return array
      */
-    public function AllTests()
+    public function getAllTests()
     {
         $math = EccFactory::getAdapter();
         $vectors = [];
@@ -89,7 +91,7 @@ class UintSetTest extends BinaryTest
     }
 
     /**
-     * @dataProvider AllTests
+     * @dataProvider getAllTests
      * @param $int
      * @param $eHex
      */

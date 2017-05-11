@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BitWasp\Buffertools\Tests;
 
 use BitWasp\Buffertools\CachingTypeFactory;

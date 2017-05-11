@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BitWasp\Buffertools;
 
 use Mdanter\Ecc\EccFactory;
@@ -145,18 +147,6 @@ class BuffertoolsTest extends \PHPUnit_Framework_TestCase
         $val        = Buffertools::numToVarInt($decimal);//->getBinary();
 
         $this->assertSame($expected, $val->getBinary());
-    }
-
-    /**
-     * @expectedException \Exception
-     */
-    public function testNumToVarIntOutOfRange()
-    {
-        // Check that this is out of range (PHP's fault)
-        $adapter = EccFactory::getAdapter();
-        $two = gmp_init(2, 10);
-        $decimal  = $adapter->toString($adapter->add($adapter->pow($two, 32), gmp_init(1)));
-        Buffertools::numToVarInt($decimal);
     }
 
     public function testFlipBytes()

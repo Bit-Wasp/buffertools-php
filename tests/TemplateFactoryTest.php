@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BitWasp\Buffertools\Tests;
 
 use BitWasp\Buffertools\TemplateFactory;
@@ -48,7 +50,7 @@ class TemplateFactoryTest extends BinaryTest
     public function testTemplateUint($function, $eClass)
     {
         $math = EccFactory::getAdapter();
-        $factory = new TemplateFactory(null, $math);
+        $factory = new TemplateFactory(null);
         $factory->$function();
         $template = $factory->getTemplate();
         $this->assertEquals(1, count($template));
@@ -59,7 +61,7 @@ class TemplateFactoryTest extends BinaryTest
     public function testVector()
     {
         $math = EccFactory::getAdapter();
-        $factory = new TemplateFactory(null, $math);
+        $factory = new TemplateFactory(null);
         $factory->vector(
             function () {
                 return;
