@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BitWasp\Buffertools\Types;
 
 use BitWasp\Buffertools\Buffer;
@@ -13,21 +15,19 @@ abstract class AbstractSignedInt extends AbstractType implements SignedIntInterf
      * @param GmpMathInterface     $math
      * @param int                  $byteOrder
      */
-    public function __construct(GmpMathInterface $math, $byteOrder = ByteOrder::BE)
+    public function __construct(GmpMathInterface $math, int $byteOrder = ByteOrder::BE)
     {
         parent::__construct($math, $byteOrder);
     }
 
     /**
-     * @param $integer
+     * @param int|string $integer
      * @return string
      */
-    public function writeBits($integer)
+    public function writeBits($integer): string
     {
-        $math = $this->getMath();
-
         return str_pad(
-            $math->baseConvert($integer, 10, 2),
+            gmp_strval(gmp_init($integer, 10), 2),
             $this->getBitSize(),
             '0',
             STR_PAD_LEFT
@@ -40,7 +40,7 @@ abstract class AbstractSignedInt extends AbstractType implements SignedIntInterf
      * @throws \BitWasp\Buffertools\Exceptions\ParserOutOfRange
      * @throws \Exception
      */
-    public function readBits(Parser $parser)
+    public function readBits(Parser $parser): string
     {
         $bitSize = $this->getBitSize();
         $byteSize = $bitSize / 8;
@@ -68,7 +68,7 @@ abstract class AbstractSignedInt extends AbstractType implements SignedIntInterf
      * {@inheritdoc}
      * @see \BitWasp\Buffertools\Types\TypeInterface::write()
      */
-    public function write($integer)
+    public function write($integer): string
     {
         $bitSize = $this->getBitSize();
         if (gmp_sign($integer) < 0) {
@@ -89,7 +89,7 @@ abstract class AbstractSignedInt extends AbstractType implements SignedIntInterf
      * {@inheritdoc}
      * @see \BitWasp\Buffertools\Types\TypeInterface::read()
      */
-    public function read(Parser $binary)
+    public function read(Parser $binary): string
     {
         return $this->readBits($binary);
     }

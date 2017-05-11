@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BitWasp\Buffertools\Types;
 
 use BitWasp\Buffertools\Buffer;
@@ -27,7 +29,7 @@ class VarString extends AbstractType
      * {@inheritdoc}
      * @see \BitWasp\Buffertools\Types\TypeInterface::write()
      */
-    public function write($buffer)
+    public function write($buffer): string
     {
         if (!$buffer instanceof BufferInterface) {
             throw new \InvalidArgumentException('Must provide a buffer');
@@ -41,11 +43,11 @@ class VarString extends AbstractType
      * {@inheritdoc}
      * @see \BitWasp\Buffertools\Types\TypeInterface::write()
      * @param Parser $parser
-     * @return \BitWasp\Buffertools\Buffer
+     * @return \BitWasp\Buffertools\BufferInterface
      * @throws \BitWasp\Buffertools\Exceptions\ParserOutOfRange
      * @throws \Exception
      */
-    public function read(Parser $parser)
+    public function read(Parser $parser): BufferInterface
     {
         $length = $this->varint->read($parser);
 
@@ -57,6 +59,6 @@ class VarString extends AbstractType
             return new Buffer();
         }
 
-        return $parser->readBytes($length);
+        return $parser->readBytes((int) $length);
     }
 }

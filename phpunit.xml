@@ -7,6 +7,11 @@
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>
+    <filter>
+        <whitelist>
+            <directory>src</directory>
+        </whitelist>
+    </filter>
     <logging>
         <log type="coverage-html" target="build/docs/code-coverage"/>
         <log type="coverage-clover" target="build/docs/clover.xml"/>

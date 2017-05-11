@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BitWasp\Buffertools\Types;
 
 use BitWasp\Buffertools\ByteOrder;
@@ -8,20 +10,23 @@ use Mdanter\Ecc\Math\GmpMathInterface;
 
 class VarInt extends AbstractType
 {
+    /**
+     * @var array
+     */
     private $sizeInfo = [];
 
     /**
      * @param GmpMathInterface $math
      * @param int                  $byteOrder
      */
-    public function __construct(GmpMathInterface $math, $byteOrder = ByteOrder::BE)
+    public function __construct(GmpMathInterface $math, int $byteOrder = ByteOrder::BE)
     {
         parent::__construct($math, $byteOrder);
         $two = gmp_init(2, 10);
         $this->sizeInfo = [
-            [Uint16::class, $math->pow($two, 16), gmp_init(0xfd)],
-            [Uint32::class, $math->pow($two, 32), gmp_init(0xfe)],
-            [Uint64::class, $math->pow($two, 64), gmp_init(0xff)],
+            [Uint16::class, $math->pow($two, 16), 0xfd],
+            [Uint32::class, $math->pow($two, 32), 0xfe],
+            [Uint64::class, $math->pow($two, 64), 0xff],
         ];
     }
 
@@ -29,7 +34,7 @@ class VarInt extends AbstractType
      * @param \GMP $integer
      * @return array
      */
-    public function solveWriteSize(\GMP $integer)
+    public function solveWriteSize(\GMP $integer): array
     {
         $math = $this->getMath();
 
@@ -47,18 +52,18 @@ class VarInt extends AbstractType
     }
 
     /**
-     * @param \GMP $givenPrefix
+     * @param int $givenPrefix
      * @return UintInterface[]
      * @throws \InvalidArgumentException
      */
-    public function solveReadSize(\GMP $givenPrefix)
+    public function solveReadSize(int $givenPrefix): array
     {
         $math = $this->getMath();
 
         foreach ($this->sizeInfo as $config) {
             $uint = $config[0];
             $prefix = $config[2];
-            if ($math->cmp($givenPrefix, $prefix) === 0) {
+            if ($givenPrefix === $prefix) {
                 return [
                     new $uint($math, ByteOrder::LE)
                 ];
@@ -72,7 +77,7 @@ class VarInt extends AbstractType
      * {@inheritdoc}
      * @see \BitWasp\Buffertools\Types\TypeInterface::write()
      */
-    public function write($integer)
+    public function write($integer): string
     {
         $math = $this->getMath();
 
@@ -95,14 +100,14 @@ class VarInt extends AbstractType
      * {@inheritdoc}
      * @see \BitWasp\Buffertools\Types\TypeInterface::read()
      */
-    public function read(Parser $parser)
+    public function read(Parser $parser): string
     {
         $math = $this->getMath();
         $uint8 = new Uint8($math);
-        $int = gmp_init($uint8->readBits($parser), 10);
+        $int = (int) $uint8->readBits($parser);
 
-        if ($math->cmp($int, gmp_init(0xfd, 10)) < 0) {
-            return gmp_strval($int, 10);
+        if ($int < 0xfd) {
+            return (string) $int;
         } else {
             $uint = $this->solveReadSize($int)[0];
             return $uint->read($parser);

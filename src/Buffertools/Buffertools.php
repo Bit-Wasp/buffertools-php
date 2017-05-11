@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BitWasp\Buffertools;
 
 class Buffertools
@@ -9,7 +11,7 @@ class Buffertools
      * @return string
      * @throws \Exception
      */
-    public static function numToVarIntBin($decimal)
+    public static function numToVarIntBin(int $decimal): string
     {
         if ($decimal < 0xfd) {
             $bin = chr($decimal);
@@ -31,10 +33,10 @@ class Buffertools
      * Convert a decimal number into a VarInt Buffer
      *
      * @param  integer $decimal
-     * @return Buffer
+     * @return BufferInterface
      * @throws \Exception
      */
-    public static function numToVarInt($decimal)
+    public static function numToVarInt(int $decimal): BufferInterface
     {
         return new Buffer(static::numToVarIntBin($decimal));
     }
@@ -67,7 +69,7 @@ class Buffertools
      * @param int    $size
      * @return BufferInterface
      */
-    public static function concat(BufferInterface $buffer1, BufferInterface $buffer2, $size = null)
+    public static function concat(BufferInterface $buffer1, BufferInterface $buffer2, int $size = null)
     {
         return new Buffer($buffer1->getBinary() . $buffer2->getBinary(), $size);
     }
@@ -89,7 +91,7 @@ class Buffertools
      * @param callable $convertToBuffer
      * @return array
      */
-    public static function sort(array $items, callable $convertToBuffer = null)
+    public static function sort(array $items, callable $convertToBuffer = null): array
     {
         if (null == $convertToBuffer) {
             $convertToBuffer = function ($value) {

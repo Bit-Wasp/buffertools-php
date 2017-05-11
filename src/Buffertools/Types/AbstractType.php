@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BitWasp\Buffertools\Types;
 
 use BitWasp\Buffertools\ByteOrder;
@@ -21,7 +23,7 @@ abstract class AbstractType implements TypeInterface
      * @param GmpMathInterface     $math
      * @param int                  $byteOrder
      */
-    public function __construct(GmpMathInterface $math, $byteOrder = ByteOrder::BE)
+    public function __construct(GmpMathInterface $math, int $byteOrder = ByteOrder::BE)
     {
         if (false === in_array($byteOrder, [ByteOrder::BE, ByteOrder::LE])) {
             throw new \InvalidArgumentException('Must pass valid flag for endianness');
@@ -34,7 +36,7 @@ abstract class AbstractType implements TypeInterface
     /**
      * @return int
      */
-    public function getByteOrder()
+    public function getByteOrder(): int
     {
         return $this->byteOrder;
     }
@@ -42,7 +44,7 @@ abstract class AbstractType implements TypeInterface
     /**
      * @return bool
      */
-    public function isBigEndian()
+    public function isBigEndian(): bool
     {
         return $this->getByteOrder() == ByteOrder::BE;
     }
@@ -50,17 +52,17 @@ abstract class AbstractType implements TypeInterface
     /**
      * @return GmpMathInterface
      */
-    public function getMath()
+    public function getMath(): GmpMathInterface
     {
         return $this->math;
     }
 
     /**
-     * @param $bitString
+     * @param string $bitString
      * @return string
      * @throws \Exception
      */
-    public function flipBits($bitString)
+    public function flipBits(string $bitString): string
     {
         $length = strlen($bitString);
 
