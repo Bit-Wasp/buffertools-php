@@ -33,6 +33,18 @@ class VarStringTest extends BinaryTest
     }
 
     /**
+     * @expectedException \BitWasp\Buffertools\Exceptions\ParserOutOfRange
+     * @expectedExceptionMessage Insufficient data remaining for VarString
+     */
+    public function testAbortsWithInvalidVarIntLength()
+    {
+        $math = EccFactory::getAdapter();
+        $buffer = new Buffer("\x05\x00");
+
+        $varstring = new VarString(new VarInt($math));
+        $varstring->read(new Parser($buffer));
+    }
+    /**
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Must provide a buffer
      */
