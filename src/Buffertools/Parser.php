@@ -21,6 +21,11 @@ class Parser
     /**
      * @var int
      */
+    private $size = 0;
+
+    /**
+     * @var int
+     */
     private $position = 0;
 
     /**
@@ -39,6 +44,7 @@ class Parser
 
         $this->string = $input->getBinary();
         $this->position = 0;
+        $this->size = 0;
     }
 
     /**
@@ -49,6 +55,16 @@ class Parser
     public function getPosition()
     {
         return $this->position;
+    }
+
+    /**
+     * Get the total size of the parser
+     *
+     * @return int
+     */
+    public function getSize()
+    {
+        return $this->size;
     }
 
     /**
@@ -160,6 +176,7 @@ class Parser
         }
 
         $this->string .= $binary;
+        $this->size += strlen($binary);
         return $this;
     }
 
@@ -184,6 +201,7 @@ class Parser
         }
 
         $this->string .= $parser->getBuffer()->getBinary();
+        $this->size += $parser->getSize();
 
         return $this;
     }
