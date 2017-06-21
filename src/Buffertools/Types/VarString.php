@@ -4,6 +4,7 @@ namespace BitWasp\Buffertools\Types;
 
 use BitWasp\Buffertools\Buffer;
 use BitWasp\Buffertools\BufferInterface;
+use BitWasp\Buffertools\Exceptions\ParserOutOfRange;
 use BitWasp\Buffertools\Parser;
 
 class VarString extends AbstractType
@@ -47,6 +48,10 @@ class VarString extends AbstractType
     public function read(Parser $parser)
     {
         $length = $this->varint->read($parser);
+
+        if ($length > $parser->getSize() - $parser->getPosition()) {
+            throw new ParserOutOfRange("Insufficient data remaining for VarString");
+        }
 
         if ($this->varint->getMath()->cmp(gmp_init($length, 10), gmp_init(0, 10)) == 0) {
             return new Buffer();
