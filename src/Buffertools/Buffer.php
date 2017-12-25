@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace BitWasp\Buffertools;
 
-use Mdanter\Ecc\EccFactory;
 use Mdanter\Ecc\Math\GmpMathInterface;
 
 class Buffer implements BufferInterface
@@ -22,10 +21,9 @@ class Buffer implements BufferInterface
     /**
      * @param string               $byteString
      * @param null|integer         $byteSize
-     * @param GmpMathInterface     $math
      * @throws \Exception
      */
-    public function __construct(string $byteString = '', int $byteSize = null, GmpMathInterface $math = null)
+    public function __construct(string $byteString = '', int $byteSize = null)
     {
         if ($byteSize !== null) {
             // Check the integer doesn't overflow its supposed size
@@ -56,36 +54,37 @@ class Buffer implements BufferInterface
      *
      * @param string $hexString
      * @param integer $byteSize
-     * @param GmpMathInterface $math
      * @return Buffer
      * @throws \Exception
      */
-    public static function hex(string $hexString = '', int $byteSize = null, GmpMathInterface $math = null): Buffer
+    public static function hex(string $hexString = '', int $byteSize = null): BufferInterface
     {
         if (strlen($hexString) > 0 && !ctype_xdigit($hexString)) {
             throw new \InvalidArgumentException('Buffer::hex: non-hex character passed');
         }
 
-        $math = $math ?: EccFactory::getAdapter();
         $binary = pack("H*", $hexString);
-        return new self($binary, $byteSize, $math);
+        return new self($binary, $byteSize);
     }
 
     /**
      * @param int|string $integer
      * @param null|int $byteSize
-     * @param GmpMathInterface|null $math
      * @return Buffer
      */
-    public static function int($integer, $byteSize = null, GmpMathInterface $math = null): Buffer
+    public static function int($integer, $byteSize = null): BufferInterface
     {
         if ($integer < 0) {
             throw new \InvalidArgumentException('Negative integers not supported by Buffer::int. This could be an application error, or you should be using templates.');
         }
 
-        $math = $math ?: EccFactory::getAdapter();
-        $binary = pack("H*", $math->decHex($integer));
-        return new self($binary, $byteSize, $math);
+        $hex = gmp_strval(gmp_init($integer, 10), 16);
+        if ((mb_strlen($hex) % 2) !== 0) {
+            $hex = "0{$hex}";
+        }
+
+        $binary = pack("H*", $hex);
+        return new self($binary, $byteSize);
     }
 
     /**
@@ -182,7 +181,7 @@ class Buffer implements BufferInterface
     /**
      * @return Buffer
      */
-    public function flip(): Buffer
+    public function flip(): BufferInterface
     {
         /** @var Buffer $buffer */
         $buffer = Buffertools::flipBytes($this);

@@ -8,7 +8,6 @@ use BitWasp\Buffertools\Buffer;
 use BitWasp\Buffertools\BufferInterface;
 use BitWasp\Buffertools\ByteOrder;
 use BitWasp\Buffertools\Parser;
-use Mdanter\Ecc\Math\GmpMathInterface;
 
 class ByteString extends AbstractType
 {
@@ -18,14 +17,13 @@ class ByteString extends AbstractType
     private $length;
 
     /**
-     * @param GmpMathInterface     $math
      * @param int|string           $length
      * @param int|string           $byteOrder
      */
-    public function __construct(GmpMathInterface $math, $length, $byteOrder = ByteOrder::BE)
+    public function __construct(int $length, $byteOrder = ByteOrder::BE)
     {
         $this->length = $length;
-        parent::__construct($math, $byteOrder);
+        parent::__construct($byteOrder);
     }
 
     /**
@@ -85,10 +83,10 @@ class ByteString extends AbstractType
 
     /**
      * @param Parser $parser
-     * @return Buffer
+     * @return BufferInterface
      * @throws \BitWasp\Buffertools\Exceptions\ParserOutOfRange
      */
-    public function read(Parser $parser): Buffer
+    public function read(Parser $parser): BufferInterface
     {
         $bits = $this->readBits($parser->readBytes($this->length));
         if (!$this->isBigEndian()) {

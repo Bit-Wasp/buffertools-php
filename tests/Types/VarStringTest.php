@@ -9,7 +9,6 @@ use BitWasp\Buffertools\Types\VarInt;
 use BitWasp\Buffertools\Types\VarString;
 use BitWasp\Buffertools\Buffer;
 use BitWasp\Buffertools\Parser;
-use Mdanter\Ecc\EccFactory;
 
 class VarStringTest extends BinaryTest
 {
@@ -23,8 +22,7 @@ class VarStringTest extends BinaryTest
             '00010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102',
         );
 
-        $math = EccFactory::getAdapter();
-        $varstring = new VarString(new VarInt($math));
+        $varstring = new VarString(new VarInt());
 
         foreach ($strings as $string) {
             $binary = $varstring->write(Buffer::hex($string));
@@ -40,10 +38,9 @@ class VarStringTest extends BinaryTest
      */
     public function testAbortsWithInvalidVarIntLength()
     {
-        $math = EccFactory::getAdapter();
         $buffer = new Buffer("\x05\x00");
 
-        $varstring = new VarString(new VarInt($math));
+        $varstring = new VarString(new VarInt());
         $varstring->read(new Parser($buffer));
     }
     /**
@@ -52,8 +49,7 @@ class VarStringTest extends BinaryTest
      */
     public function testFailsWithoutBuffer()
     {
-        $math = EccFactory::getAdapter();
-        $varstring = new VarString(new VarInt($math));
+        $varstring = new VarString(new VarInt());
         $varstring->write('');
     }
 }

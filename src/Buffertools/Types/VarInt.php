@@ -6,7 +6,6 @@ namespace BitWasp\Buffertools\Types;
 
 use BitWasp\Buffertools\ByteOrder;
 use BitWasp\Buffertools\Parser;
-use Mdanter\Ecc\Math\GmpMathInterface;
 
 class VarInt extends AbstractType
 {
@@ -16,17 +15,16 @@ class VarInt extends AbstractType
     private $sizeInfo = [];
 
     /**
-     * @param GmpMathInterface $math
-     * @param int                  $byteOrder
+     * @param int $byteOrder
      */
-    public function __construct(GmpMathInterface $math, int $byteOrder = ByteOrder::BE)
+    public function __construct(int $byteOrder = ByteOrder::BE)
     {
-        parent::__construct($math, $byteOrder);
+        parent::__construct($byteOrder);
         $two = gmp_init(2, 10);
         $this->sizeInfo = [
-            [Uint16::class, $math->pow($two, 16), 0xfd],
-            [Uint32::class, $math->pow($two, 32), 0xfe],
-            [Uint64::class, $math->pow($two, 64), 0xff],
+            [Uint16::class, gmp_pow($two, 16), 0xfd],
+            [Uint32::class, gmp_pow($two, 32), 0xfe],
+            [Uint64::class, gmp_pow($two, 64), 0xff],
         ];
     }
 
@@ -36,13 +34,11 @@ class VarInt extends AbstractType
      */
     public function solveWriteSize(\GMP $integer): array
     {
-        $math = $this->getMath();
-
         foreach ($this->sizeInfo as $config) {
             list($uint, $limit, $prefix) = $config;
-            if ($math->cmp($integer, $limit) < 0) {
+            if (gmp_cmp($integer, $limit) < 0) {
                 return [
-                    new $uint($math, ByteOrder::LE),
+                    new $uint(ByteOrder::LE),
                     $prefix
                 ];
             }
@@ -58,14 +54,12 @@ class VarInt extends AbstractType
      */
     public function solveReadSize(int $givenPrefix): array
     {
-        $math = $this->getMath();
-
         foreach ($this->sizeInfo as $config) {
             $uint = $config[0];
             $prefix = $config[2];
             if ($givenPrefix === $prefix) {
                 return [
-                    new $uint($math, ByteOrder::LE)
+                    new $uint(ByteOrder::LE)
                 ];
             }
         }
@@ -79,11 +73,9 @@ class VarInt extends AbstractType
      */
     public function write($integer): string
     {
-        $math = $this->getMath();
-
         $gmp = gmp_init($integer, 10);
-        $uint8 = new Uint8($math);
-        if ($math->cmp($gmp, gmp_init(0xfd, 10)) < 0) {
+        $uint8 = new Uint8();
+        if (gmp_cmp($gmp, gmp_init(0xfd, 10)) < 0) {
             $int = $uint8;
         } else {
             list ($int, $prefix) = $this->solveWriteSize($gmp);
@@ -102,8 +94,7 @@ class VarInt extends AbstractType
      */
     public function read(Parser $parser): string
     {
-        $math = $this->getMath();
-        $uint8 = new Uint8($math);
+        $uint8 = new Uint8();
         $int = (int) $uint8->readBits($parser);
 
         if ($int < 0xfd) {

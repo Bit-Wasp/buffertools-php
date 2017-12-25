@@ -10,28 +10,31 @@ use BitWasp\Buffertools\ByteOrder;
 use BitWasp\Buffertools\Parser;
 use BitWasp\Buffertools\Tests\BinaryTest;
 use BitWasp\Buffertools\Types\ByteString;
-use Mdanter\Ecc\Math\MathAdapterFactory;
 
 class ByteStringTest extends BinaryTest
 {
-    public function getVectors()
+    /**
+     * @return array
+     */
+    public function getVectors(): array
     {
-        $math = MathAdapterFactory::getAdapter();
         return [
-            [$math, 1, '04'],
-            [$math, 1, '41'],
-            [$math, 4, '0488b21e'],
+            [1, '04'],
+            [1, '41'],
+            [4, '0488b21e'],
         ];
     }
 
     /**
      * @dataProvider getVectors
+     * @param int $size
+     * @param int $string
      */
-    public function testByteString($math, $size, $string)
+    public function testByteString(int $size, string $string)
     {
         $buffer = Buffer::hex($string, $size);
 
-        $t = new ByteString($math, $size);
+        $t = new ByteString($size);
         $out = $t->write($buffer);
 
         $this->assertEquals(pack("H*", $string), $out);
@@ -42,12 +45,14 @@ class ByteStringTest extends BinaryTest
 
     /**
      * @dataProvider getVectors
+     * @param int $size
+     * @param int $string
      */
-    public function testByteStringLe($math, $size, $string)
+    public function testByteStringLe(int $size, string $string)
     {
         $buffer = Buffer::hex($string, $size);
 
-        $t = new ByteString($math, $size, ByteOrder::LE);
+        $t = new ByteString($size, ByteOrder::LE);
         $out = $t->write($buffer);
 
         $eFlipped = Buffertools::flipBytes(pack("H*", $string));

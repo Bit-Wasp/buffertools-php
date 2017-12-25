@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace BitWasp\Buffertools;
 
-use Mdanter\Ecc\EccFactory;
+use PHPUnit\Framework\TestCase;
 
-class BuffertoolsTest extends \PHPUnit_Framework_TestCase
+class BuffertoolsTest extends TestCase
 {
     /**
      * @return array
      */
-    private function getUnsortedList()
+    private function getUnsortedList(): array
     {
         return [
             '0101',
@@ -26,7 +26,7 @@ class BuffertoolsTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    private function getSortedList()
+    private function getSortedList(): array
     {
         return [
             '0000',
@@ -41,7 +41,7 @@ class BuffertoolsTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    private function getUnsortedBufferList()
+    private function getUnsortedBufferList(): array
     {
         $results = [];
         foreach ($this->getUnsortedList() as $hex) {
@@ -53,7 +53,7 @@ class BuffertoolsTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    private function getSortedBufferList()
+    private function getSortedBufferList(): array
     {
         $results = [];
         foreach ($this->getSortedList() as $hex) {

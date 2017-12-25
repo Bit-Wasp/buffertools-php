@@ -90,6 +90,7 @@ class Parser
 
         if ($flipBytes) {
             $string = Buffertools::flipBytes($string);
+            /** @var string $string */
         }
 
         return new Buffer($string, $length);

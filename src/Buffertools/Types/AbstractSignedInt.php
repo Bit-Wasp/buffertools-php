@@ -7,17 +7,15 @@ namespace BitWasp\Buffertools\Types;
 use BitWasp\Buffertools\Buffer;
 use BitWasp\Buffertools\ByteOrder;
 use BitWasp\Buffertools\Parser;
-use Mdanter\Ecc\Math\GmpMathInterface;
 
 abstract class AbstractSignedInt extends AbstractType implements SignedIntInterface
 {
     /**
-     * @param GmpMathInterface     $math
-     * @param int                  $byteOrder
+     * @param int $byteOrder
      */
-    public function __construct(GmpMathInterface $math, int $byteOrder = ByteOrder::BE)
+    public function __construct(int $byteOrder = ByteOrder::BE)
     {
-        parent::__construct($math, $byteOrder);
+        parent::__construct($byteOrder);
     }
 
     /**
