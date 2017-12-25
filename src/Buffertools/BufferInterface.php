@@ -51,7 +51,7 @@ interface BufferInterface
     /**
      * @return Buffer
      */
-    public function flip(): Buffer;
+    public function flip(): BufferInterface;
 
     /**
      * @param BufferInterface $other

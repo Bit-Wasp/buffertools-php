@@ -22,7 +22,7 @@ class VarString extends AbstractType
     public function __construct(VarInt $varInt)
     {
         $this->varint = $varInt;
-        parent::__construct($varInt->getMath(), $varInt->getByteOrder());
+        parent::__construct($varInt->getByteOrder());
     }
 
     /**
@@ -55,7 +55,7 @@ class VarString extends AbstractType
             throw new ParserOutOfRange("Insufficient data remaining for VarString");
         }
 
-        if ($this->varint->getMath()->cmp(gmp_init($length, 10), gmp_init(0, 10)) == 0) {
+        if (gmp_cmp(gmp_init($length, 10), gmp_init(0, 10)) == 0) {
             return new Buffer();
         }
 

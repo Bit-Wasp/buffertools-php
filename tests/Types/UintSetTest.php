@@ -16,7 +16,6 @@ use BitWasp\Buffertools\Types\Uint256;
 use BitWasp\Buffertools\Buffer;
 use BitWasp\Buffertools\Buffertools;
 use BitWasp\Buffertools\Parser;
-use Mdanter\Ecc\EccFactory;
 
 class UintSetTest extends BinaryTest
 {
@@ -25,13 +24,12 @@ class UintSetTest extends BinaryTest
      * @param $bitSize
      * @return array
      */
-    private function generateSizeBasedTests($bitSize, $byteOrder)
+    private function generateSizeBasedTests(int $bitSize, int $byteOrder)
     {
-        $math = EccFactory::getAdapter();
         $halfPos = gmp_strval(gmp_init(str_pad('7', $bitSize / 4, 'f', STR_PAD_RIGHT), 16), 10);
         $maxPos = gmp_strval(gmp_init(str_pad('', $bitSize / 4, 'f', STR_PAD_RIGHT), 16), 10);
 
-        $test = function ($integer) use ($bitSize, $math, $byteOrder) {
+        $test = function ($integer) use ($bitSize, $byteOrder) {
             $hex = str_pad(gmp_strval(gmp_init($integer, 10), 16), $bitSize / 4, '0', STR_PAD_LEFT);
 
             if ($byteOrder == ByteOrder::LE) {
@@ -53,35 +51,33 @@ class UintSetTest extends BinaryTest
     }
 
     /**
-     * @param $math
      * @return UintInterface[]
      */
-    public function getUintClasses($math)
+    public function getUintClasses(): array
     {
         return [
-            new Uint8($math),
-            new Uint16($math),
-            new Uint32($math),
-            new Uint64($math),
-            new Uint128($math),
-            new Uint256($math),
-            new Uint8($math, ByteOrder::LE),
-            new Uint16($math, ByteOrder::LE),
-            new Uint32($math, ByteOrder::LE),
-            new Uint64($math, ByteOrder::LE),
-            new Uint128($math, ByteOrder::LE),
-            new Uint256($math, ByteOrder::LE),
+            new Uint8(),
+            new Uint16(),
+            new Uint32(),
+            new Uint64(),
+            new Uint128(),
+            new Uint256(),
+            new Uint8(ByteOrder::LE),
+            new Uint16(ByteOrder::LE),
+            new Uint32(ByteOrder::LE),
+            new Uint64(ByteOrder::LE),
+            new Uint128(ByteOrder::LE),
+            new Uint256(ByteOrder::LE),
         ];
     }
 
     /**
      * @return array
      */
-    public function getAllTests()
+    public function getAllTests(): array
     {
-        $math = EccFactory::getAdapter();
         $vectors = [];
-        foreach ($this->getUintClasses($math) as $val) {
+        foreach ($this->getUintClasses() as $val) {
             $order = $val->getByteOrder();
             foreach ($this->generateSizeBasedTests($val->getBitSize(), $order) as $t) {
                 $vectors[] = array_merge([$val], $t);
@@ -95,7 +91,7 @@ class UintSetTest extends BinaryTest
      * @param $int
      * @param $eHex
      */
-    public function testUint(UintInterface $comp, $int, $eHex)
+    public function testUint(UintInterface $comp, $int, string $eHex)
     {
         $binary = $comp->write($int);
         $this->assertEquals($eHex, str_pad(bin2hex($binary), $comp->getBitSize() / 4, '0', STR_PAD_LEFT));
@@ -111,8 +107,7 @@ class UintSetTest extends BinaryTest
      */
     public function testUintInvalidOrder()
     {
-        $math = EccFactory::getAdapter();
-        new Uint8($math, 2);
+        new Uint8(2);
     }
 
     /**
@@ -121,8 +116,7 @@ class UintSetTest extends BinaryTest
      */
     public function testInvalidFlipLength()
     {
-        $math = EccFactory::getAdapter();
-        $u = new Uint8($math, 1);
+        $u = new Uint8(1);
         $u->flipBits('0');
     }
 }

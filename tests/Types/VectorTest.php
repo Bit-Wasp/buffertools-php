@@ -9,14 +9,12 @@ use BitWasp\Buffertools\Types\VarInt;
 use BitWasp\Buffertools\Types\Vector;
 use BitWasp\Buffertools\Buffer;
 use BitWasp\Buffertools\Parser;
-use Mdanter\Ecc\EccFactory;
 
 class VectorTest extends BinaryTest
 {
     public function testVector()
     {
-        $math = EccFactory::getAdapter();
-        $varint = new VarInt($math);
+        $varint = new VarInt();
         $vector = new Vector(
             $varint,
             function () {
@@ -35,8 +33,7 @@ class VectorTest extends BinaryTest
      */
     public function testWriteInvalid()
     {
-        $math = EccFactory::getAdapter();
-        $varint = new VarInt($math);
+        $varint = new VarInt();
         $vector = new Vector(
             $varint,
             function () {
@@ -49,8 +46,7 @@ class VectorTest extends BinaryTest
 
     public function testReadVector()
     {
-        $math = EccFactory::getAdapter();
-        $varint = new VarInt($math);
+        $varint = new VarInt();
         $vector = new Vector(
             $varint,
             function (Parser $parser) {

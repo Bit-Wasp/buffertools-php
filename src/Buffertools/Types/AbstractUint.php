@@ -11,12 +11,11 @@ use Mdanter\Ecc\Math\GmpMathInterface;
 abstract class AbstractUint extends AbstractType implements UintInterface
 {
     /**
-     * @param GmpMathInterface     $math
-     * @param int                  $byteOrder
+     * @param int $byteOrder
      */
-    public function __construct(GmpMathInterface $math, int $byteOrder = ByteOrder::BE)
+    public function __construct(int $byteOrder = ByteOrder::BE)
     {
-        parent::__construct($math, $byteOrder);
+        parent::__construct($byteOrder);
     }
 
     /**

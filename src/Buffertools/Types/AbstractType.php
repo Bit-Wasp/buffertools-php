@@ -5,31 +5,23 @@ declare(strict_types=1);
 namespace BitWasp\Buffertools\Types;
 
 use BitWasp\Buffertools\ByteOrder;
-use Mdanter\Ecc\Math\GmpMathInterface;
 
 abstract class AbstractType implements TypeInterface
 {
-    /**
-     * @var GmpMathInterface
-     */
-    private $math;
-
     /**
      * @var
      */
     private $byteOrder;
 
     /**
-     * @param GmpMathInterface     $math
      * @param int                  $byteOrder
      */
-    public function __construct(GmpMathInterface $math, int $byteOrder = ByteOrder::BE)
+    public function __construct(int $byteOrder = ByteOrder::BE)
     {
         if (false === in_array($byteOrder, [ByteOrder::BE, ByteOrder::LE])) {
             throw new \InvalidArgumentException('Must pass valid flag for endianness');
         }
 
-        $this->math = $math;
         $this->byteOrder = $byteOrder;
     }
 
@@ -47,14 +39,6 @@ abstract class AbstractType implements TypeInterface
     public function isBigEndian(): bool
     {
         return $this->getByteOrder() == ByteOrder::BE;
-    }
-
-    /**
-     * @return GmpMathInterface
-     */
-    public function getMath(): GmpMathInterface
-    {
-        return $this->math;
     }
 
     /**

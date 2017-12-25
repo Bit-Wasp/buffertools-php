@@ -7,7 +7,6 @@ namespace BitWasp\Buffertools\Tests;
 use BitWasp\Buffertools\TemplateFactory;
 use BitWasp\Buffertools\Types\VarInt;
 use BitWasp\Buffertools\Types\VarString;
-use Mdanter\Ecc\EccFactory;
 
 class TemplateFactoryTest extends BinaryTest
 {
@@ -49,7 +48,6 @@ class TemplateFactoryTest extends BinaryTest
      */
     public function testTemplateUint($function, $eClass)
     {
-        $math = EccFactory::getAdapter();
         $factory = new TemplateFactory(null);
         $factory->$function();
         $template = $factory->getTemplate();
@@ -60,7 +58,6 @@ class TemplateFactoryTest extends BinaryTest
 
     public function testVector()
     {
-        $math = EccFactory::getAdapter();
         $factory = new TemplateFactory(null);
         $factory->vector(
             function () {

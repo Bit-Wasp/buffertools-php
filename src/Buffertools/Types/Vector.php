@@ -26,7 +26,7 @@ class Vector extends AbstractType
     {
         $this->varint = $varInt;
         $this->readFxn = $readFunction;
-        parent::__construct($varInt->getMath(), $varInt->getByteOrder());
+        parent::__construct($varInt->getByteOrder());
     }
 
     /**

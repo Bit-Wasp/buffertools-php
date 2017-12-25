@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace BitWasp\Buffertools\Tests\Util;
 
 use \BitWasp\Buffertools\Buffer;
-use Mdanter\Ecc\EccFactory;
+use PHPUnit\Framework\TestCase;
 
-class BufferTest extends \PHPUnit_Framework_TestCase
+class BufferTest extends TestCase
 {
     public function testBufferDebug()
     {
@@ -73,7 +73,7 @@ class BufferTest extends \PHPUnit_Framework_TestCase
     public function testSerialize()
     {
         $hex = '41414141';
-        $dec = EccFactory::getAdapter()->hexDec($hex);
+        $dec = gmp_strval(gmp_init($hex, 16), 10);
         $bin = pack("H*", $hex);
         $buffer = Buffer::hex($hex);
 
@@ -98,21 +98,19 @@ class BufferTest extends \PHPUnit_Framework_TestCase
 
     public function getIntVectors()
     {
-        $math = EccFactory::getAdapter();
-
         return array(
-            array('1',  1,      '01', $math),
-            array('1',  null,   '01', $math),
-            array('20', 1,      '14', $math)
+            array('1',  1,      '01'),
+            array('1',  null,   '01'),
+            array('20', 1,      '14')
         );
     }
 
     /**
      * @dataProvider getIntVectors
      */
-    public function testIntConstruct($int, $size, $expectedHex, $math)
+    public function testIntConstruct($int, $size, string $expectedHex)
     {
-        $buffer = Buffer::int($int, $size, $math);
+        $buffer = Buffer::int($int, $size);
         $this->assertEquals($expectedHex, $buffer->getHex());
     }
 
