@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace BitWasp\Buffertools;
+namespace BitWasp\Buffertools\Tests;
 
+use BitWasp\Buffertools\Buffer;
+use BitWasp\Buffertools\Buffertools;
 use PHPUnit\Framework\TestCase;
 
 class BuffertoolsTest extends TestCase

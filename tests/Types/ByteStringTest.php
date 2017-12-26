@@ -28,7 +28,7 @@ class ByteStringTest extends BinaryTest
     /**
      * @dataProvider getVectors
      * @param int $size
-     * @param int $string
+     * @param string $string
      */
     public function testByteString(int $size, string $string)
     {
@@ -46,7 +46,7 @@ class ByteStringTest extends BinaryTest
     /**
      * @dataProvider getVectors
      * @param int $size
-     * @param int $string
+     * @param string $string
      */
     public function testByteStringLe(int $size, string $string)
     {

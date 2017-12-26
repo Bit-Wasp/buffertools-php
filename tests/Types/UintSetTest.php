@@ -21,7 +21,8 @@ class UintSetTest extends BinaryTest
 {
 
     /**
-     * @param $bitSize
+     * @param int $bitSize
+     * @param int $byteOrder
      * @return array
      */
     private function generateSizeBasedTests(int $bitSize, int $byteOrder)
@@ -88,8 +89,9 @@ class UintSetTest extends BinaryTest
 
     /**
      * @dataProvider getAllTests
-     * @param $int
-     * @param $eHex
+     * @param UintInterface $comp
+     * @param int|string $int
+     * @param string $eHex
      */
     public function testUint(UintInterface $comp, $int, string $eHex)
     {

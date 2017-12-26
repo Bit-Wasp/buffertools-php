@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BitWasp\Buffertools\Tests\Util;
+namespace BitWasp\Buffertools\Tests;
 
 use \BitWasp\Buffertools\Buffer;
 use PHPUnit\Framework\TestCase;
