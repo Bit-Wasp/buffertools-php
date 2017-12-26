@@ -53,7 +53,7 @@ class Buffer implements BufferInterface
      * Create a new buffer from a hex string
      *
      * @param string $hexString
-     * @param integer $byteSize
+     * @param int|null $byteSize
      * @return Buffer
      * @throws \Exception
      */
@@ -88,7 +88,7 @@ class Buffer implements BufferInterface
     }
 
     /**
-     * @param integer      $start
+     * @param int      $start
      * @param integer|null $end
      * @return BufferInterface
      * @throws \Exception
@@ -173,7 +173,7 @@ class Buffer implements BufferInterface
     /**
      * @return int|string
      */
-    public function getInt(): string
+    public function getInt()
     {
         return gmp_strval($this->getGmp(), 10);
     }

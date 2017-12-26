@@ -29,7 +29,7 @@ interface TypeInterface
     public function read(Parser $parser);
 
     /**
-     * @return int|string
+     * @return int
      */
     public function getByteOrder(): int;
 }

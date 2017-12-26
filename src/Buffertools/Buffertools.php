@@ -66,7 +66,7 @@ class Buffertools
     /**
      * @param BufferInterface $buffer1
      * @param BufferInterface $buffer2
-     * @param int    $size
+     * @param int|null        $size
      * @return BufferInterface
      */
     public static function concat(BufferInterface $buffer1, BufferInterface $buffer2, int $size = null)
@@ -88,7 +88,7 @@ class Buffertools
      * and which optionally type-hint the items in the array.
      *
      * @param array $items
-     * @param callable $convertToBuffer
+     * @param callable|null $convertToBuffer
      * @return array
      */
     public static function sort(array $items, callable $convertToBuffer = null): array

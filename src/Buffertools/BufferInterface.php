@@ -7,8 +7,8 @@ namespace BitWasp\Buffertools;
 interface BufferInterface
 {
     /**
-     * @param integer $start
-     * @param integer|null $end
+     * @param int              $start
+     * @param int|null         $end
      * @return BufferInterface
      * @throws \Exception
      */
@@ -41,7 +41,7 @@ interface BufferInterface
     /**
      * @return int|string
      */
-    public function getInt(): string;
+    public function getInt();
 
     /**
      * @return \GMP

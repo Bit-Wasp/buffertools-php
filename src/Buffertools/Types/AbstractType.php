@@ -9,7 +9,7 @@ use BitWasp\Buffertools\ByteOrder;
 abstract class AbstractType implements TypeInterface
 {
     /**
-     * @var
+     * @var int
      */
     private $byteOrder;
 
