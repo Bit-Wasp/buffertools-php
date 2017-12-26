@@ -6,7 +6,6 @@ namespace BitWasp\Buffertools\Types;
 
 use BitWasp\Buffertools\ByteOrder;
 use BitWasp\Buffertools\Parser;
-use Mdanter\Ecc\Math\GmpMathInterface;
 
 abstract class AbstractUint extends AbstractType implements UintInterface
 {
@@ -19,7 +18,7 @@ abstract class AbstractUint extends AbstractType implements UintInterface
     }
 
     /**
-     * @param $integer
+     * @param int|string $integer - decimal integer
      * @return string
      */
     public function writeBits($integer): string
@@ -38,7 +37,7 @@ abstract class AbstractUint extends AbstractType implements UintInterface
      * @throws \BitWasp\Buffertools\Exceptions\ParserOutOfRange
      * @throws \Exception
      */
-    public function readBits(Parser $parser): string
+    public function readBits(Parser $parser)
     {
         $bitSize = $this->getBitSize();
         $bits = str_pad(

@@ -17,10 +17,10 @@ class ByteString extends AbstractType
     private $length;
 
     /**
-     * @param int|string           $length
-     * @param int|string           $byteOrder
+     * @param int           $length
+     * @param int           $byteOrder
      */
-    public function __construct(int $length, $byteOrder = ByteOrder::BE)
+    public function __construct(int $length, int $byteOrder = ByteOrder::BE)
     {
         $this->length = $length;
         parent::__construct($byteOrder);

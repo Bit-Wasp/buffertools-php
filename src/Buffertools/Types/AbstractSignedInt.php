@@ -38,7 +38,7 @@ abstract class AbstractSignedInt extends AbstractType implements SignedIntInterf
      * @throws \BitWasp\Buffertools\Exceptions\ParserOutOfRange
      * @throws \Exception
      */
-    public function readBits(Parser $parser): string
+    public function readBits(Parser $parser)
     {
         $bitSize = $this->getBitSize();
         $byteSize = $bitSize / 8;
