@@ -3,7 +3,7 @@
 This library provides a `Buffer` and `Parser` class to make dealing with binary data in PHP easier.
 `Templates` extend this by offering a read/write interface for larger serialized structures. 
 
-[![Build Status](https://travis-ci.org/Bit-Wasp/buffertools-php.svg)](https://travis-ci.org/Bit-Wasp/buffertools-php)
+[![Build Status](https://travis-ci.org/Bit-Wasp/buffertools-php.svg?branch=master)](https://travis-ci.org/Bit-Wasp/buffertools-php)
 [![Code Coverage](https://scrutinizer-ci.com/g/bit-wasp/buffertools-php/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/bit-wasp/buffertools-php/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Bit-Wasp/buffertools-php/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Bit-Wasp/buffertools-php/?branch=master)
 
