@@ -12,7 +12,7 @@ class TemplateFactory
     private $template;
 
     /**
-     * @var TypeFactory
+     * @var TypeFactoryInterface
      */
     private $types;
 
