@@ -87,7 +87,7 @@ abstract class AbstractSignedInt extends AbstractType implements SignedIntInterf
      * {@inheritdoc}
      * @see \BitWasp\Buffertools\Types\TypeInterface::read()
      */
-    public function read(Parser $binary): string
+    public function read(Parser $binary)
     {
         return $this->readBits($binary);
     }
