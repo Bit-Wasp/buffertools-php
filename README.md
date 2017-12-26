@@ -6,6 +6,9 @@ This library provides a `Buffer` and `Parser` class to make dealing with binary 
 [![Build Status](https://travis-ci.org/Bit-Wasp/buffertools-php.svg?branch=master)](https://travis-ci.org/Bit-Wasp/buffertools-php)
 [![Code Coverage](https://scrutinizer-ci.com/g/bit-wasp/buffertools-php/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/bit-wasp/buffertools-php/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Bit-Wasp/buffertools-php/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Bit-Wasp/buffertools-php/?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/bitwasp/buffertools/v/stable)](https://packagist.org/packages/bitwasp/buffertools)
+[![Total Downloads](https://poser.pugx.org/bitwasp/buffertools/downloads)](https://packagist.org/packages/bitwasp/buffertools)
+[![License](https://poser.pugx.org/bitwasp/buffertools/license)](https://packagist.org/packages/bitwasp/buffertools)
 
 ## Requirements:
 
