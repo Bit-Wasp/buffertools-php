@@ -37,7 +37,7 @@ This library provides a `Buffer` and `Parser` class to make dealing with binary 
  In most cases, the interface offered by Parser should not be used directly. 
  Instead, Templates expose read/write access to larger serialized structures.
  
- ### Using Parser to read binary data
+ ### Using Parser to read binary data:
 ```php
     use BitWasp\Buffertools\Buffer;
     use BitWasp\Buffertools\Parser;
@@ -99,3 +99,4 @@ $p = (object) [
 
 print_r($p);
 ```
+
