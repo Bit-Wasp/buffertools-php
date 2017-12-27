@@ -13,8 +13,10 @@ use BitWasp\Buffertools\Types\SignedIntInterface;
 
 class IntSetTest extends BinaryTest
 {
-
-    public function getIntSetVectors()
+    /**
+     * @return array
+     */
+    public function getIntSetVectors(): array
     {
         $int32_le = new Int32(ByteOrder::LE);
         $int32_be = new Int32(ByteOrder::BE);
