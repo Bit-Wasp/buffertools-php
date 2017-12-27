@@ -12,24 +12,36 @@ use BitWasp\Buffertools\Parser;
 
 class VarStringTest extends BinaryTest
 {
-
-    public function testGetVarString()
+    /**
+     * @return array
+     */
+    public function getSampleVarStrings(): array
     {
-        $strings = array(
+        return array_map(function (string $value) {
+            return [$value];
+        }, [
             '',
             '00',
             '00010203040506070809',
             '00010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102030405060708090001020304050607080900010203040506070809000102',
-        );
+        ]);
+    }
 
+    /**
+     * @param string $input
+     * @throws \BitWasp\Buffertools\Exceptions\ParserOutOfRange
+     * @throws \Exception
+     * @dataProvider getSampleVarStrings
+     */
+    public function testGetVarString(string $input)
+    {
         $varstring = new VarString(new VarInt());
+        $binary = $varstring->write(Buffer::hex($input));
 
-        foreach ($strings as $string) {
-            $binary = $varstring->write(Buffer::hex($string));
-            $parser = new Parser(new Buffer($binary));
-            $original = $varstring->read($parser);
-            $this->assertSame($string, $original->getHex());
-        }
+        $parser = new Parser(new Buffer($binary));
+        $original = $varstring->read($parser);
+
+        $this->assertSame($input, $original->getHex());
     }
 
     /**
