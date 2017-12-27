@@ -22,7 +22,10 @@ use BitWasp\Buffertools\Types\Int256;
 
 class TypeFactoryTest extends BinaryTest
 {
-    public function getTypeVectors()
+    /**
+     * @return array
+     */
+    public function getTypeVectors(): array
     {
         $vectors = [];
         $addPlainAndLe = function ($fxnName, $class, array $params = []) use (& $vectors) {
@@ -46,7 +49,10 @@ class TypeFactoryTest extends BinaryTest
         return $vectors;
     }
 
-    public function getTypeFactoryVectors()
+    /**
+     * @return array
+     */
+    public function getTypeFactoryVectors(): array
     {
         $vectors = [];
         foreach ([new TypeFactory(), new CachingTypeFactory()] as $factory) {
