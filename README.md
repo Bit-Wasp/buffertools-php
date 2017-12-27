@@ -23,83 +23,26 @@ This library provides a `Buffer` and `Parser` class to make dealing with binary 
 ## Examples 
  
  Buffer's are immutable classes to store binary data. 
- BufferHex will convert the provided data to binary, as will BufferInt. 
+ Buffer::hex can be used to initialize from hex
+ Buffer::int can be used to initialize from a positive decimal integer (int|string)
+   
  Buffer's main methods are:
   - getBinary()
   - getHex()
   - getInt()
-  
+
  Parser will read Buffers. 
  Parser's main methods are: 
   - readBytes()
-  - getArray()
-  - getVarInt()
-  - getString()
   - writeBytes()
+  - readArray()
+  - writeArray()
   
  In most cases, the interface offered by Parser should not be used directly. 
  Instead, Templates expose read/write access to larger serialized structures.
  
- ### Using Parser to read binary data:
-```php
-    use BitWasp\Buffertools\Buffer;
-    use BitWasp\Buffertools\Parser;
-    
-    // Parsers read Buffers
-    $buffer = new Buffer('abc');
-    $parser = new Parser($buffer);
-    
-    // Call readBytes to unpack the data
-    /** @var Buffer[] $set */
-    $set = [
-        $parser->readBytes(1),
-        $parser->readBytes(1),
-        $parser->readBytes(1)
-    ];
-    
-    foreach ($set as $item) {
-        echo $item->getBinary() . PHP_EOL;
-    }
-```
-
-### Using Templates
-```php
-    
-use BitWasp\Buffertools\Buffer;
-use BitWasp\Buffertools\Parser;
-use BitWasp\Buffertools\TemplateFactory;
-
-$structure = (object) [
-    'hash' => hash('sha256', 'abc'),
-    'message_id' => 9123,
-    'message' => "Hi there! What's up?"
-];
-
-// Templates are read/write
-$template = (new TemplateFactory)
-    ->bytestring(32)
-    ->uint32()
-    ->varstring()
-    ->getTemplate();
-
-// Write the structure
-$binary = $template->write([
-    Buffer::hex($structure->hash),
-    $structure->message_id,
-    new Buffer($structure->message)
-]);
-
-echo $binary->getHex() . "\n";
-
-// Use the template to read resulting Buffer
-$parsed = $template->parse(new Parser($binary));
-
-$p = (object) [
-    'hash' => $parsed[0]->getHex(),
-    'message_id' => $parsed[1],
-    'message' => $parsed[2]->getBinary()
-];
-
-print_r($p);
-```
-
+ - [Example 1: Using buffer to wrap binary data](./examples/usingBuffer.php) 
+ - [Example 2: Using parser to extract binary data](./examples/usingParser.php) 
+ - [Example 3: Using templates to read multiple elements from a parser](./examples/usingTemplates.php) 
+ - [Example 4: Using templates to read/write structured messages](./examples/usingTemplates2.php) 
+  

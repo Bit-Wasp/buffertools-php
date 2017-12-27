@@ -1,6 +1,6 @@
 <?php
 
-require "../vendor/autoload.php";
+require __DIR__ . "/../vendor/autoload.php";
 
 use BitWasp\Buffertools\Buffer;
 use BitWasp\Buffertools\Parser;

@@ -18,6 +18,7 @@ script:
   - php vendor/bin/phpunit
   - vendor/bin/phpstan analyze -l 4 src tests examples
   - php vendor/bin/phpcs -n --standard=PSR1,PSR2 --report=full src/ tests/ examples/
+  - ./validate_examples.sh
 
 after_success:
   - wget https://scrutinizer-ci.com/ocular.phar
