@@ -96,19 +96,25 @@ class BufferTest extends TestCase
         $this->assertEquals(4, Buffer::hex('41', 4)->getSize());
     }
 
-    public function getIntVectors()
+    /**
+     * @return array
+     */
+    public function getIntVectors(): array
     {
-        return array(
-            array('1',  1,      '01'),
-            array('1',  null,   '01'),
-            array('20', 1,      '14')
-        );
+        return [
+            ['1',  '01', 1,   ],
+            ['1',  '01', null,],
+            ['20', '14', 1,   ]
+        ];
     }
 
     /**
      * @dataProvider getIntVectors
+     * @param int|string $int
+     * @param int|null $size
+     * @param string $expectedHex
      */
-    public function testIntConstruct($int, $size, string $expectedHex)
+    public function testIntConstruct($int, string $expectedHex, int $size = null)
     {
         $buffer = Buffer::int($int, $size);
         $this->assertEquals($expectedHex, $buffer->getHex());

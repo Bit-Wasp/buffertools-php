@@ -174,7 +174,6 @@ class BuffertoolsTest extends TestCase
         $this->assertSame($flip, chr(0x08) . chr(0x07) . chr(0x06) . chr(0x05) . chr(0x04) . chr(0x03) . chr(0x02) . chr(0x01));
     }
 
-
     public function testConcat()
     {
         $a = Buffer::hex("1100");
