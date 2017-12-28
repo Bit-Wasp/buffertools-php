@@ -26,25 +26,19 @@ class Parser
     /**
      * Instantiate class, optionally taking Buffer or HEX.
      *
-     * @param null|string|BufferInterface $input
+     * @param BufferInterface $input
      */
-    public function __construct($input = null)
+    public function __construct(BufferInterface $input = null)
     {
-        if (null === $input) {
-            $input = '';
-        }
-
-        if (is_string($input)) {
-            $bin = Buffer::hex($input, null)->getBinary();
-        } elseif ($input instanceof BufferInterface) {
-            $bin = $input->getBinary();
-        } else {
-            throw new \InvalidArgumentException("Invalid argument to Parser");
-        }
-
-        $this->string = $bin;
         $this->position = 0;
-        $this->size = strlen($this->string);
+
+        if (null === $input) {
+            $this->string = '';
+            $this->size = 0;
+        } else {
+            $this->string = $input->getBinary();
+            $this->size = $input->getSize();
+        }
     }
 
     /**
