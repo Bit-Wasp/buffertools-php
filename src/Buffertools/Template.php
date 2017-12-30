@@ -63,7 +63,7 @@ class Template implements \Countable
      */
     public function parse(Parser $parser): array
     {
-        if (0 == count($this->template)) {
+        if (empty($this->template)) {
             throw new \RuntimeException('No items in template');
         }
 
