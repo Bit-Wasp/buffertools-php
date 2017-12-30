@@ -42,7 +42,7 @@ class ParserTest extends TestCase
         $bytes = Buffer::hex('41424344');
 
         $parser = new Parser();
-        $parser->writeBytes(4, $bytes);
+        $parser->appendBuffer($bytes);
         $this->assertTrue($parser->getBuffer()->equals($bytes));
     }
 
@@ -50,7 +50,7 @@ class ParserTest extends TestCase
     {
         $bytes = Buffer::hex('41424344');
         $parser = new Parser();
-        $parser->writeBytes(4, $bytes, true);
+        $parser->appendBuffer($bytes, true);
 
         $this->assertEquals('44434241', $parser->getBuffer()->getHex());
     }
@@ -58,14 +58,14 @@ class ParserTest extends TestCase
     public function testWriteBytesPadded()
     {
         $parser = new Parser();
-        $parser->writeBytes(4, Buffer::hex('34'));
+        $parser->appendBuffer(Buffer::hex('34'));
         $this->assertEquals("00000034", $parser->getBuffer()->getHex());
     }
 
     public function testWriteBytesFlipPadded()
     {
         $parser = new Parser();
-        $parser->writeBytes(4, Buffer::hex('34'), true);
+        $parser->appendBuffer(Buffer::hex('34', 4), true);
         $this->assertEquals("34000000", $parser->getBuffer()->getHex());
     }
 
