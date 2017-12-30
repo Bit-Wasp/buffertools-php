@@ -11,7 +11,7 @@ class Parser
     /**
      * @var string
      */
-    private $string;
+    private $string = '';
 
     /**
      * @var int
@@ -30,12 +30,7 @@ class Parser
      */
     public function __construct(BufferInterface $input = null)
     {
-        $this->position = 0;
-
-        if (null === $input) {
-            $this->string = '';
-            $this->size = 0;
-        } else {
+        if ($input instanceof BufferInterface) {
             $this->string = $input->getBinary();
             $this->size = $input->getSize();
         }
