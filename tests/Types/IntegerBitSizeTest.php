@@ -2,7 +2,6 @@
 
 namespace BitWasp\Buffertools\Tests\Types;
 
-
 use BitWasp\Buffertools\Tests\BinaryTest;
 use BitWasp\Buffertools\Types\Int128;
 use BitWasp\Buffertools\Types\Int16;
@@ -44,7 +43,8 @@ class IntegerBitSizeTest extends BinaryTest
      * @param string $integerClass
      * @param int $bitSize
      */
-    public function testBitSize(string $integerClass, int $bitSize) {
+    public function testBitSize(string $integerClass, int $bitSize)
+    {
         /** @var UintInterface|SignedIntInterface $integer */
         $integer = new $integerClass();
         $this->assertEquals($bitSize, $integer->getBitSize());
