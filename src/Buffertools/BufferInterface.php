@@ -34,9 +34,10 @@ interface BufferInterface
     public function getBinary(): string;
 
     /**
+     * @param bool $prefix
      * @return string
      */
-    public function getHex(): string;
+    public function getHex(bool $prefix = false): string;
 
     /**
      * @return int|string

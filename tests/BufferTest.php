@@ -61,6 +61,16 @@ class BufferTest extends TestCase
         $this->assertNotEmpty($buffer->getBinary());
     }
 
+    public function testCreateHexBufferWithPrefix()
+    {
+        $hex = '0x41414141';
+        $buffer = Buffer::hex($hex);
+        $this->assertInstanceOf(Buffer::class, $buffer);
+        $this->assertNotEmpty($buffer->getBinary());
+        $this->assertEquals("41414141", $buffer->getHex());
+        $this->assertEquals("0x41414141", $buffer->getHex(true));
+    }
+
     public function testPadding()
     {
         $buffer = Buffer::hex('41414141', 6);
@@ -68,6 +78,16 @@ class BufferTest extends TestCase
         $this->assertEquals(4, $buffer->getInternalSize());
         $this->assertEquals(6, $buffer->getSize());
         $this->assertEquals("000041414141", $buffer->getHex());
+    }
+
+    public function testPaddingWithPrefix()
+    {
+        $hex = '0x41414141';
+        $buffer = Buffer::hex($hex, 6);
+        $this->assertEquals(4, $buffer->getInternalSize());
+        $this->assertEquals(6, $buffer->getSize());
+        $this->assertEquals("000041414141", $buffer->getHex());
+        $this->assertEquals("0x000041414141", $buffer->getHex(true));
     }
 
     public function testSerialize()
