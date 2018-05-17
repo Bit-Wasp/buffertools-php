@@ -29,14 +29,15 @@ interface BufferInterface
     public function getInternalSize(): int;
 
     /**
-     * @return string
+     * @return stringt
      */
     public function getBinary(): string;
 
     /**
+     * @param bool $prefix
      * @return string
      */
-    public function getHex(): string;
+    public function getHex(bool $prefix = false): string;
 
     /**
      * @return int|string

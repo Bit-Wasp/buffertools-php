@@ -59,6 +59,10 @@ class Buffer implements BufferInterface
      */
     public static function hex(string $hexString = '', int $byteSize = null): BufferInterface
     {
+        if (strlen($hexString) >= 2 && substr($hexString, 0, 2) === '0x') {
+            $hexString = substr($hexString, 2);
+        }
+
         if (strlen($hexString) > 0 && !ctype_xdigit($hexString)) {
             throw new \InvalidArgumentException('Buffer::hex: non-hex character passed');
         }
@@ -154,11 +158,12 @@ class Buffer implements BufferInterface
     }
 
     /**
+     * @param bool $prefix
      * @return string
      */
-    public function getHex(): string
+    public function getHex(bool $prefix = false): string
     {
-        return unpack("H*", $this->getBinary())[1];
+        return ($prefix ? '0x' : '') . unpack("H*", $this->getBinary())[1];
     }
 
     /**
