@@ -29,7 +29,7 @@ interface BufferInterface
     public function getInternalSize(): int;
 
     /**
-     * @return stringt
+     * @return string
      */
     public function getBinary(): string;
 
