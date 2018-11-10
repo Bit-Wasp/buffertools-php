@@ -27,22 +27,6 @@ class ByteString extends AbstractType
     }
 
     /**
-     * @param BufferInterface $string
-     * @return string
-     */
-    public function writeBits(BufferInterface $string): string
-    {
-        $bits = str_pad(
-            gmp_strval(gmp_init($string->getHex(), 16), 2),
-            $this->length * 8,
-            '0',
-            STR_PAD_LEFT
-        );
-
-        return $bits;
-    }
-
-    /**
      * @param Buffer $string
      * @return string
      * @throws \Exception
@@ -53,32 +37,11 @@ class ByteString extends AbstractType
             throw new \InvalidArgumentException('FixedLengthString::write() must be passed a Buffer');
         }
 
-        $bits = $this->isBigEndian()
-            ? $this->writeBits($string)
-            : $this->flipBits($this->writeBits($string));
-
-        $hex = str_pad(
-            gmp_strval(gmp_init($bits, 2), 16),
-            $this->length * 2,
-            '0',
-            STR_PAD_LEFT
-        );
-
-        return pack("H*", $hex);
-    }
-
-    /**
-     * @param BufferInterface $buffer
-     * @return string
-     */
-    public function readBits(BufferInterface $buffer): string
-    {
-        return str_pad(
-            gmp_strval(gmp_init($buffer->getHex(), 16), 2),
-            $this->length * 8,
-            '0',
-            STR_PAD_LEFT
-        );
+        $data = new Buffer($string->getBinary(), $this->length);
+        if (!$this->isBigEndian()) {
+            $data = $data->flip();
+        }
+        return $data->getBinary();
     }
 
     /**
@@ -88,19 +51,11 @@ class ByteString extends AbstractType
      */
     public function read(Parser $parser): BufferInterface
     {
-        $bits = $this->readBits($parser->readBytes($this->length));
+        $data = $parser->readBytes($this->length);
         if (!$this->isBigEndian()) {
-            $bits = $this->flipBits($bits);
+            $data = $data->flip();
         }
 
-        return Buffer::hex(
-            str_pad(
-                gmp_strval(gmp_init($bits, 2), 16),
-                $this->length * 2,
-                '0',
-                STR_PAD_LEFT
-            ),
-            $this->length
-        );
+        return $data;
     }
 }
