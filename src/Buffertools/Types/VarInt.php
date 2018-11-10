@@ -10,61 +10,38 @@ use BitWasp\Buffertools\Parser;
 class VarInt extends AbstractType
 {
     /**
-     * @var array
-     */
-    private $sizeInfo = [];
-
-    /**
-     * @param int $byteOrder
-     */
-    public function __construct(int $byteOrder = ByteOrder::BE)
-    {
-        parent::__construct($byteOrder);
-        $two = gmp_init(2, 10);
-        $this->sizeInfo = [
-            [Uint16::class, gmp_pow($two, 16), 0xfd],
-            [Uint32::class, gmp_pow($two, 32), 0xfe],
-            [Uint64::class, gmp_pow($two, 64), 0xff],
-        ];
-    }
-
-    /**
      * @param \GMP $integer
      * @return array
      */
-    public function solveWriteSize(\GMP $integer): array
+    public function solveWriteSize(\GMP $integer)
     {
-        foreach ($this->sizeInfo as $config) {
-            list($uint, $limit, $prefix) = $config;
-            if (gmp_cmp($integer, $limit) < 0) {
-                return [
-                    new $uint(ByteOrder::LE),
-                    $prefix
-                ];
-            }
+        if (gmp_cmp($integer, gmp_pow(gmp_init(2), 16)) < 0) {
+            return [new Uint16(ByteOrder::LE), 0xfd];
+        } else if (gmp_cmp($integer, gmp_pow(gmp_init(2), 32)) < 0) {
+            return [new Uint32(ByteOrder::LE), 0xfe];
+        } else if (gmp_cmp($integer, gmp_pow(gmp_init(2), 64)) < 0) {
+            return [new Uint64(ByteOrder::LE), 0xff];
+        } else {
+            throw new \InvalidArgumentException('Integer too large, exceeds 64 bit');
         }
-
-        throw new \InvalidArgumentException('Integer too large, exceeds 64 bit');
     }
 
     /**
-     * @param int $givenPrefix
+     * @param \GMP $givenPrefix
      * @return UintInterface[]
      * @throws \InvalidArgumentException
      */
-    public function solveReadSize(int $givenPrefix): array
+    public function solveReadSize(\GMP $givenPrefix)
     {
-        foreach ($this->sizeInfo as $config) {
-            $uint = $config[0];
-            $prefix = $config[2];
-            if ($givenPrefix === $prefix) {
-                return [
-                    new $uint(ByteOrder::LE)
-                ];
-            }
+        if (gmp_cmp($givenPrefix, 0xfd) === 0) {
+            return [new Uint16(ByteOrder::LE)];
+        } else if (gmp_cmp($givenPrefix, 0xfe) === 0) {
+            return [new Uint32(ByteOrder::LE)];
+        } else if (gmp_cmp($givenPrefix, 0xff) === 0) {
+            return [new Uint64(ByteOrder::LE)];
         }
 
-        throw new \InvalidArgumentException('Integer too large, exceeds 64 bit');
+        throw new \InvalidArgumentException('Unknown varint prefix');
     }
 
     /**
@@ -73,35 +50,26 @@ class VarInt extends AbstractType
      */
     public function write($integer): string
     {
-        $gmp = gmp_init($integer, 10);
-        $uint8 = new Uint8();
-        if (gmp_cmp($gmp, gmp_init(0xfd, 10)) < 0) {
-            $int = $uint8;
-        } else {
-            list ($int, $prefix) = $this->solveWriteSize($gmp);
-            $prefix = gmp_strval($prefix, 10);
+        $gmpInt = gmp_init($integer, 10);
+        if (gmp_cmp($gmpInt, gmp_init(0xfd, 10)) < 0) {
+            return pack("C", $integer);
         }
-
-        $prefix = isset($prefix) ? $uint8->write($prefix) : '';
-        $bits = $prefix . $int->write($integer);
-
-        return $bits;
+        list ($int, $prefix) = $this->solveWriteSize($gmpInt);
+        return pack("C", $prefix) . $int->write($integer);
     }
 
     /**
      * {@inheritdoc}
      * @see \BitWasp\Buffertools\Types\TypeInterface::read()
      */
-    public function read(Parser $parser): string
+    public function read(Parser $parser)
     {
-        $uint8 = new Uint8();
-        $int = (int) $uint8->readBits($parser);
-
-        if ($int < 0xfd) {
-            return (string) $int;
-        } else {
-            $uint = $this->solveReadSize($int)[0];
-            return $uint->read($parser);
+        $byte = unpack("C", $parser->readBytes(1)->getBinary())[1];
+        if (gmp_init($byte) < 0xfd) {
+            return $byte;
         }
+
+        list ($uint) = $this->solveReadSize(gmp_init($byte, 10));
+        return $uint->read($parser);
     }
 }
