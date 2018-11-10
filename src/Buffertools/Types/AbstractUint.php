@@ -85,8 +85,8 @@ abstract class AbstractUint extends AbstractType implements UintInterface
      * {@inheritdoc}
      * @see \BitWasp\Buffertools\Types\TypeInterface::read()
      */
-    public function read(Parser $binary)
+    public function read(Parser $parser)
     {
-        return $this->readBits($binary);
+        return $this->readBits($parser);
     }
 }
