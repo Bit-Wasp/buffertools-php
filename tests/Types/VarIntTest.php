@@ -22,7 +22,7 @@ class VarIntTest extends BinaryTest
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Integer too large, exceeds 64 bit
+     * @expectedExceptionMessage Unknown varint prefix
      */
     public function testSolveReadTooLong()
     {
