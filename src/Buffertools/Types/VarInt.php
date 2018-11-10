@@ -65,7 +65,7 @@ class VarInt extends AbstractType
     public function read(Parser $parser)
     {
         $byte = unpack("C", $parser->readBytes(1)->getBinary())[1];
-        if (gmp_init($byte) < 0xfd) {
+        if ($byte < 0xfd) {
             return $byte;
         }
 
