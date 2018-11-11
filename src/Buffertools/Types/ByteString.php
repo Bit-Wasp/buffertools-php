@@ -3,6 +3,7 @@
 namespace BitWasp\Buffertools\Types;
 
 use BitWasp\Buffertools\Buffer;
+use BitWasp\Buffertools\BufferInterface;
 use BitWasp\Buffertools\ByteOrder;
 use BitWasp\Buffertools\Parser;
 use Mdanter\Ecc\Math\GmpMathInterface;
@@ -26,14 +27,14 @@ class ByteString extends AbstractType
     }
 
     /**
-     * @param Buffer $string
+     * @param BufferInterface $string
      * @return string
      * @throws \Exception
      */
     public function write($string)
     {
-        if (!($string instanceof Buffer)) {
-            throw new \InvalidArgumentException('FixedLengthString::write() must be passed a Buffer');
+        if (!($string instanceof BufferInterface)) {
+            throw new \InvalidArgumentException('FixedLengthString::write() input must implement BufferInterface');
         }
 
         $data = new Buffer($string->getBinary(), $this->length);
@@ -46,7 +47,7 @@ class ByteString extends AbstractType
 
     /**
      * @param Parser $parser
-     * @return Buffer
+     * @return BufferInterface
      * @throws \BitWasp\Buffertools\Exceptions\ParserOutOfRange
      */
     public function read(Parser $parser)
