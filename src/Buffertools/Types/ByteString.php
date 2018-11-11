@@ -36,8 +36,12 @@ class ByteString extends AbstractType
             throw new \InvalidArgumentException('FixedLengthString::write() must be passed a Buffer');
         }
 
-        $data = $this->isBigEndian() ? $string : $string->flip();
-        return (new Buffer($data->getBinary(), $this->length))->getBinary();
+        $data = new Buffer($string->getBinary(), $this->length);
+        if (!$this->isBigEndian()) {
+            $data = $data->flip();
+        }
+
+        return $data->getBinary();
     }
 
     /**
