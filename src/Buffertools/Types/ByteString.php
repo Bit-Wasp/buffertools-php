@@ -27,14 +27,14 @@ class ByteString extends AbstractType
     }
 
     /**
-     * @param Buffer $string
+     * @param BufferInterface $string
      * @return string
      * @throws \Exception
      */
     public function write($string): string
     {
-        if (!($string instanceof Buffer)) {
-            throw new \InvalidArgumentException('FixedLengthString::write() must be passed a Buffer');
+        if (!($string instanceof BufferInterface)) {
+            throw new \InvalidArgumentException('FixedLengthString::write() input must implement BufferInterface');
         }
 
         $data = new Buffer($string->getBinary(), $this->length);
