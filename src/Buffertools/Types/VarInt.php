@@ -9,9 +9,15 @@ use BitWasp\Buffertools\Parser;
 
 class VarInt extends AbstractType
 {
+    private $formatUint8 = "C";
+    private $formatUint16LE = "v";
+    private $formatUint32LE = "V";
+    private $formatUint64LE = "P";
+
     /**
      * @param \GMP $integer
      * @return array
+     * @deprecated
      */
     public function solveWriteSize(\GMP $integer)
     {
@@ -30,6 +36,7 @@ class VarInt extends AbstractType
      * @param \GMP $givenPrefix
      * @return UintInterface[]
      * @throws \InvalidArgumentException
+     * @deprecated
      */
     public function solveReadSize(\GMP $givenPrefix)
     {
@@ -46,16 +53,24 @@ class VarInt extends AbstractType
 
     /**
      * {@inheritdoc}
-     * @see \BitWasp\Buffertools\Types\TypeInterface::write()
+     * @see \BitWasp\Buffertools\Types\TypeInterface::read()
      */
     public function write($integer): string
     {
-        $gmpInt = gmp_init($integer, 10);
-        if (gmp_cmp($gmpInt, gmp_init(0xfd, 10)) < 0) {
-            return pack("C", $integer);
+        if ($integer < 0xfd) {
+            return pack($this->formatUint8, $integer);
         }
-        list ($int, $prefix) = $this->solveWriteSize($gmpInt);
-        return pack("C", $prefix) . $int->write($integer);
+
+        $gmpInt = gmp_init($integer);
+        if (gmp_cmp($gmpInt, gmp_sub(gmp_pow(2, 16), 1)) <= 0) {
+            return pack("{$this->formatUint8}{$this->formatUint16LE}", 0xfd, $integer);
+        } else if (gmp_cmp($gmpInt, gmp_sub(gmp_pow(2, 32), 1)) <= 0) {
+            return pack("{$this->formatUint8}{$this->formatUint32LE}", 0xfe, $integer);
+        } else if (gmp_cmp($gmpInt, gmp_sub(gmp_pow(2, 63), 1)) <= 0) {
+            return pack("{$this->formatUint8}{$this->formatUint64LE}", 0xff, $integer);
+        }
+
+        throw new \RuntimeException("Unable to serialize varint, exceeds maximum value");
     }
 
     /**
@@ -64,12 +79,16 @@ class VarInt extends AbstractType
      */
     public function read(Parser $parser)
     {
-        $byte = unpack("C", $parser->readBytes(1)->getBinary())[1];
+        $byte = unpack($this->formatUint8, $parser->readBytes(1)->getBinary())[1];
         if ($byte < 0xfd) {
             return $byte;
+        } else if ($byte === 0xfd) {
+            return unpack($this->formatUint16LE, $parser->readBytes(2)->getBinary())[1];
+        } else if ($byte === 0xfe) {
+            return unpack($this->formatUint32LE, $parser->readBytes(4)->getBinary())[1];
+        } else {
+            $uint64 = new Uint64(ByteOrder::LE);
+            return $uint64->read($parser);
         }
-
-        list ($uint) = $this->solveReadSize(gmp_init($byte, 10));
-        return $uint->read($parser);
     }
 }
