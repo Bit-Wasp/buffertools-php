@@ -74,11 +74,22 @@ class Buffer implements BufferInterface
      */
     public static function int($integer, $byteSize = null): BufferInterface
     {
-        if ($integer < 0) {
-            throw new \InvalidArgumentException('Negative integers not supported by Buffer::int. This could be an application error, or you should be using templates.');
+        $gmp = gmp_init($integer, 10);
+        return self::gmp($gmp, $byteSize);
+    }
+
+    /**
+     * @param \GMP $gmp
+     * @return Buffer
+     * @throws \Exception
+     */
+    public static function gmp(\GMP $gmp, $byteSize = null): BufferInterface
+    {
+        if (gmp_sign($gmp) < 0) {
+            throw new \InvalidArgumentException('Negative integers not supported. This could be an application error, or you should be using templates.');
         }
 
-        $hex = gmp_strval(gmp_init($integer, 10), 16);
+        $hex = gmp_strval($gmp, 16);
         if ((mb_strlen($hex) % 2) !== 0) {
             $hex = "0{$hex}";
         }
