@@ -148,6 +148,18 @@ class BufferTest extends TestCase
         Buffer::gmp($gmp);
     }
 
+    public function testAppend()
+    {
+        $a = Buffer::hex('12345678');
+        $b = Buffer::hex('ff030405');
+
+        $a->append($b);
+
+        $this->assertEquals('12345678ff030405', $a->getHex());
+        $this->assertEquals(8, $a->getInternalSize());
+        $this->assertEquals(8, $a->getSize());
+    }
+
     public function testSlice()
     {
         $a = Buffer::hex("11000011");
