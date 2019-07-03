@@ -148,6 +148,14 @@ class BufferTest extends TestCase
         Buffer::gmp($gmp);
     }
 
+    public function testConcat()
+    {
+        $a = Buffer::hex('FABA04');
+        $b = Buffer::hex('DEADBEEF');
+
+        $this->assertEquals($a->getHex() . $b->getHex(), $a->concat($b)->getHex());
+    }
+
     public function testSlice()
     {
         $a = Buffer::hex("11000011");

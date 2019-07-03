@@ -201,6 +201,15 @@ class Buffer implements BufferInterface
 
     /**
      * @param BufferInterface $other
+     * @return BufferInterface
+     */
+    public function concat(BufferInterface $other)
+    {
+        return Buffertools::concat($this, $other);
+    }
+
+    /**
+     * @param BufferInterface $other
      * @return bool
      */
     public function equals(BufferInterface $other): bool
