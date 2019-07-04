@@ -120,6 +120,34 @@ class BufferTest extends TestCase
         $this->assertEquals($expectedHex, $buffer->getHex());
     }
 
+    /**
+     * @return array
+     */
+    public function getGmpVectors(): array
+    {
+        return [
+            [ gmp_init('0A', 16) ],
+            [ gmp_init('237852977508946591877284351678975096651401224047304305322504192889595623579202', 10) ],
+        ];
+    }
+
+    /**
+     * @dataProvider getGmpVectors
+     * @param \GMP $gmp
+     */
+    public function testGmpConstruction(\GMP $gmp)
+    {
+        $this->assertTrue(gmp_cmp($gmp, Buffer::gmp($gmp)->getGmp()) === 0);
+    }
+
+    public function testGmpConstructionNegative()
+    {
+        $gmp = gmp_init('-1234', 10);
+
+        $this->expectException(\InvalidArgumentException::class);
+        Buffer::gmp($gmp);
+    }
+
     public function testSlice()
     {
         $a = Buffer::hex("11000011");
