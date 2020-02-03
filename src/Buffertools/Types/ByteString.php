@@ -43,7 +43,7 @@ class ByteString extends AbstractType
     }
 
     /**
-     * @param Buffer $string
+     * @param BufferInterface $string
      * @return string
      * @throws \Exception
      */
@@ -84,7 +84,7 @@ class ByteString extends AbstractType
     /**
      * @param Parser $parser
      * @return BufferInterface
-     * @throws \BitWasp\Buffertools\Exceptions\ParserOutOfRange
+     * @throws \Exception
      */
     public function read(Parser $parser): BufferInterface
     {

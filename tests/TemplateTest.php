@@ -29,7 +29,7 @@ class TemplateTest extends BinaryTest
     public function testTemplateEmptyParse()
     {
         $template = new Template();
-        $parser = new Parser('010203040a0b0c0d');
+        $parser = new Parser(Buffer::hex('010203040a0b0c0d'));
         $template->parse($parser);
     }
 
